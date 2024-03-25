@@ -1,0 +1,4 @@
+nixd
+nixpkgs-fmt
+nix-prefetch-git
+nix-diff
