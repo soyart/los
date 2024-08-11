@@ -10,6 +10,7 @@ in {
   options = {
     los.home."${username}".progs.vscodium = {
       enable = lib.mkEnableOption "Enable VSCodium module";
+      fhs = lib.mkEnableOption "Use FHS-compatible VSCodium package";
       extensions = lib.mkOption {
         type = types.listOf types.package;
 
@@ -26,15 +27,17 @@ in {
           rust-lang.rust-analyzer
         ];
       };
-    };   
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home-manager.users."${username}" = {
       programs.vscode = {
         enable = true;
-        # package = pkgs.vscodium;
-        package = pkgs.vscodium.fhs; # With normal FHS-style chroot
+        package = if cfg.fhs
+          then pkgs.vscodium.fhs
+          else pkgs.vscodium;
+
         extensions = cfg.extensions;
       };
     };

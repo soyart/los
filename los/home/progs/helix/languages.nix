@@ -1,3 +1,5 @@
+pkgs:
+
 {
   language-server = {
     nixd = {
@@ -46,14 +48,15 @@
   language = [
     {
       name = "nix";
-      auto-format = true;
-      roots = [
-        "flake.nix"
-      ];
       language-servers = [
         {
           name = "nixd";
         }
+      ];
+      auto-format = true;
+      formatter.command = "${pkgs.nixd}/bin/nixfmt";
+      roots = [
+        "flake.nix"
       ];
     }
 

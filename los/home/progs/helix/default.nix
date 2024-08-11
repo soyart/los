@@ -13,9 +13,7 @@ in {
       langServers = lib.mkOption {
         description = "List of LSP Nix packages only available to Helix";
         type = types.listOf types.package;
-        default = with pkgs; [
-          nixd
-        ];
+        default = [];
         example = with pkgs; [
           nixd
           gopls
@@ -39,7 +37,7 @@ in {
           keys = import ./keys.nix;
         };
 
-        languages = import ./languages.nix;
+        languages = import ./languages.nix pkgs;
       };
     };
   };
