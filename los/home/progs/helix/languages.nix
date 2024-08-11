@@ -1,9 +1,14 @@
 pkgs:
 
+let
+  nixd = "${pkgs.nixd}/bin/nixd";
+  nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixfmt";
+
+in
 {
   language-server = {
     nixd = {
-      command = "nixd";
+      command = nixd;
     };
 
     efm = {
@@ -57,7 +62,7 @@ pkgs:
         }
       ];
       auto-format = true;
-      formatter.command = "${pkgs.nixpkgs-fmt}/bin/nixfmt";
+      formatter.command = nixfmt;
       roots = [
         "flake.nix"
       ];

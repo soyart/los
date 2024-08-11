@@ -6,6 +6,9 @@ let
   types = lib.types;
   cfg = config.los.home."${username}".progs.vscodium;
 
+  nixd = "${pkgs.nixd}/bin/nixd";
+  nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixfmt";
+
 in
 {
   options = {
@@ -45,8 +48,9 @@ in
         userSettings = {
           nix = {
             enableLanguageServer = true;
-            serverPath = "nixd";
-            formatterPath = "nixpkgs-fmt";
+            serverPath = nixd;
+            formatterPath = nixfmt;
+            formatOnSave = true;
           };
         };
       };
