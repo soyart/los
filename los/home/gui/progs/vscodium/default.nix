@@ -10,7 +10,7 @@ in
 {
   options = {
     los.home."${username}".progs.vscodium = {
-      enable = lib.mkEnableOption "Enable VSCodium module";
+      enable = lib.mkEnableOption "Enable VSCodium module, with Nix support";
       fhs = lib.mkEnableOption "Use FHS-compatible VSCodium package";
       extensions = lib.mkOption {
         type = types.listOf types.package;
@@ -41,6 +41,12 @@ in
           else pkgs.vscodium;
 
         extensions = cfg.extensions;
+
+        userSettings = {
+          nix.enableLanguageServer = true;
+          nix.serverPath = "nixd";
+          nix.formatterPath = "nixpkgs-fmt";
+        };
       };
     };
   };
