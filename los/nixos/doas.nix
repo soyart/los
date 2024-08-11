@@ -1,43 +1,42 @@
 { lib, config, pkgs, ... }:
 
-with lib;
-with lib.types;
-
 let
+  types = lib.types;
   cfg = config.los.doas;
 
-in {
+in
+{
   options.los.doas = {
-    enable = mkEnableOption "Globally enable doas";
+    enable = lib.mkEnableOption "Globally enable doas";
 
-    keepSudo = mkOption {
-      type = bool;
+    keepSudo = lib.mkOption {
+      type = types.bool;
       default = true;
       description = "Keep sudo on the system";
     };
 
     settings = {
-      users = mkOption {
-        type = listOf str;
+      users = lib.mkOption {
+        type = types.listOf types.str;
         description = "List of usernames with doas enabled";
       };
-      groups = mkOption {
-        type = listOf str;
-        default = [];
+      groups = lib.mkOption {
+        type = types.listOf types.str;
+        default = [ ];
         description = "List of user groups with doas enabled";
       };
-      keepEnv = mkOption {
-        type = bool;
+      keepEnv = lib.mkOption {
+        type = types.bool;
         default = true;
       };
-      persist = mkOption {
-        type = bool;
+      persist = lib.mkOption {
+        type = types.bool;
         default = true;
       };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     security.sudo.enable = cfg.keepSudo;
 
     security.doas.enable = true;

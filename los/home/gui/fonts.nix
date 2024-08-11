@@ -2,20 +2,19 @@ username:
 
 { lib, config, pkgs, ... }:
 
-with lib;
-with lib.types;
-
 let
+  types = lib.types;
   cfg = config.los.home."${username}".gui.fonts;
 
-in {
+in
+{
   options = {
     los.home."${username}".gui.fonts = {
-      enable = mkEnableOption "Install fonts for GUI";
+      enable = lib.mkEnableOption "Install fonts for GUI";
 
-      ttf = mkOption {
+      ttf = lib.mkOption {
         description = "Normal TTF fonts";
-        type = listOf package;
+        type = types.listOf types.package;
         default = with pkgs; [
           inconsolata
           liberation_ttf
@@ -26,19 +25,19 @@ in {
         ];
       };
 
-      nerd = mkOption {
+      nerd = lib.mkOption {
         description = "Nerd Fonts for override";
-        type = listOf str;
-        default = [];
+        type = types.listOf types.str;
+        default = [ ];
         example = [
           "Hack"
           "Inconsolata"
         ];
       };
 
-      defaults = mkOption {
+      defaults = lib.mkOption {
         description = "Default font names for each typeface family";
-        type = attrsOf (listOf str);
+        type = types.attrsOf (types.listOf types.str);
         default = null;
         example = {
           serif = [
@@ -56,18 +55,18 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home-manager.users."${username}" = {
       home.packages =
-          if (builtins.length cfg.nerd != 0)
-          then cfg.ttf ++ [
-            (pkgs.nerdfonts.override { fonts = cfg.nerd; })
-          ]
+        if (builtins.length cfg.nerd != 0)
+        then cfg.ttf ++ [
+          (pkgs.nerdfonts.override { fonts = cfg.nerd; })
+        ]
 
-          else cfg.ttf;
+        else cfg.ttf;
 
       fonts = {
-        fontconfig = mkIf (cfg.defaults != null) {
+        fontconfig = lib.mkIf (cfg.defaults != null) {
           enable = true;
           defaultFonts = cfg.defaults;
         };

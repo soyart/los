@@ -1,7 +1,7 @@
-{
-  stdenv,
-  fetchgit,
- }:
+{ stdenv
+, fetchgit
+,
+}:
 
 stdenv.mkDerivation {
   pname = "unix";

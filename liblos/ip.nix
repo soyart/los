@@ -6,15 +6,18 @@ let
   regexV4 = "(([0-9]+).([0-9]+).([0-9]+).([0-9]+))";
   regexV4WithPort = regexV4 + "\:([0-9]+)";
 
-in rec {
+in
+rec {
   inherit regexV4 regexV4WithPort;
 
-  parseV4 = addr: let
+  parseV4 = addr:
+    let
       matched = builtins.match regexV4 addr;
       address = builtins.head matched;
       componentsInts = map strings.toInt (builtins.tail matched);
 
-    in {
+    in
+    {
       inherit address;
 
       valid = matched != null
@@ -27,13 +30,15 @@ in rec {
 
   isV4 = addr: (parseV4 addr).valid;
 
-  parseV4WithPort = addr: let
+  parseV4WithPort = addr:
+    let
       matched = builtins.match regexV4WithPort addr;
       address = builtins.head matched;
       componentsInts = map strings.toInt (builtins.tail matched);
       port = lists.last componentsInts;
 
-    in {
+    in
+    {
       inherit address port;
 
       valid = matched != null

@@ -1,17 +1,15 @@
-{ lib, config, ... }:
-
-with lib;
-with lib.types;
+{ config, lib, ... }:
 
 let
   cfg = config.los.net.iwd;
 
-in {
+in
+{
   options.los.net.iwd = {
-    enable =  mkEnableOption "Enable iwd wireless daemon";
+    enable = lib.mkEnableOption "Enable iwd wireless daemon";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     networking.wireless.iwd = {
       enable = true;
       settings = {

@@ -1,37 +1,36 @@
 { lib, config, ... }:
 
-with lib;
-with lib.types;
-
 let
+  types = lib.types;
   cfg = config.los.mainUser;
 
-in {
+in
+{
   options.los.mainUser = {
-    enable = mkEnableOption "Enable mainUser module";
+    enable = lib.mkEnableOption "Enable mainUser module";
 
-    username= mkOption {
+    username = lib.mkOption {
       description = "Username";
-      type = str // {
+      type = types.str // {
         check = (s: s != "root");
       };
       default = "los";
       example = "bob";
     };
 
-    groups = mkOption {
+    groups = lib.mkOption {
       description = "Extra groups other than 'weel' and `users`";
-      type = listOf str // {
-        check =  (li: !(builtins.elem "wheel" li));
+      type = types.listOf types.str // {
+        check = (li: !(builtins.elem "wheel" li));
       };
-      default = [];
+      default = [ ];
       example = [ "video" "docker" ];
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     users.groups."${cfg.username}" = {
-      members = [ cfg.username];
+      members = [ cfg.username ];
     };
 
     users.users.${cfg.username} = {

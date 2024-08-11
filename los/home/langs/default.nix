@@ -2,10 +2,8 @@ username:
 
 { lib, config, pkgs, ... }:
 
-with lib;
-with lib.types;
-
 let
+  types = lib.types;
   cfg = config.los.home."${username}".langs;
 
   mappings = {
@@ -23,8 +21,8 @@ let
 
   mod = {
     options = {
-      enable = mkEnableOption "Enable language support";
-      systemPackage = mkEnableOption "Enable language support as system package";
+      enable = lib.mkEnableOption "Enable language support (home-manager)";
+      systemPackage = lib.mkEnableOption "Enable language support as system package";
     };
   };
 
@@ -38,9 +36,9 @@ let
   # [ {name=go; enable=true; systemPackage=true}; {name=rust; enable=true; systemPackage=true;} ]
   #
   langList = (langCfgs:
-    mapAttrsToList
+    lib.mapAttrsToList
       (key: val: val // { name = key; })
-    langCfgs
+      langCfgs
   );
 
   sysPkgs = (langList:
@@ -48,7 +46,7 @@ let
       (lang: lib.optionals (lang.enable && lang.systemPackage)
         mappings."${lang.name}"
       )
-    langList
+      langList
   );
 
   homePkgs = (langList:
@@ -56,28 +54,30 @@ let
       (lang: lib.optionals (lang.enable && !lang.systemPackage)
         mappings."${lang.name}"
       )
-    langList
+      langList
   );
 
-in {
-  options.los.home."${username}".langs = mkOption {
+in
+{
+  options.los.home."${username}".langs = lib.mkOption {
     description = "Programming languages to install";
-    type = attrsOf (submodule mod);
+    type = types.attrsOf (types.submodule mod);
     default = {
       enable = false;
       systemPackage = false;
     };
   };
-  
-  config = 
-  let
-    languages = langList cfg;
 
-  in {
-    environment.systemPackages =
-      lists.flatten (sysPkgs languages);
+  config =
+    let
+      languages = langList cfg;
 
-    home-manager.users."${username}".home.packages =
-      lists.flatten (homePkgs languages);
-  };
+    in
+    {
+      environment.systemPackages =
+        lib.lists.flatten (sysPkgs languages);
+
+      home-manager.users."${username}".home.packages =
+        lib.lists.flatten (homePkgs languages);
+    };
 }

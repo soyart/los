@@ -1,4 +1,5 @@
 let
-  pkgs = import <nixpkgs> {};
+  pkgs = import <nixpkgs> { };
 
-in pkgs.callPackage ./drv.nix {}
+in
+pkgs.callPackage ./drv.nix { }

@@ -2,24 +2,21 @@ username:
 
 { lib, config, pkgs, ... }:
 
-with lib;
-with lib.types;
-
 let
+  types = lib.types;
   cfg = config.los.home."${username}".progs.helix;
 
-in {
+in
+{
   options = {
     los.home."${username}".progs.helix = {
-      enable = mkEnableOption "Enable Helix editor from los";
-      langServers = mkOption {
+      enable = lib.mkEnableOption "Enable Helix editor from los";
+      langServers = lib.mkOption {
         description = "List of LSP Nix packages only available to Helix";
-        type = listOf package;
-        default = with pkgs; [
-          nil
-        ];
+        type = types.listOf types.package;
+        default = [ ];
         example = with pkgs; [
-          nil
+          nixd
           gopls
           marksman
         ];
@@ -27,12 +24,12 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home-manager.users."${username}" = {
       programs.helix = {
         enable = true;
 
-        extraPackages = mkIf ((builtins.length cfg.langServers) != 0)
+        extraPackages = lib.mkIf ((builtins.length cfg.langServers) != 0)
           cfg.langServers;
 
         settings = {
@@ -41,7 +38,7 @@ in {
           keys = import ./keys.nix;
         };
 
-        languages = import ./languages.nix { inherit pkgs; };
+        languages = import ./languages.nix pkgs;
       };
     };
   };

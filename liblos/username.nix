@@ -1,11 +1,8 @@
 { lib, purpose }:
 
-with lib;
-with lib.types;
-
-mkOption {
+lib.mkOption {
   description = "username to enable ${purpose} for";
-  type = str // {
+  type = lib.types.str // {
     check = s: (builtins.stringLength s) != 0;
   };
 }

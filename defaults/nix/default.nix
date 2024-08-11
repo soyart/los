@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   nix = {
@@ -7,6 +7,8 @@
       auto-optimise-store = true;
       # trusted-users = [ "root" "@wheel" ];
     };
+
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
     gc = {
       automatic = true;

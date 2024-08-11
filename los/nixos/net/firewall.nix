@@ -1,29 +1,27 @@
 { lib, config, ... }:
 
-with lib;
-with lib.types;
-
 let
+  types = lib.types;
   cfg = config.los.net.firewall;
 
   fw = {
     options = {
-      allowPing = mkOption {
+      allowPing = lib.mkOption {
         description = "Allow ping when firewall is up";
-        type = bool;
+        type = types.bool;
         default = false;
       };
 
-      portsTcp = mkOption {
+      portsTcp = lib.mkOption {
         description = "Open TCP ports";
-        type = listOf int;
-        default = [];
+        type = types.listOf types.int;
+        default = [ ];
       };
 
-      portsUdp = mkOption {
+      portsUdp = lib.mkOption {
         description = "Open UDP ports";
-        type = listOf int;
-        default = [];
+        type = types.listOf types.int;
+        default = [ ];
       };
     };
   };
@@ -31,21 +29,21 @@ let
 in
 {
   options.los.net.firewall = {
-    enable = mkEnableOption "Enable los firewall";
-    global = mkOption {
+    enable = lib.mkEnableOption "Enable los firewall";
+    global = lib.mkOption {
       description = "Global firewall for all network interfaces";
-      type = submodule fw;
-      default = {};
+      type = types.submodule fw;
+      default = { };
     };
 
-    # interfaces = mkOption {
+    # interfaces = lib.mkOption{
     #   description = "Maps names of interfaces to los firewall";
     #   type = attrsOf (submodule fw);
     #   default = {};
     # };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     networking.nftables.enable = true;
     networking.firewall = {
       enable = true;

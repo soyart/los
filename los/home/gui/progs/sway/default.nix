@@ -2,25 +2,23 @@ username:
 
 { lib, config, pkgs, inputs, ... }:
 
-with lib;
-
 let
   cfg = config.los.home."${username}".gui.progs.sway;
-
   unix = inputs.unix;
 
-in {
+in
+{
   options = {
     los.home."${username}".gui.progs.sway = {
-      enable = mkEnableOption "Enable Sway DM with config from gitlab.com/artnoi/unix";
+      enable = lib.mkEnableOption "Enable Sway DM with config from gitlab.com/artnoi/unix";
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     security = {
       polkit.enable = true;
       rtkit.enable = true;
-      pam.services.swaylock = {};
+      pam.services.swaylock = { };
     };
 
     services.pipewire = {
@@ -31,7 +29,7 @@ in {
     };
 
     users.users."${username}" = {
-      extraGroups = [ "audio"  "video" ];
+      extraGroups = [ "audio" "video" ];
     };
 
     hardware = {
@@ -39,18 +37,18 @@ in {
     };
 
     home-manager.users."${username}" = {
-      home.packages = with pkgs; [
-        swayidle
-        swaylock
-        alacritty # Default terminal in sway config from unix
-        wl-clipboard
-        brightnessctl
-        dash
-        lm_sensors
-        wofi
-        dmenu
-
-        (writeShellScriptBin "sndctl" ''
+      home.packages = [
+        pkgs.swayidle
+        pkgs.swaylock
+        pkgs.alacritty # Default terminal in sway config from unix
+        pkgs.wl-clipboard
+        pkgs.brightnessctl
+        pkgs.dash
+        pkgs.lm_sensors
+        pkgs.wofi
+        pkgs.dmenu
+      ] ++ [
+        (pkgs.writeShellScriptBin "sndctl" ''
           ${builtins.readFile "${unix}/sh-tools/bin/sndctl-wireplumber"}
         '')
       ];
@@ -97,7 +95,7 @@ in {
       wayland.windowManager.sway = {
         enable = true;
         extraConfig = ''
-           include ${unix}/dotfiles/linux/.config/sway/config
+          include ${unix}/dotfiles/linux/.config/sway/config
         '';
       };
     };

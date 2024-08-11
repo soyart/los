@@ -1,24 +1,35 @@
 { lib, config, ... }:
 
-with lib;
-with lib.types;
-
 let
+  types = lib.types;
   cfg = config.los.ramDisks;
 
-in {
-  options.los.ramDisks = mkOption {
+in
+{
+  options.los.ramDisks = lib.mkOption {
     description = "Set of tmpfs mounts";
-    type = attrsOf (submodule {
+    type = types.attrsOf (types.submodule {
       options = {
-        perm = mkOption { type = str; default = "755"; };
-        owner = mkOption { type = str; default = "root"; };
-        group = mkOption { type = str; default = "root"; };
-        size = mkOption { type = nullOr str; default = null; };
+        perm = lib.mkOption {
+          type = types.str;
+          default = "755";
+        };
+        owner = lib.mkOption {
+          type = types.str;
+          default = "root";
+        };
+        group = lib.mkOption {
+          type = types.str;
+          default = "root";
+        };
+        size = lib.mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
       };
     });
     example = {
-      "/rd1" = {};
+      "/rd1" = { };
       "/rd2".size = "500M";
       "/rd2".owner = "userfoo";
       "/rd3" = {
@@ -28,24 +39,28 @@ in {
     };
   };
 
-  config = let
-    mapFn = key: value: let
-      mntOpts = [
-        "defaults"
-        "mode=${value.perm}"
-        "uid=${value.owner}"
-        "gid=${value.group}"
-      ]
-      ++ lib.optional (value.size != null) "size=${value.size}";
+  config =
+    let
+      mapFn = key: value:
+        let
+          mntOpts = [
+            "defaults"
+            "mode=${value.perm}"
+            "uid=${value.owner}"
+            "gid=${value.group}"
+          ]
+          ++ lib.optional (value.size != null) "size=${value.size}";
 
-    in {
-      device = "none";
-      fsType = "tmpfs";
-      options = mntOpts;
+        in
+        {
+          device = "none";
+          fsType = "tmpfs";
+          options = mntOpts;
+        };
+
+    in
+    {
+      # Nix module system will merge this to global config.fileSystems
+      fileSystems = builtins.mapAttrs mapFn cfg;
     };
-
-  in {
-    # Nix module system will merge this to global config.fileSystems
-    fileSystems = mapAttrs mapFn cfg;
-  };
 }

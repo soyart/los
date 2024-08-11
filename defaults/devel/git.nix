@@ -10,7 +10,7 @@ username:
   los.home."${username}".progs.git = {
     enable = true;
     withLfs = false;
-    username = "soyart";  
+    username = "soyart";
     email = "artdrawin@gmail.com";
 
     editor = {
