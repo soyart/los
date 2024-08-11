@@ -9,7 +9,8 @@ let
   cfg = perUser.gui.progs.firefox;
   cfgSway = perUser.gui.progs.sway;
 
-in {
+in
+{
   options = {
     los.home."${username}".gui.progs.firefox = {
       enable = lib.mkEnableOption "Enable Firefox (Wayland-only)";
@@ -43,12 +44,16 @@ in {
 
       programs.firefox = {
         enable = true;
-        package = if cfg.withPipewire
-          then (pkgs.wrapFirefox (
-            pkgs.firefox-unwrapped.override {
-              pipewireSupport = true;
-            }) {}
-          )
+        package =
+          if cfg.withPipewire
+          then
+            (pkgs.wrapFirefox
+              (
+                pkgs.firefox-unwrapped.override {
+                  pipewireSupport = true;
+                })
+              { }
+            )
 
           else pkgs.firefox;
       };

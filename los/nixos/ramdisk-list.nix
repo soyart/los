@@ -4,27 +4,28 @@ let
   types = lib.types;
   cfg = config.los.ramDiskList;
 
-in {
-  options.los.ramDiskList = lib.mkOption{
+in
+{
+  options.los.ramDiskList = lib.mkOption {
     description = "List of tmpfs mounts";
     type = types.listOf (types.submodule {
       options = {
-        mnt = lib.mkOption{
+        mnt = lib.mkOption {
           type = types.str;
         };
-        perm = lib.mkOption{
+        perm = lib.mkOption {
           type = types.str;
           default = "755";
         };
-        owner = lib.mkOption{
+        owner = lib.mkOption {
           type = types.str;
           default = "root";
         };
-        group = lib.mkOption{
+        group = lib.mkOption {
           type = types.str;
           default = "root";
         };
-        size = lib.mkOption{
+        size = lib.mkOption {
           type = types.nullOr types.str;
           default = null;
         };
@@ -37,22 +38,24 @@ in {
     ];
   };
 
-  config = let
-    mapFn = c: {
-      "${c.mnt}" = {
-        device = "none";
-        fsType = "tmpfs";
-        options = [
-          "defaults"
-          "mode=${cfg.perm}"
-          "uid=${cfg.owner}"
-          "gid=${cfg.group}"
-        ]
-        ++ lib.optional (cfg.size != null) "size=${cfg.size}";
+  config =
+    let
+      mapFn = c: {
+        "${c.mnt}" = {
+          device = "none";
+          fsType = "tmpfs";
+          options = [
+            "defaults"
+            "mode=${cfg.perm}"
+            "uid=${cfg.owner}"
+            "gid=${cfg.group}"
+          ]
+          ++ lib.optional (cfg.size != null) "size=${cfg.size}";
+        };
       };
-    };
-    
-    in {
+
+    in
+    {
       fileSystems = lib.attrsets.mergeAttrsList (map mapFn cfg);
     };
 }

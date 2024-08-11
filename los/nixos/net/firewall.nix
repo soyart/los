@@ -6,22 +6,22 @@ let
 
   fw = {
     options = {
-      allowPing = lib.mkOption{
+      allowPing = lib.mkOption {
         description = "Allow ping when firewall is up";
         type = types.bool;
         default = false;
       };
 
-      portsTcp = lib.mkOption{
+      portsTcp = lib.mkOption {
         description = "Open TCP ports";
         type = types.listOf types.int;
-        default = [];
+        default = [ ];
       };
 
-      portsUdp = lib.mkOption{
+      portsUdp = lib.mkOption {
         description = "Open UDP ports";
         type = types.listOf types.int;
-        default = [];
+        default = [ ];
       };
     };
   };
@@ -30,10 +30,10 @@ in
 {
   options.los.net.firewall = {
     enable = lib.mkEnableOption "Enable los firewall";
-    global = lib.mkOption{
+    global = lib.mkOption {
       description = "Global firewall for all network interfaces";
       type = types.submodule fw;
-      default = {};
+      default = { };
     };
 
     # interfaces = lib.mkOption{

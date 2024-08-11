@@ -1,10 +1,11 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 
 let
   envName = "dev-go";
   aliasesGit = builtins.readFile ../git-aliases.sh;
 
-in {
+in
+{
   devShell = pkgs.mkShellNoCC {
     HELLO = "world";
     ENV_NAME = envName;

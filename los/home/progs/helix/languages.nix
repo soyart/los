@@ -9,7 +9,10 @@ pkgs:
     efm = {
       command = "efm-langserver";
       args = [
-        "-loglevel" "10" "-logfile" "/tmp/helix.efm.log"
+        "-loglevel"
+        "10"
+        "-logfile"
+        "/tmp/helix.efm.log"
       ];
     };
 

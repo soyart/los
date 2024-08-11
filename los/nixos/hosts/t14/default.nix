@@ -2,17 +2,17 @@
 
 {
   imports = [
-      ./hardware.nix
-      ./configuration.nix
+    ./hardware.nix
+    ./configuration.nix
 
-      ../../../../defaults/nix
-      ../../../../defaults/net
+    ../../../../defaults/nix
+    ../../../../defaults/net
 
-      ../../net
-      ../../syspkgs.nix
-      ../../main-user.nix
-      ../../doas.nix # doas is considered a system setting
-      ../../ramdisk.nix
+    ../../net
+    ../../syspkgs.nix
+    ../../main-user.nix
+    ../../doas.nix # doas is considered a system setting
+    ../../ramdisk.nix
   ];
 
   networking.hostName = hostname;
@@ -48,7 +48,7 @@
         group = "wheel";
       };
       "/rd" = {
-        size = "2G";  
+        size = "2G";
         group = mainUser;
         owner = mainUser;
       };
@@ -63,9 +63,9 @@
       enable = true;
       keepSudo = false;
       settings = {
-          users = [ mainUser ];
-          keepEnv = true;
-          persist = true;
+        users = [ mainUser ];
+        keepEnv = true;
+        persist = true;
       };
     };
 

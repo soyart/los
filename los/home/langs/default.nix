@@ -38,7 +38,7 @@ let
   langList = (langCfgs:
     lib.mapAttrsToList
       (key: val: val // { name = key; })
-    langCfgs
+      langCfgs
   );
 
   sysPkgs = (langList:
@@ -46,7 +46,7 @@ let
       (lang: lib.optionals (lang.enable && lang.systemPackage)
         mappings."${lang.name}"
       )
-    langList
+      langList
   );
 
   homePkgs = (langList:
@@ -54,10 +54,11 @@ let
       (lang: lib.optionals (lang.enable && !lang.systemPackage)
         mappings."${lang.name}"
       )
-    langList
+      langList
   );
 
-in {
+in
+{
   options.los.home."${username}".langs = lib.mkOption {
     description = "Programming languages to install";
     type = types.attrsOf (types.submodule mod);
@@ -66,16 +67,17 @@ in {
       systemPackage = false;
     };
   };
-  
-  config = 
-  let
-    languages = langList cfg;
 
-  in {
-    environment.systemPackages =
-      lib.lists.flatten (sysPkgs languages);
+  config =
+    let
+      languages = langList cfg;
 
-    home-manager.users."${username}".home.packages =
-      lib.lists.flatten (homePkgs languages);
-  };
+    in
+    {
+      environment.systemPackages =
+        lib.lists.flatten (sysPkgs languages);
+
+      home-manager.users."${username}".home.packages =
+        lib.lists.flatten (homePkgs languages);
+    };
 }

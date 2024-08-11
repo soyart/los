@@ -6,7 +6,8 @@ let
   types = lib.types;
   cfg = config.los.home."${username}".gui.fonts;
 
-in {
+in
+{
   options = {
     los.home."${username}".gui.fonts = {
       enable = lib.mkEnableOption "Install fonts for GUI";
@@ -27,7 +28,7 @@ in {
       nerd = lib.mkOption {
         description = "Nerd Fonts for override";
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         example = [
           "Hack"
           "Inconsolata"
@@ -57,12 +58,12 @@ in {
   config = lib.mkIf cfg.enable {
     home-manager.users."${username}" = {
       home.packages =
-          if (builtins.length cfg.nerd != 0)
-          then cfg.ttf ++ [
-            (pkgs.nerdfonts.override { fonts = cfg.nerd; })
-          ]
+        if (builtins.length cfg.nerd != 0)
+        then cfg.ttf ++ [
+          (pkgs.nerdfonts.override { fonts = cfg.nerd; })
+        ]
 
-          else cfg.ttf;
+        else cfg.ttf;
 
       fonts = {
         fontconfig = lib.mkIf (cfg.defaults != null) {

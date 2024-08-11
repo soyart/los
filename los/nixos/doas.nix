@@ -4,7 +4,8 @@ let
   types = lib.types;
   cfg = config.los.doas;
 
-in {
+in
+{
   options.los.doas = {
     enable = lib.mkEnableOption "Globally enable doas";
 
@@ -21,7 +22,7 @@ in {
       };
       groups = lib.mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = "List of user groups with doas enabled";
       };
       keepEnv = lib.mkOption {

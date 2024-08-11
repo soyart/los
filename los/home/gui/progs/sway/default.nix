@@ -6,7 +6,8 @@ let
   cfg = config.los.home."${username}".gui.progs.sway;
   unix = inputs.unix;
 
-in {
+in
+{
   options = {
     los.home."${username}".gui.progs.sway = {
       enable = lib.mkEnableOption "Enable Sway DM with config from gitlab.com/artnoi/unix";
@@ -17,7 +18,7 @@ in {
     security = {
       polkit.enable = true;
       rtkit.enable = true;
-      pam.services.swaylock = {};
+      pam.services.swaylock = { };
     };
 
     services.pipewire = {
@@ -28,7 +29,7 @@ in {
     };
 
     users.users."${username}" = {
-      extraGroups = [ "audio"  "video" ];
+      extraGroups = [ "audio" "video" ];
     };
 
     hardware = {
@@ -94,7 +95,7 @@ in {
       wayland.windowManager.sway = {
         enable = true;
         extraConfig = ''
-           include ${unix}/dotfiles/linux/.config/sway/config
+          include ${unix}/dotfiles/linux/.config/sway/config
         '';
       };
     };

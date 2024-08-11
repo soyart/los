@@ -6,7 +6,8 @@ let
   types = lib.types;
   cfg = config.los.home."${username}".progs.vscodium;
 
-in {
+in
+{
   options = {
     los.home."${username}".progs.vscodium = {
       enable = lib.mkEnableOption "Enable VSCodium module";
@@ -34,7 +35,8 @@ in {
     home-manager.users."${username}" = {
       programs.vscode = {
         enable = true;
-        package = if cfg.fhs
+        package =
+          if cfg.fhs
           then pkgs.vscodium.fhs
           else pkgs.vscodium;
 

@@ -5,23 +5,23 @@ let
   # inherit (inputs.disko.nixosModules) disko;
   # inherit (inputs.sops-nix.nixosModules) sops;
 
-  mkHost = {
-    modules,
-    mainUser,
-    hostname ? "los",
-    stateVersion ? "23.11",
-    system ? "x86_64-linux",
-    # disk ? ./disks/thinkpad.nix,
-  }: nixosSystem {
-    inherit system modules;
+  mkHost =
+    { modules
+    , mainUser
+    , hostname ? "los"
+    , stateVersion ? "23.11"
+    , system ? "x86_64-linux"
+    , # disk ? ./disks/thinkpad.nix,
+    }: nixosSystem {
+      inherit system modules;
 
-    specialArgs = {
-      inherit hostname mainUser inputs stateVersion ;
+      specialArgs = {
+        inherit hostname mainUser inputs stateVersion;
+      };
+
+      # modules = [ sops disko ./shared ] ++ modules; 
+      # specialArgs = { inherit inputs disk stateVersion; };
     };
-
-    # modules = [ sops disko ./shared ] ++ modules; 
-    # specialArgs = { inherit inputs disk stateVersion; };
-  };
 
   # Imports home-manager as NixOS modules,
   # and with defaults home-manager.home config.
@@ -37,7 +37,8 @@ let
     };
   };
 
-in {
+in
+{
   "los-t14" =
     let username = "artnoi";
     in mkHost {
@@ -51,5 +52,5 @@ in {
         (import ../../presets/sway-dev username)
         (import ../../defaults/devel-gui/vscodium.nix username)
       ];
-  };
+    };
 }

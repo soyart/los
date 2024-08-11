@@ -3,9 +3,10 @@
 let
   cfg = config.los.net.iwd;
 
-in {
+in
+{
   options.los.net.iwd = {
-    enable =  lib.mkEnableOption "Enable iwd wireless daemon";
+    enable = lib.mkEnableOption "Enable iwd wireless daemon";
   };
 
   config = lib.mkIf cfg.enable {

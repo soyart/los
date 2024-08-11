@@ -6,7 +6,8 @@ let
   types = lib.types;
   cfg = config.los.home."${username}".progs.git;
 
-in {
+in
+{
   options = {
     los.home."${username}".progs.git = {
       enable = lib.mkEnableOption "Enable los Git";
@@ -53,28 +54,28 @@ in {
     home-manager.users."${username}" =
       let editor = cfg.editor;
 
-    in {
-      home.sessionVariables = {
-        EDITOR = "${editor.package.outPath}/${editor.binPath}"; 
-      };
+      in {
+        home.sessionVariables = {
+          EDITOR = "${editor.package.outPath}/${editor.binPath}";
+        };
 
-      programs = {
-        ${editor.package.pname}.enable = true;        
+        programs = {
+          ${editor.package.pname}.enable = true;
 
-        git = {
-          enable = true;
-          lfs.enable = cfg.withLfs;
+          git = {
+            enable = true;
+            lfs.enable = cfg.withLfs;
 
-          userName = cfg.username;
-          userEmail = cfg.email;
+            userName = cfg.username;
+            userEmail = cfg.email;
 
-          extraConfig = {
-            push = {
-              autoSetupRemote = true;  
+            extraConfig = {
+              push = {
+                autoSetupRemote = true;
+              };
             };
           };
         };
       };
-    };
   };
 }
