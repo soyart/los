@@ -16,7 +16,6 @@ in
         type = types.listOf types.package;
         default = [ ];
         example = with pkgs; [
-          nixd
           gopls
           marksman
         ];

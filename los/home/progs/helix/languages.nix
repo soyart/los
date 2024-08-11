@@ -57,7 +57,7 @@ pkgs:
         }
       ];
       auto-format = true;
-      formatter.command = "${pkgs.nixd}/bin/nixfmt";
+      formatter.command = "${pkgs.nixpkgs-fmt}/bin/nixfmt";
       roots = [
         "flake.nix"
       ];
