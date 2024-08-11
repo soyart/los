@@ -43,9 +43,11 @@ in
         extensions = cfg.extensions;
 
         userSettings = {
-          nix.enableLanguageServer = true;
-          nix.serverPath = "nixd";
-          nix.formatterPath = "nixpkgs-fmt";
+          nix = {
+            enableLanguageServer = true;
+            serverPath = "nixd";
+            formatterPath = "nixpkgs-fmt";
+          };
         };
       };
     };
