@@ -22,6 +22,7 @@
       "/var/log"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
+      "/var/lib/iwd"
       # "/etc/iwd"
       # { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
     ];
@@ -31,7 +32,7 @@
     {
       device = "none";
       fsType = "tmpfs";
-      options = [ "defaults" "size=40%" "mode=755" ];
+      options = [ "defaults" "size=6G" "mode=755" ];
     };
 
   fileSystems."/persist" =
