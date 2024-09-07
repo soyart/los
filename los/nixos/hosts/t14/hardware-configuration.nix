@@ -15,6 +15,43 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
+  fileSystems = {
+    "/" =
+      {
+        device = "none";
+        fsType = "tmpfs";
+        options = [ "defaults" "size=6G" "mode=755" ];
+      };
+
+    "/boot" =
+      {
+        device = "/dev/disk/by-uuid/7CB3-65EB";
+        fsType = "vfat";
+      };
+
+    "/nix" =
+      {
+        device = "/dev/disk/by-uuid/f5913f2e-1b06-4413-b03f-4201a6e194c3";
+        fsType = "btrfs";
+        options = [ "subvol=@nix" "compress=zstd:6" ];
+      };
+
+    "/home" =
+      {
+        device = "/dev/disk/by-uuid/f5913f2e-1b06-4413-b03f-4201a6e194c3";
+        fsType = "btrfs";
+        options = [ "subvol=@home" "compress=zstd:6" ];
+      };
+
+    "/persist" =
+      {
+        device = "/dev/disk/by-uuid/f5913f2e-1b06-4413-b03f-4201a6e194c3";
+        fsType = "btrfs";
+        neededForBoot = true;
+        options = [ "subvol=@persist" "compress=zstd:6" ];
+      };
+  };
+
   environment.persistence."/persist" = {
     enable = true;
     hideMounts = true;
@@ -30,41 +67,6 @@
       "/etc/machine-id"
     ];
   };
-
-  fileSystems."/" =
-    {
-      device = "none";
-      fsType = "tmpfs";
-      options = [ "defaults" "size=6G" "mode=755" ];
-    };
-
-  fileSystems."/persist" =
-    {
-      device = "/dev/disk/by-uuid/f5913f2e-1b06-4413-b03f-4201a6e194c3";
-      fsType = "btrfs";
-      neededForBoot = true;
-      options = [ "subvol=@persist" "compress=zstd:6" ];
-    };
-
-  fileSystems."/nix" =
-    {
-      device = "/dev/disk/by-uuid/f5913f2e-1b06-4413-b03f-4201a6e194c3";
-      fsType = "btrfs";
-      options = [ "subvol=@nix" "compress=zstd:6" ];
-    };
-
-  fileSystems."/home" =
-    {
-      device = "/dev/disk/by-uuid/f5913f2e-1b06-4413-b03f-4201a6e194c3";
-      fsType = "btrfs";
-      options = [ "subvol=@home" "compress=zstd:6" ];
-    };
-
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/7CB3-65EB";
-      fsType = "vfat";
-    };
 
   swapDevices =
     [{ device = "/dev/disk/by-uuid/86114262-1471-4b76-8149-f0966a1668c3"; }];
