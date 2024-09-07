@@ -26,6 +26,12 @@ in
       default = [ ];
       example = [ "video" "docker" ];
     };
+
+    hashedPassword = lib.mkOption {
+      type = types.str // {
+        check = (s: s != "");
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -38,6 +44,7 @@ in
       home = "/home/${cfg.username}";
       createHome = true;
       extraGroups = cfg.groups ++ [ "wheel" ];
+      hashedPassword = cfg.hashedPassword;
     };
   };
 }
