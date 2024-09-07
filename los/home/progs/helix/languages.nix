@@ -2,7 +2,7 @@ pkgs:
 
 let
   nixd = "${pkgs.nixd}/bin/nixd";
-  nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixfmt";
+  nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
 
 in
 {

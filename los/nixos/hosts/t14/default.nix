@@ -57,6 +57,7 @@
     mainUser = {
       enable = true;
       username = mainUser;
+      hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
     };
 
     doas = {

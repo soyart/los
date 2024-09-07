@@ -7,7 +7,7 @@ let
   cfg = config.los.home."${username}".progs.vscodium;
 
   nixd = "${pkgs.nixd}/bin/nixd";
-  nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixfmt";
+  nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
 
 in
 {
