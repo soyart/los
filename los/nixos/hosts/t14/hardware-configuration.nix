@@ -16,13 +16,6 @@
   boot.extraModulePackages = [ ];
 
   fileSystems = {
-    "/" =
-      {
-        device = "none";
-        fsType = "tmpfs";
-        options = [ "defaults" "size=6G" "mode=755" ];
-      };
-
     "/boot" =
       {
         device = "/dev/disk/by-uuid/7CB3-65EB";
@@ -41,6 +34,13 @@
         device = "/dev/disk/by-uuid/f5913f2e-1b06-4413-b03f-4201a6e194c3";
         fsType = "btrfs";
         options = [ "subvol=@home" "compress=zstd:6" ];
+      };
+
+    "/" =
+      {
+        device = "none";
+        fsType = "tmpfs";
+        options = [ "defaults" "size=6G" "mode=755" ];
       };
 
     "/persist" =
