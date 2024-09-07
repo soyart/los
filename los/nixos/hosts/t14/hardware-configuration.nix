@@ -23,8 +23,13 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/var/lib/iwd"
-      # "/etc/iwd"
+      "/etc/iwd"
       # { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
+    ];
+    files = [
+      "/etc/machine-id"
+      "/etc/passwd"
+      "/etc/shadow"
     ];
   };
 
