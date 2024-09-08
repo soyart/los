@@ -89,5 +89,8 @@
 
   programs.nano.enable = false;
 
-  services.automatic-timezoned.enable = true;
+  services = {
+    journald.extraConfig = "SystemMaxUse=100M";
+    automatic-timezoned.enable = true;
+  };
 }
