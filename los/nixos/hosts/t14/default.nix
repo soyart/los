@@ -93,4 +93,8 @@
     journald.extraConfig = "SystemMaxUse=100M";
     automatic-timezoned.enable = true;
   };
+
+  home-manager.users."${mainUser}" = {
+    home.stateVersion = "24.05";
+  };
 }

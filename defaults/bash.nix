@@ -132,7 +132,5 @@ username:
         export PS2;
       '';
     };
-
-    home.stateVersion = "24.05";
   };
 }
