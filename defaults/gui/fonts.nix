@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../los/home/gui/fonts.nix username)
+    (import ../../home/gui/fonts.nix username)
   ];
 
   los.home."${username}".gui.fonts = {

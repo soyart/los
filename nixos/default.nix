@@ -49,8 +49,8 @@ in
         ./hosts/t14
         withDefaultHomeManager
 
-        (import ../../presets/sway-dev username)
-        (import ../../defaults/devel-gui/vscodium.nix username)
+        (import ../presets/sway-dev username)
+        (import ../defaults/devel-gui/vscodium.nix username)
       ];
     };
 }

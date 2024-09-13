@@ -3,14 +3,14 @@
 los is short for L OS. It's provides Nix flake, modules, and library for
 building my personal NixOS setup.
 
-L in los is undefined, and could be last, light, or even loser.
+L in los is picked randomly, and could stand for last, light, or even loser.
 
 ## Structure
 
-- [los modules](./los/)
+- los modules
 
-  Modules in los is put under 2 directories: [system module in `nixos`](./los/nixos/)
-  and [user home module in `home`](./los/home/).
+  Modules in los is put under 2 directories: [system module in `nixos`](./nixos/)
+  and [user home module in `home`](./home/).
 
   There's only 1 rule for modules: **a system module must never touch user home modules**.
 
@@ -27,7 +27,7 @@ L in los is undefined, and could be last, light, or even loser.
     ### Host configurations
     
     Per-host configurations should be consolidated into a single module
-    under [`./los/nixos/hosts`](./los/nixos/hosts/).
+    under [`./nixos/hosts`](./nixos/hosts/).
 
     Preferrably, these *hosts* modules should not declare any options (i.e.
     they are `imports`-only modules), and they should not touch home modules.
@@ -60,7 +60,7 @@ L in los is undefined, and could be last, light, or even loser.
 
 - [Package lists](./packages/)
 
-  List of package names to be imported by [syspkgs module](./los/nixos/syspkgs.nix).
+  List of package names to be imported by [syspkgs module](./nixos/syspkgs.nix).
 
   Each text line is treated as pname of a Nix package.
 

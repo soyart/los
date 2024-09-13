@@ -5,8 +5,8 @@
     ./hardware.nix
     ./configuration.nix
 
-    ../../../../defaults/nix
-    ../../../../defaults/net
+    ../../../defaults/nix
+    ../../../defaults/net
 
     ../../net
     ../../syspkgs.nix
@@ -75,11 +75,11 @@
     };
 
     syspkgs = [
-      ../../../../packages/base
-      ../../../../packages/devel
-      ../../../../packages/net
-      ../../../../packages/laptop
-      ../../../../packages/nix-extras
+      ../../../packages/base
+      ../../../packages/devel
+      ../../../packages/net
+      ../../../packages/laptop
+      ../../../packages/nix-extras
     ];
   };
 

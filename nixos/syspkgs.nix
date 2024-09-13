@@ -3,7 +3,7 @@
 let
   types = lib.types;
   cfg = config.los.syspkgs;
-  importTxt = import ../../liblos/import-txt.nix { inherit pkgs; };
+  importTxt = import ../liblos/import-txt.nix { inherit pkgs; };
 
 in
 {
