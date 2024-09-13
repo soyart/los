@@ -4,10 +4,10 @@ username:
 
 {
   imports = [
-    (import ../../home/langs username)
+    (import ../../home/devel username)
   ];
 
-  los.home."${username}".langs = {
+  los.home."${username}".devel = {
     go.enable = true;
     rust.enable = true;
   };

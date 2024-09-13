@@ -4,7 +4,7 @@ username:
 
 let
   types = lib.types;
-  cfg = config.los.home."${username}".langs;
+  cfg = config.los.home."${username}".devel;
 
   mappings = {
     go = with pkgs; [
@@ -59,7 +59,7 @@ let
 
 in
 {
-  options.los.home."${username}".langs = lib.mkOption {
+  options.los.home."${username}".devel = lib.mkOption {
     description = "Programming languages to install";
     type = types.attrsOf (types.submodule mod);
     default = {
