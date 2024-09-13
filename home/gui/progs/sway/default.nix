@@ -60,8 +60,23 @@ in
       };
 
       home.file = {
+        "bin" = {
+          source = "${unix}/sh-tools/bin";
+          recursive = true;
+        };
+
+        "wall" = {
+          source = ../../wall;
+          recursive = true;
+        };
+
         ".config/sway" = {
           source = "${unix}/dotfiles/linux/.config/sway";
+          recursive = true;
+        };
+
+        ".config/swaylock" = {
+          source = "${unix}/dotfiles/linux/.config/swaylock";
           recursive = true;
         };
 
@@ -72,22 +87,6 @@ in
 
         ".config/wofi" = {
           source = "${unix}/dotfiles/linux/.config/wofi";
-          recursive = true;
-        };
-
-        "bin" = {
-          source = "${unix}/sh-tools/bin";
-          recursive = true;
-        };
-
-        # @TODO: separate module
-        ".config/alacritty" = {
-          source = "${unix}/dotfiles/pkg/alacritty/.config/alacritty";
-          recursive = true;
-        };
-
-        "wall" = {
-          source = ../../wall;
           recursive = true;
         };
       };
