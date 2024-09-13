@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware.nix
+    ./impermanence.nix
     ./configuration.nix
 
     ../../../defaults/nix
