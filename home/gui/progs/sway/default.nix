@@ -8,6 +8,11 @@ let
 
 in
 {
+  imports = [
+    (import ./config.nix username)
+    (import ./keybindings.nix username)
+  ];
+
   options = {
     los.home."${username}".gui.progs.sway = {
       enable = lib.mkEnableOption "Enable Sway DM with config from gitlab.com/artnoi/unix";
@@ -71,7 +76,7 @@ in
         };
 
         ".config/sway" = {
-          source = "${unix}/dotfiles/linux/.config/sway";
+          source = "${unix}/dotfiles/linux/.config/sway-bak";
           recursive = true;
         };
 
@@ -91,11 +96,12 @@ in
         };
       };
 
+      # TODO: Move to config.nix
       wayland.windowManager.sway = {
         enable = true;
-        extraConfig = ''
-          include ${unix}/dotfiles/linux/.config/sway/config
-        '';
+        # extraConfig = ''
+        #   include ${unix}/dotfiles/linux/.config/sway/config
+        # '';
       };
     };
   };
