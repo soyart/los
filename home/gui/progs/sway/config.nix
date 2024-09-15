@@ -57,7 +57,7 @@ in
             size = 14.0;
           };
 
-          statusCommand = "dash ${barCommand} ${username} ${config.networking.hostName}'";
+          statusCommand = "dash ${barCommand} '${username}' '${config.networking.hostName}'";
 
           colors = {
             background = colors.black;
