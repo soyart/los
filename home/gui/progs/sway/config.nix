@@ -24,7 +24,6 @@ let
     yellow1 = "#f2ca30";
   };
 
-
 in
 {
   config.home-manager.users."${username}".wayland.windowManager.sway = lib.mkIf cfg.enable {
