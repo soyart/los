@@ -46,7 +46,7 @@ in
       };
 
       fonts = {
-        names = [ "pango:Hack" ];
+        names = [ "Hack" ];
         size = 14.0;
       };
 
@@ -67,7 +67,7 @@ in
           workspaceNumbers = true;
 
           fonts = {
-            names = [ "pango:Hack" ];
+            names = [ "Hack" ];
             size = 14.0;
           };
 
