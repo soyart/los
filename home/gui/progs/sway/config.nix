@@ -1,9 +1,10 @@
 username:
 
-{ lib, config, ... }:
+{ inputs, lib, config, ... }:
 
 let
   cfg = config.los.home."${username}".gui.progs.sway;
+  barCommand = "${inputs.unix}/dotfiles/linux/.config/dwm/dwmbar.sh";
 
   colors = {
     blue = "#91acd1";
@@ -22,6 +23,7 @@ let
     yellow0 = "#e9b189";
     yellow1 = "#f2ca30";
   };
+
 
 in
 {
@@ -55,7 +57,7 @@ in
             size = 14.0;
           };
 
-          statusCommand = "dash ~/.config/dwm/dwmbar.sh ${username} ${config.networking.hostName}'";
+          statusCommand = "dash ${barCommand} ${username} ${config.networking.hostName}'";
 
           colors = {
             background = colors.black;
