@@ -30,10 +30,24 @@ in
   config.home-manager.users."${username}".wayland.windowManager.sway = lib.mkIf cfg.enable {
     enable = true;
     config = {
+      startup = [
+        {
+          command = ''
+            exec swayidle -w timeout 300 'swaylock -f -c 000000' timeout 360 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep 'swaylock'
+          '';
+          always = true;
+        }
+      ];
+
       terminal = "alacritty";
       gaps = {
         inner = 6;
         outer = 6;
+      };
+
+      fonts = {
+        names = [ "pango:Hack" ];
+        size = 14.0;
       };
 
       colors = {
