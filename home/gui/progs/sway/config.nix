@@ -40,7 +40,7 @@ in
         focused = {
           background = "${colors.cyan}";
           border = "${colors.magenta}";
-          childBorder = "${colors.magenta}";
+          childBorder = "${colors.cyan}";
           text = "${colors.black}";
           indicator = "${colors.white}";
         };
