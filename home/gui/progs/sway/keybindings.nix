@@ -11,7 +11,7 @@ in
     {
       config.keybindings =
         let
-          mod = "Mod4";
+          mod = "Mod1";
           shtools = "${inputs.unix}/sh-tools/bin";
 
         in
