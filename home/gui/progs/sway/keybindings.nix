@@ -5,18 +5,19 @@ username:
 let
   cfg = config.los.home."${username}".gui.progs.sway;
 
+  mod = "Mod1";
 in
 {
   config.home-manager.users."${username}".wayland.windowManager.sway = lib.mkIf cfg.enable
     {
+      config.modifier = mod;
       config.keybindings =
         let
-          mod = "Mod1";
           shtools = "${inputs.unix}/sh-tools/bin";
 
         in
         {
-          "${mod}+Return" = "alacritty";
+          "${mod}+Return" = "exec alacritty";
           "${mod}+q" = "kill";
           "${mod}+Shift+r" = "reload";
           "${mod}+Shift+q" = "exit";
