@@ -70,7 +70,7 @@ in
             };
 
             inactiveWorkspace = {
-              border = colors.blue;
+              border = colors.dark0;
               background = colors.dark0;
               text = colors.blue;
             };
