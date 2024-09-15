@@ -75,6 +75,17 @@ in
           "${mod}+minus" = "scratchpad show";
           # Move the currently focused window to the scratchpad
           "${mod}+Shift+minus" = "move scratchpad";
+
+          "XF86AudioRaiseVolume" = "exec sndctl up";
+          "XF86AudioLowerVolume" = "exec sndctl dn";
+          "XF86AudioMute" = "exec sndctl mute";
+          "XF86AudioMicMute" = "exec sndctl micmute";
+          "XF86AudioPlay" = "exec playerctl play-pause";
+          "XF86AudioNext" = "exec playerctl next";
+          "XF86AudioPrev" = "exec playerctl previous";
+
+          "XF86MonBrightnessDown" = "exec brightnessctl set 10%-";
+          "XF86MonBrightnessUp" = "exec brightnessctl set 10%+";
         };
 
       config.modes = {
