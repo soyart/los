@@ -47,17 +47,33 @@ in
       bars = [
         {
           position = "top";
+          workspaceButtons = true;
+          workspaceNumbers = true;
+
           fonts = {
             names = [ "pango:Hack" ];
             size = 14.0;
           };
 
           statusCommand = "dash ~/.config/dwm/dwmbar.sh ${username} ${config.networking.hostName}'";
+
           colors = {
-            border = colors.black;
             background = colors.black;
-            text = colors.cyan;
+            statusline = colors.blue;
+
+            focusedWorkspace = {
+              border = colors.dark0;
+              background = colors.blue;
+              text = colors.dark0;
+            };
+
+            inactiveWorkspace = {
+              border = colors.blue;
+              background = colors.dark0;
+              text = colors.blue;
+            };
           };
+
         }
       ];
     };

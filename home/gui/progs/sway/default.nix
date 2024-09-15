@@ -75,7 +75,7 @@ in
           recursive = true;
         };
 
-        ".config/sway" = {
+        ".config/sway-bak" = {
           source = "${unix}/dotfiles/linux/.config/sway-bak";
           recursive = true;
         };
