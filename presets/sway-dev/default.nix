@@ -10,5 +10,6 @@ username:
     (import ../../defaults/gui/sway.nix username)
     (import ../../defaults/gui/fonts.nix username)
     (import ../../defaults/gui/firefox.nix username)
+    (import ../../defaults/gui/alacritty.nix username)
   ];
 }
