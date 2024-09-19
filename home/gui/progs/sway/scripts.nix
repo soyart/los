@@ -1,24 +1,33 @@
 { pkgs }:
 
 rec {
-  sndctl = pkgs.writeShellScriptBin "sndctl" ''
-    case "$1" in
-    	vol)
-    		wpctl get-volume @DEFAULT_SINK@ | awk '{print $2,$3}'; ;;
+  sndctl = pkgs.writeShellApplication {
+    name = "sndctl";
+    runtimeInputs = [
+      pkgs.gawk
+      pkgs.wireplumber
+    ];
 
-    	mute)
-    		wpctl set-mute @DEFAULT_SINK@ toggle; ;;
+    text = ''
+      case "$1" in
+      	vol)
+      		wpctl get-volume @DEFAULT_SINK@ | awk '{print $2,$3}'; ;;
 
-    	micmute)
-    		wpctl set-mute @DEFAULT_SOURCE@ toggle; ;;
+      	mute)
+      		wpctl set-mute @DEFAULT_SINK@ toggle; ;;
 
-    	up)
-    		wpctl set-volume @DEFAULT_SINK@ 10%+; ;;
-    	
-    	dn)
-    		wpctl set-volume @DEFAULT_SINK@ 10%-; ;;
-    esac;
-  '';
+      	micmute)
+      		wpctl set-mute @DEFAULT_SOURCE@ toggle; ;;
+
+      	up)
+      		wpctl set-volume @DEFAULT_SINK@ 10%+; ;;
+      	
+      	dn)
+      		wpctl set-volume @DEFAULT_SINK@ 10%-; ;;
+      esac;
+    '';
+  };
+
 
   shutdown = pkgs.writeShellScript "shutdown" ''
     systemctl poweroff
