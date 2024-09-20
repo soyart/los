@@ -7,12 +7,6 @@ let
   unix = inputs.unix;
   scripts = import ./scripts.nix { inherit pkgs; };
 
-  doasNoPass = username: cmd: {
-    users = [ username ];
-    groups = [ username "wheel" ];
-    noPass = true;
-    cmd = cmd;
-  };
 
 in
 {
@@ -34,13 +28,14 @@ in
       polkit.enable = true;
       rtkit.enable = true;
       pam.services.swaylock = { };
-
-      doas = {
-        extraRules = [
-          (doasNoPass username "${scripts.wofipower}")
-        ];
-      };
     };
+
+    los.doas.noPasswords = [
+      {
+        inherit username;
+        cmd = "${scripts.wofipower}";
+      }
+    ];
 
     services.pipewire = {
       enable = true;

@@ -4,6 +4,14 @@ let
   types = lib.types;
   cfg = config.los.doas;
 
+  mapNoPassword = c: {
+    inherit (c) cmd runAs keepEnv setEnv;
+
+    users = [ c.username ];
+    persist = false;
+    noPass = true;
+  };
+
 in
 {
   options.los.doas = {
@@ -34,6 +42,36 @@ in
         default = true;
       };
     };
+
+    noPasswords = lib.mkOption {
+      type = types.listOf (types.submodule {
+        options = {
+          username = lib.mkOption {
+            type = types.str;
+          };
+          cmd = lib.mkOption {
+            type = types.path // {
+              check = (p: builtins.pathExists p);
+            };
+          };
+
+          keepEnv = lib.mkOption {
+            type = types.bool;
+            default = true;
+          };
+          setEnv = lib.mkOption {
+            type = types.listOf types.str;
+            default = [ ];
+          };
+          runAs = lib.mkOption {
+            type = types.nullOr types.str;
+            default = null;
+          };
+        };
+      });
+
+      default = [ ];
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -45,7 +83,7 @@ in
       groups = cfg.settings.groups;
       keepEnv = cfg.settings.keepEnv;
       persist = cfg.settings.persist;
-    }];
+    }] ++ (map mapNoPassword cfg.noPasswords);
 
     environment.systemPackages = with pkgs; [
       doas-sudo-shim
