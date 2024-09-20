@@ -28,23 +28,6 @@ rec {
     '';
   };
 
-
-  shutdown = pkgs.writeShellScript "shutdown" ''
-    systemctl poweroff
-  '';
-
-  reboot = pkgs.writeShellScript "reboot" ''
-    systemctl reboot
-  '';
-
-  suspend = pkgs.writeShellScript "suspend" ''
-    systemctl suspend
-  '';
-
-  hibernate = pkgs.writeShellScript "hibernate" ''
-    systemctl hibernate
-  '';
-
   wofipower = pkgs.writeShellApplication {
     name = "wofipower";
     runtimeInputs = [
@@ -54,16 +37,16 @@ rec {
     text = ''
       case "$(printf "%s\n" "lock" "hybrid-sleep" "suspend" "hibernate" "restart" "shutdown" | wofi -d -i -p 'System action:')" in
         "shutdown")
-          doas -n "${shutdown}"; ;;
+          systemctl poweroff; ;;
 
         "restart")
-          doas -n "${reboot}"; ;;
+          systemctl reboot; ;;
 
         "suspend")
-          doas -n "${suspend}"; ;;
+          systemctl suspend; ;;
 
         "hibernate")
-          doas -n "${hibernate}"; ;;
+          systemctl hibernate; ;;
 
         "lock")
           swaylock; ;;

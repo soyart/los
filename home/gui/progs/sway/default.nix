@@ -37,10 +37,7 @@ in
 
       doas = {
         extraRules = [
-          (doasNoPass username "${scripts.shutdown}")
-          (doasNoPass username "${scripts.reboot}")
-          (doasNoPass username "${scripts.suspend}")
-          (doasNoPass username "${scripts.hibernate}")
+          (doasNoPass username "${scripts.wofipower}")
         ];
       };
     };
