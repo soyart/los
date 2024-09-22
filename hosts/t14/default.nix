@@ -113,6 +113,11 @@ in
 
     fwupd.enable = true;
     locate.enable = true;
+    # automatic-timezoned requires avahi as well
+    # See issues:
+    # automatic-timezoned and geoclue2 https://github.com/NixOS/nixpkgs/issues/329522
+    # geoclue2 failures due to Mozilla Location Service going defunct https://github.com/NixOS/nixpkgs/issues/321121
     automatic-timezoned.enable = true;
+    avahi.enable = true;
   };
 }
