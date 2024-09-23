@@ -92,6 +92,7 @@
 
   services = {
     journald.extraConfig = "SystemMaxUse=100M";
+    locate.enable = true;
     automatic-timezoned.enable = true;
   };
 
