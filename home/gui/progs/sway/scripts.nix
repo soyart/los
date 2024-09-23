@@ -1,6 +1,6 @@
 { pkgs }:
 
-rec {
+{
   sndctl = pkgs.writeShellApplication {
     name = "sndctl";
     runtimeInputs = [
