@@ -92,6 +92,8 @@
 
   services = {
     journald.extraConfig = "SystemMaxUse=100M";
+
+    fwupd.enable = true;
     locate.enable = true;
     automatic-timezoned.enable = true;
   };
