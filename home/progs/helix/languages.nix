@@ -90,6 +90,10 @@ in
     }
 
     {
+      name = "c";
+      auto-format = true;
+    }
+    {
       name = "python";
       auto-format = true;
     }
