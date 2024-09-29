@@ -5,6 +5,7 @@
     ./hardware.nix
     ./impermanence.nix
     ./configuration.nix
+    (import ./devel.nix mainUser)
 
     ../../../defaults/nix
     ../../../defaults/net
