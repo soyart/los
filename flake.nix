@@ -3,7 +3,7 @@
 
   outputs = { ... }@inputs: {
     homeConfigurations = import ./home { inherit inputs; };
-    nixosConfigurations = import ./nixos { inherit inputs; };
+    nixosConfigurations = import ./hosts { inherit inputs; };
   };
 
   inputs = {
