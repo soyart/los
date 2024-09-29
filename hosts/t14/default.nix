@@ -1,4 +1,4 @@
-{ pkgs, hostname, mainUser, ... }:
+{ pkgs, hostname, mainUsername, ... }:
 
 {
   imports = [
@@ -6,14 +6,17 @@
     ./impermanence.nix
     ./configuration.nix
 
-    ../../../defaults/nix
-    ../../../defaults/net
+    # Programming/editor setup
+    (import ./devel.nix mainUsername)
 
-    ../../net
-    ../../syspkgs.nix
-    ../../main-user.nix
-    ../../doas.nix # doas is considered a system setting
-    ../../ramdisk.nix
+    ../../defaults/nix
+    ../../defaults/net
+
+    ../../nixos/net
+    ../../nixos/syspkgs.nix
+    ../../nixos/main-user.nix
+    ../../nixos/doas.nix # doas is considered a system setting
+    ../../nixos/ramdisk.nix
   ];
 
   networking.hostName = hostname;
@@ -50,14 +53,14 @@
       };
       "/rd" = {
         size = "2G";
-        group = mainUser;
-        owner = mainUser;
+        group = mainUsername;
+        owner = mainUsername;
       };
     };
 
     mainUser = {
       enable = true;
-      username = mainUser;
+      username = mainUsername;
       hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
     };
 
@@ -65,7 +68,7 @@
       enable = true;
       keepSudo = false;
       settings = {
-        users = [ mainUser ];
+        users = [ mainUsername ];
         keepEnv = true;
         persist = true;
       };
@@ -76,11 +79,11 @@
     };
 
     syspkgs = [
-      ../../../packages/base
-      ../../../packages/devel
-      ../../../packages/net
-      ../../../packages/laptop
-      ../../../packages/nix-extras
+      ../../packages/base
+      ../../packages/devel
+      ../../packages/net
+      ../../packages/laptop
+      ../../packages/nix-extras
     ];
   };
 
@@ -98,7 +101,7 @@
     automatic-timezoned.enable = true;
   };
 
-  home-manager.users."${mainUser}" = {
+  home-manager.users."${mainUsername}" = {
     home.stateVersion = "24.05";
   };
 }
