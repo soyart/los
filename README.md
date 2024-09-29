@@ -1,58 +1,59 @@
 # los
 
-los is short for L OS. It's provides Nix flake, modules, and library for
-building my personal NixOS setup.
+los provides Nix flake, modules, and library for NixOS systems.
 
-L in los is picked randomly, and could stand for last, light, or even loser.
+The L in los was picked randomly, and could stand for last, light, or even loser.
 
 ## Structure
 
-- los modules
+### Modules
 
-  Modules in los is put under 2 directories: [system module in `nixos`](./nixos/)
-  and [user home module in `home`](./home/).
+Modules in los is put under 2 directories: [system module in `nixos`](./nixos/)
+and [user home module in `home`](./home/).
 
-  There's only 1 rule for modules: **a system module must never touch user home modules**.
+There's only 1 rule for modules: **a system module must never touch user home modules**.
 
-  > We allow home modules to read or even set values of system modules,
-  > or even `nixosConfigurations` itself, *if* that's the natural way to implement the home module.
+> We allow home modules to read or even set values of system modules,
+> or even `nixosConfigurations` itself, *if* that's the natural way to implement the home module.
 
-  - [System modules in `nixos`](./nixos/)
-  
-    The root of this module is the top-level `los`
+- [System modules in `nixos`](./nixos/)
 
-    The modules here provide los system options like networking, mountpoints,
-    and main user.
+  The root of this module is the top-level `los`
 
-    ### Host configurations
-    
-    Per-host configurations should be consolidated into a single module
-    under [`./nixos/hosts`](./nixos/hosts/).
+  The modules here provide los system options like networking, mountpoints,
+  and main user.
 
-    Preferrably, these *hosts* modules should not declare any options (i.e.
-    they are `imports`-only modules), and they should not touch home modules.
+- [User home modules in `./home`](./home/)
 
-    This is because *hosts* are bare-minimum builds that can boot and connect
-    to the internet.
+  The modules here provide `los.home` user options like program configurations,
+  user-specific packages, etc.
 
-    The way I like it is to use host configuration as the base, and build up from
-    there with modules and [presets](./presets/).
+  #### User-specific options
 
-  - [`./home`](./home/) -> `los.home.${username}` or `los.home`
+  Options under `los.home` are user-specific. The per-user configuration
+  is implemented by simple, stupid functional module factories that takes
+  in a username and returns a user-specific los modules under `los.home.${username}`.
 
-    The modules here provide `los.home` user options like program configurations,
-    user-specific packages, etc.
+  The options `los.home.${username}` will then be mapped to `home-manager.users.${username}`.
 
-    ### User-specific options
+  Note that `home-manager.sharedModules` is not used because some modules here might need to set
+  system configurations too, usually low-level or security-related NixOS options.
 
-    Options under `los.home` are user-specific. The per-user configuration
-    is implemented by simple, stupid functional module factories that takes
-    in a username and returns a user-specific los modules under `los.home.${username}`.
+### Host configurations
 
-    The options `los.home.${username}` will then be mapped to `home-manager.users.${username}`.
+Per-host configurations should be consolidated into a single module
+under [`./nixos/hosts`](./nixos/hosts/).
 
-    Note that `home-manager.sharedModules` is not used because some modules here might need to set
-    system configurations too, usually low-level or security-related NixOS options.
+Preferrably, these *hosts* modules should not declare any options (i.e.
+they are `imports`-only modules), and they should not touch home modules.
+
+This is because *hosts* are bare-minimum builds that can boot and connect
+to the internet.
+
+The way I like it is to use host configuration as the base, and build up from
+there with modules and [presets](./presets/).
+
+### Misc.
 
 - [Library](./liblos/) (very opinionated)
 

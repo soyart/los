@@ -7,7 +7,7 @@ let
 
   mkHost =
     { modules
-    , mainUser
+    , mainUsername
     , hostname ? "los"
     , stateVersion ? "23.11"
     , system ? "x86_64-linux"
@@ -16,7 +16,7 @@ let
       inherit system modules;
 
       specialArgs = {
-        inherit hostname mainUser inputs stateVersion;
+        inherit hostname mainUsername inputs stateVersion;
       };
 
       # modules = [ sops disko ./shared ] ++ modules; 
@@ -43,10 +43,10 @@ in
     let username = "artnoi";
     in mkHost {
       hostname = "los-t14";
-      mainUser = username;
+      mainUsername = username;
 
       modules = [
-        ./hosts/t14
+        ./t14
         withDefaultHomeManager
 
         (import ../presets/sway-dev username)
