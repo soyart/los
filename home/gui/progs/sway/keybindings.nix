@@ -19,6 +19,7 @@ in
         {
           "${mod}+Return" = "exec alacritty";
           "${mod}+q" = "kill";
+          "${mod}+r" = "mode resize";
           "${mod}+Shift+r" = "reload";
           "${mod}+Shift+q" = "exit";
 
