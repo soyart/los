@@ -21,8 +21,8 @@ let
 
   mod = {
     options = {
-      enable = lib.mkEnableOption "Enable language support (home-manager)";
-      systemPackage = lib.mkEnableOption "Enable language support as system package";
+      enable = lib.mkEnableOption "Enable language support (home-manager programs)";
+      systemPackage = lib.mkEnableOption "Enable language support via system package(s)";
     };
   };
 
@@ -60,7 +60,10 @@ let
 in
 {
   options.los.home."${username}".devel = lib.mkOption {
-    description = "Programming languages to install";
+    description = ''
+      Programming languages to be made available to either user shell or global packages.
+    '';
+
     type = types.attrsOf (types.submodule mod);
     default = {
       enable = false;
