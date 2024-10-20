@@ -5,6 +5,7 @@ username:
 {
   imports = [
     (import ../../defaults/bash.nix username)
+    (import ../../defaults/lf.nix username)
     (import ../../defaults/devel username)
 
     (import ../../defaults/gui/sway.nix username)

@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./lf
     ./git
     ./helix
   ];
