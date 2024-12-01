@@ -1,14 +1,9 @@
 pkgs:
 
-let
-  nixd = "${pkgs.nixd}/bin/nixd";
-  nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
-
-in
 {
   language =
     let
-      stdFormat = {
+      stdFormat = x: x // {
         auto-format = true;
         indent = {
           tab-width = 4;
@@ -17,28 +12,28 @@ in
       };
     in
     [
-      ({ name = "c"; } // stdFormat)
-      ({ name = "rust"; } // stdFormat)
-      ({ name = "python"; } // stdFormat)
-      ({ name = "toml"; } // stdFormat)
-      ({ name = "yaml"; } // stdFormat)
-      ({ name = "json"; } // stdFormat)
-      ({ name = "markdown"; } // stdFormat)
+      (stdFormat { name = "c"; })
+      (stdFormat { name = "rust"; })
+      (stdFormat { name = "python"; })
+      (stdFormat { name = "toml"; })
+      (stdFormat { name = "yaml"; })
+      (stdFormat { name = "json"; })
+      (stdFormat { name = "markdown"; })
 
-      ({
+      (stdFormat {
         name = "nix";
         language-servers = [
           {
             name = "nixd";
           }
         ];
-        formatter.command = nixfmt;
+        formatter.command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
         roots = [
           "flake.nix"
         ];
-      } // stdFormat)
+      })
 
-      ({
+      (stdFormat {
         name = "go";
         language-servers = [
           {
@@ -47,13 +42,12 @@ in
           }
           { name = "gopls"; }
         ];
-
-      } // stdFormat)
+      })
     ];
 
   language-server = {
     nixd = {
-      command = nixd;
+      command = "${pkgs.nixd}/bin/nixd";
     };
 
     efm = {
