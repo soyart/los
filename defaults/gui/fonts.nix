@@ -10,16 +10,13 @@ username:
   los.home."${username}".gui.fonts = {
     enable = true;
 
-    ttf = with pkgs; [
+    packages = with pkgs; [
       hack-font
       inconsolata
       liberation_ttf
-
       tlwg # Thai font
-    ];
 
-    nerd = [
-      "Hack"
+      nerd-fonts.hack
     ];
 
     defaults = {

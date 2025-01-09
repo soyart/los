@@ -12,26 +12,17 @@ in
     los.home."${username}".gui.fonts = {
       enable = lib.mkEnableOption "Install fonts for GUI";
 
-      ttf = lib.mkOption {
+      packages = lib.mkOption {
         description = "Normal TTF fonts";
         type = types.listOf types.package;
         default = with pkgs; [
+          hack-font
           inconsolata
           liberation_ttf
         ];
         example = with pkgs; [
           inconsolata
           liberation_ttf
-        ];
-      };
-
-      nerd = lib.mkOption {
-        description = "Nerd Fonts for override";
-        type = types.listOf types.str;
-        default = [ ];
-        example = [
-          "Hack"
-          "Inconsolata"
         ];
       };
 
@@ -57,14 +48,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home-manager.users."${username}" = {
-      home.packages =
-        if (builtins.length cfg.nerd != 0)
-        then cfg.ttf ++ [
-          (pkgs.nerdfonts.override { fonts = cfg.nerd; })
-        ]
-
-        else cfg.ttf;
-
+      home.packages = cfg.packages;
       fonts = {
         fontconfig = lib.mkIf (cfg.defaults != null) {
           enable = true;

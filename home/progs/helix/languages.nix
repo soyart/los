@@ -1,14 +1,53 @@
 pkgs:
 
-let
-  nixd = "${pkgs.nixd}/bin/nixd";
-  nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
-
-in
 {
+  language =
+    let
+      stdFormat = x: x // {
+        auto-format = true;
+        indent = {
+          tab-width = 4;
+          unit = "\t";
+        };
+      };
+    in
+    [
+      (stdFormat { name = "c"; })
+      (stdFormat { name = "rust"; })
+      (stdFormat { name = "python"; })
+      (stdFormat { name = "toml"; })
+      (stdFormat { name = "yaml"; })
+      (stdFormat { name = "json"; })
+      (stdFormat { name = "markdown"; })
+
+      (stdFormat {
+        name = "nix";
+        language-servers = [
+          {
+            name = "nixd";
+          }
+        ];
+        formatter.command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
+        roots = [
+          "flake.nix"
+        ];
+      })
+
+      (stdFormat {
+        name = "go";
+        language-servers = [
+          {
+            name = "efm";
+            only-features = [ "diagnostics" ];
+          }
+          { name = "gopls"; }
+        ];
+      })
+    ];
+
   language-server = {
     nixd = {
-      command = nixd;
+      command = "${pkgs.nixd}/bin/nixd";
     };
 
     efm = {
@@ -52,58 +91,4 @@ in
       };
     };
   };
-
-  language = [
-    {
-      name = "nix";
-      language-servers = [
-        {
-          name = "nixd";
-        }
-      ];
-      auto-format = true;
-      formatter.command = nixfmt;
-      roots = [
-        "flake.nix"
-      ];
-    }
-
-    {
-      name = "go";
-      auto-format = true;
-      language-servers = [
-        {
-          name = "efm";
-          only-features = [ "diagnostics" ];
-        }
-        { name = "gopls"; }
-      ];
-    }
-
-    {
-      name = "rust";
-      auto-format = true;
-      indent = {
-        tab-width = 4;
-        unit = "\t";
-      };
-    }
-
-    {
-      name = "python";
-      auto-format = true;
-    }
-    {
-      name = "toml";
-      auto-format = true;
-    }
-    {
-      name = "yaml";
-      auto-format = true;
-    }
-    {
-      name = "json";
-      auto-format = true;
-    }
-  ];
 }
