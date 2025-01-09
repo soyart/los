@@ -9,15 +9,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
+    impermanence.url = "github:nix-community/impermanence";
 
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    impermanence = {
-      url = "github:nix-community/impermanence";
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     unix = {
