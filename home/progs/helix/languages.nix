@@ -51,7 +51,7 @@ pkgs:
     };
 
     efm = {
-      command = "efm-langserver";
+      command = "${pkgs.efm-langserver}/bin/efm-langserver";
       args = [
         "-loglevel"
         "10"
@@ -73,7 +73,6 @@ pkgs:
 
       config = {
         analyses = {
-          fieldalignment = true;
           nilness = true;
           unusedparams = true;
           unusedwrite = true;
