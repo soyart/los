@@ -43,14 +43,15 @@ in
           then pkgs.vscodium.fhs
           else pkgs.vscodium;
 
-        extensions = cfg.extensions;
-
-        userSettings = {
-          nix = {
-            enableLanguageServer = true;
-            serverPath = nixd;
-            formatterPath = nixfmt;
-            formatOnSave = true;
+        profiles.default = {
+          extensions = cfg.extensions;
+          userSettings = {
+            nix = {
+              enableLanguageServer = true;
+              serverPath = nixd;
+              formatterPath = nixfmt;
+              formatOnSave = true;
+            };
           };
         };
       };
