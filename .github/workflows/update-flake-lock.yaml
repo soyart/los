@@ -34,7 +34,7 @@ jobs:
       - name: test-eval
         run: |
           # Test that no error
-          nix eval '.#packages.x86_64-linux.default
+          nix eval '.#packages.x86_64-linux.default'
 
       - name: pr number
         run: echo Pull request number is ${{ steps.update.outputs.pull-request-number }}.
