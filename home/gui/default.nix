@@ -1,0 +1,8 @@
+{ ... }:
+
+{
+  imports = [
+    ./progs
+    ./fonts.nix
+  ];
+}
