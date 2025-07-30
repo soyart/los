@@ -33,8 +33,7 @@ jobs:
 
       - name: test-eval
         run: |
-          # Test that no error
-          nix eval '.#packages.x86_64-linux.default'
+          nix build .#nixosConfigurations.los-t14.config.system.build.toplevel
 
       - name: pr number
         run: echo Pull request number is ${{ steps.update.outputs.pull-request-number }}.
