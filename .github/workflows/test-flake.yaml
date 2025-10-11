@@ -10,7 +10,7 @@ on:
         default: master
 
 jobs:
-  lockfile:
+  test-nixos:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -25,5 +25,29 @@ jobs:
         run: |
           nix eval .#nixosConfigurations.los-t14.config.system.build.toplevel
 
-      - name: pr number
-        run: echo Pull request number is ${{ steps.update.outputs.pull-request-number }}.
+  extract-dotfiles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: install DeterminateSystems Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: build dotfiles from NixOS config
+        run: |
+          nix build .#dotfiles.los-t14 --print-out-paths
+
+      - name: show generated dotfiles
+        run: |
+          echo "=== Generated home-files structure ==="
+          ls -la result/home-files/ | head -30
+          echo ""
+          echo "=== .config directory ==="
+          ls -la result/home-files/.config/ 2>/dev/null | head -30
+          echo ""
+          echo "=== Checking specific configs ==="
+          ls -la result/home-files/.config/helix/ 2>/dev/null || echo "No helix config"
+          ls -la result/home-files/.config/alacritty/ 2>/dev/null || echo "No alacritty config"
