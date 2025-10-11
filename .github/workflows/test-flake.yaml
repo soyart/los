@@ -1,8 +1,6 @@
-name: update-flake-lock
+name: test flake
 on:
-  schedule:
-    - cron: "0 0 * * 1,4" # Run twice a week
-
+  push:
   workflow_dispatch:
     inputs:
       ref:
@@ -22,14 +20,6 @@ jobs:
 
       - name: install DeterminateSystems Nix
         uses: DeterminateSystems/determinate-nix-action@v3
-
-      - name: update flake.lock
-        id: update
-        uses: DeterminateSystems/update-flake-lock@main
-        with:
-          nix-options: --debug --log-format raw
-          pr-assignees: soyart
-          pr-reviewers: soyart
 
       - name: test nix build
         run: |
