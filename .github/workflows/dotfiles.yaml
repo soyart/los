@@ -35,14 +35,20 @@ jobs:
           echo "=== What's in .config ==="
           ls -la result/home-files/.config/
           echo ""
-          echo "=== Config directories ==="
-          find result/home-files/.config -maxdepth 1 -type d | sort
+          echo "=== What's in helix directory (sample) ==="
+          ls -la result/home-files/.config/helix/
           echo ""
-          echo "=== Sample config files ==="
-          find result/home-files/.config -type f | head -20
+          echo "=== What's in alacritty directory (sample) ==="
+          ls -la result/home-files/.config/alacritty/
           echo ""
-          echo "=== Total files in .config ==="
+          echo "=== Finding ALL items (including symlinks) ==="
+          find result/home-files/.config -type f -o -type l | head -30
+          echo ""
+          echo "=== Total files (regular files only) ==="
           find result/home-files/.config -type f | wc -l
+          echo ""
+          echo "=== Total symlinks ==="
+          find result/home-files/.config -type l | wc -l
 
       - name: prepare dotfiles for upload
         run: |
@@ -50,9 +56,21 @@ jobs:
           # This ensures upload-artifact can properly access all files
           mkdir -p dotfiles-export
           cp -rL result/home-files/.config dotfiles-export/
-          echo "=== Copied files ==="
+          echo "=== Copied directories ==="
           du -sh dotfiles-export/.config
           ls -la dotfiles-export/.config/ | head -20
+          echo ""
+          echo "=== What's in copied helix directory ==="
+          ls -la dotfiles-export/.config/helix/
+          echo ""
+          echo "=== What's in copied alacritty directory ==="
+          ls -la dotfiles-export/.config/alacritty/
+          echo ""
+          echo "=== Total files after copy ==="
+          find dotfiles-export/.config -type f | wc -l
+          echo ""
+          echo "=== Sample files after copy ==="
+          find dotfiles-export/.config -type f | head -10
 
       - name: upload dotfiles
         uses: actions/upload-artifact@v4
