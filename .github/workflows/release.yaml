@@ -8,11 +8,9 @@ on:
         required: false
         default: master
   push:
-    branches:
-      - master
     tags:
-      - 'v*'
-      - 'rc-*'
+      - "v*"
+      - "rc-*"
 
 jobs:
   generate:
@@ -50,11 +48,11 @@ jobs:
           # Copy and dereference symlinks from Nix store
           mkdir -p dotfiles-export
           cp -rL result/home-files/.config dotfiles-export/config
-          
+
           # Create tarball
           cd dotfiles-export
           tar -czf los-dotfiles.tar.gz config/
-          
+
           echo "=== Tarball created ==="
           ls -lh los-dotfiles.tar.gz
           echo ""
@@ -142,4 +140,3 @@ jobs:
           asset_path: ./los-dotfiles.tar.gz
           asset_name: los-dotfiles.tar.gz
           asset_content_type: application/gzip
-
