@@ -77,4 +77,5 @@ jobs:
         with:
           name: los-dotfiles
           path: dotfiles-export/.config
+          include-hidden-files: true
 
