@@ -27,40 +27,36 @@ jobs:
         run: |
           nix build .#dotfiles.los-t14 --print-out-paths
 
-      - name: debug - check result structure
+      - name: check generated dotfiles
         run: |
-          echo "=== Checking if result exists ==="
-          ls -la result || echo "No result symlink found"
+          echo "=== Dereferencing home-files symlink ==="
+          ls -la result/home-files/
           echo ""
-          echo "=== What's in result ==="
-          ls -la result/ || true
+          echo "=== What's in .config ==="
+          ls -la result/home-files/.config/
           echo ""
-          echo "=== Looking for home-files ==="
-          find result -name "home-files" -type d 2>/dev/null || echo "No home-files directory found"
+          echo "=== Config directories ==="
+          find result/home-files/.config -maxdepth 1 -type d | sort
           echo ""
-          echo "=== Full result tree (first 50 lines) ==="
-          find result -type f | head -50 || true
+          echo "=== Sample config files ==="
+          find result/home-files/.config -type f | head -20
+          echo ""
+          echo "=== Total files in .config ==="
+          find result/home-files/.config -type f | wc -l
 
-      - name: show generated configs
+      - name: prepare dotfiles for upload
         run: |
-          if [ -d "result/home-files/.config" ]; then
-            echo "=== Generated .config structure ==="
-            ls -la result/home-files/.config/
-            echo ""
-            echo "=== Config directories ==="
-            find result/home-files/.config -maxdepth 1 -type d | sort
-            echo ""
-            echo "=== Total files in .config ==="
-            find result/home-files/.config -type f | wc -l
-          else
-            echo "ERROR: result/home-files/.config does not exist"
-            echo "Checking what we actually have:"
-            ls -laR result/ | head -100
-          fi
+          # Copy .config to a regular directory (not Nix store symlinks)
+          # This ensures upload-artifact can properly access all files
+          mkdir -p dotfiles-export
+          cp -rL result/home-files/.config dotfiles-export/
+          echo "=== Copied files ==="
+          du -sh dotfiles-export/.config
+          ls -la dotfiles-export/.config/ | head -20
 
       - name: upload dotfiles
         uses: actions/upload-artifact@v4
         with:
           name: los-dotfiles
-          path: result/home-files/.config
+          path: dotfiles-export/.config
 
