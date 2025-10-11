@@ -1,10 +1,19 @@
 {
   description = "NixOS configuration";
 
-  outputs = { ... }@inputs: {
-    homeConfigurations = import ./home { inherit inputs; };
-    nixosConfigurations = import ./hosts { inherit inputs; };
-  };
+  outputs = { ... }@inputs: 
+    let
+      nixosConfigurations = import ./hosts { inherit inputs; };
+    in
+    {
+      homeConfigurations = import ./home { inherit inputs; };
+      inherit nixosConfigurations;
+
+      # Extract home-manager dotfiles from NixOS builds
+      dotfiles = {
+        los-t14 = nixosConfigurations.los-t14.config.home-manager.users.artnoi.home.activationPackage;
+      };
+    };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
