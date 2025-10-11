@@ -1,0 +1,87 @@
+name: release dotfiles
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        type: string
+        description: Git reference (branch, tag, or sha1)
+        required: false
+        default: master
+  release:
+    types: [published]
+
+jobs:
+  build-and-export-dotfiles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+
+      - name: install DeterminateSystems Nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: build dotfiles from NixOS config
+        run: |
+          nix build .#dotfiles.los-t14 --print-out-paths
+
+      - name: prepare dotfiles for export
+        run: |
+          # Create a tarball of the home-files directory
+          cd result/home-files
+          tar -czf ../../los-dotfiles.tar.gz .
+          cd ../..
+          
+          # Also create individual archives for specific configs
+          mkdir -p artifacts
+          
+          # Package helix config
+          if [ -d "result/home-files/.config/helix" ]; then
+            tar -czf artifacts/helix-config.tar.gz -C result/home-files/.config helix
+          fi
+          
+          # Package alacritty config
+          if [ -d "result/home-files/.config/alacritty" ]; then
+            tar -czf artifacts/alacritty-config.tar.gz -C result/home-files/.config alacritty
+          fi
+          
+          # Package tmux config
+          if [ -d "result/home-files/.config/tmux" ]; then
+            tar -czf artifacts/tmux-config.tar.gz -C result/home-files/.config tmux
+          fi
+          
+          # Package shell configs (bashrc, etc.)
+          if [ -f "result/home-files/.bashrc" ]; then
+            tar -czf artifacts/shell-config.tar.gz -C result/home-files \
+              .bashrc .bash_profile .profile 2>/dev/null || true
+          fi
+          
+          # List what we created
+          echo "=== Generated artifacts ==="
+          ls -lh los-dotfiles.tar.gz
+          ls -lh artifacts/
+
+      - name: upload complete dotfiles archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: los-dotfiles-complete
+          path: los-dotfiles.tar.gz
+          retention-days: 90
+
+      - name: upload individual config archives
+        uses: actions/upload-artifact@v4
+        with:
+          name: los-dotfiles-individual
+          path: artifacts/*.tar.gz
+          retention-days: 90
+          if-no-files-found: ignore
+
+      - name: show dotfiles structure
+        run: |
+          echo "=== Complete dotfiles structure ==="
+          tar -tzf los-dotfiles.tar.gz | head -50
+          echo ""
+          echo "=== Total files ==="
+          tar -tzf los-dotfiles.tar.gz | wc -l
+
