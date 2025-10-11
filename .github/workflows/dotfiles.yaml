@@ -30,9 +30,8 @@ jobs:
       - name: prepare dotfiles for export
         run: |
           # Create a tarball of the home-files directory
-          cd result/home-files
-          tar -czf ../../los-dotfiles.tar.gz .
-          cd ../..
+          # Use -C to change directory for tar, avoiding cd into read-only Nix store symlink
+          tar -czf los-dotfiles.tar.gz -C result/home-files .
           
           # Also create individual archives for specific configs
           mkdir -p artifacts
@@ -61,7 +60,7 @@ jobs:
           # List what we created
           echo "=== Generated artifacts ==="
           ls -lh los-dotfiles.tar.gz
-          ls -lh artifacts/
+          ls -lh artifacts/ 2>/dev/null || echo "No individual artifacts created"
 
       - name: upload complete dotfiles archive
         uses: actions/upload-artifact@v4
