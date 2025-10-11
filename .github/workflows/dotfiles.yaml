@@ -27,16 +27,36 @@ jobs:
         run: |
           nix build .#dotfiles.los-t14 --print-out-paths
 
+      - name: debug - check result structure
+        run: |
+          echo "=== Checking if result exists ==="
+          ls -la result || echo "No result symlink found"
+          echo ""
+          echo "=== What's in result ==="
+          ls -la result/ || true
+          echo ""
+          echo "=== Looking for home-files ==="
+          find result -name "home-files" -type d 2>/dev/null || echo "No home-files directory found"
+          echo ""
+          echo "=== Full result tree (first 50 lines) ==="
+          find result -type f | head -50 || true
+
       - name: show generated configs
         run: |
-          echo "=== Generated .config structure ==="
-          ls -la result/home-files/.config/
-          echo ""
-          echo "=== Config directories ==="
-          find result/home-files/.config -maxdepth 1 -type d | sort
-          echo ""
-          echo "=== Total files in .config ==="
-          find result/home-files/.config -type f | wc -l
+          if [ -d "result/home-files/.config" ]; then
+            echo "=== Generated .config structure ==="
+            ls -la result/home-files/.config/
+            echo ""
+            echo "=== Config directories ==="
+            find result/home-files/.config -maxdepth 1 -type d | sort
+            echo ""
+            echo "=== Total files in .config ==="
+            find result/home-files/.config -type f | wc -l
+          else
+            echo "ERROR: result/home-files/.config does not exist"
+            echo "Checking what we actually have:"
+            ls -laR result/ | head -100
+          fi
 
       - name: upload dotfiles
         uses: actions/upload-artifact@v4
