@@ -1,6 +1,7 @@
-{ lib, config, liblos, ... }:
+{ lib, pkgs, config, ... }:
 
 let
+  liblos = import ../liblos { inherit lib pkgs; };
   types = lib.types;
   cfg = config.los.mainUser;
 

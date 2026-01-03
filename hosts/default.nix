@@ -5,9 +5,6 @@ let
   # inherit (inputs.disko.nixosModules) disko;
   # inherit (inputs.sops-nix.nixosModules) sops;
 
-  pkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
-  liblos = import ../liblos { lib = inputs.nixpkgs.lib; inherit pkgs; };
-
   mkHost =
     { modules
     , mainUsername
@@ -19,7 +16,7 @@ let
       inherit system modules;
 
       specialArgs = {
-        inherit hostname mainUsername inputs stateVersion liblos;
+        inherit hostname mainUsername inputs stateVersion;
       };
 
       # modules = [ sops disko ./shared ] ++ modules; 
@@ -36,7 +33,7 @@ let
     config.home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
-      extraSpecialArgs = { inherit inputs liblos; };
+      extraSpecialArgs = { inherit inputs; };
     };
   };
 

@@ -1,6 +1,7 @@
-{ lib, config, liblos, ... }:
+{ lib, pkgs, config, ... }:
 
 let
+  liblos = import ../../liblos { inherit lib pkgs; };
   types = lib.types;
   cfg = config.los.net.unboundDoT;
 
@@ -11,9 +12,7 @@ in
     nameserversDoT = lib.mkOption {
       type = liblos.extend {
         base = types.listOf types.str;
-        check = (
-          li: builtins.length li != 0
-        );
+        check = (li: builtins.length li != 0);
       };
       example = [ "1.1.1.1@853#one.one.one.one" "9.9.9.9@853#dns.quad9.net" ];
       default = [ "1.1.1.1@853#one.one.one.one" "9.9.9.9@853#dns.quad9.net" ];

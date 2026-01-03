@@ -1,8 +1,9 @@
 username:
 
-{ lib, pkgs, config, hostname, liblos, ... }:
+{ lib, pkgs, config, hostname, ... }:
 
 let
+  liblos = import ../../../liblos { inherit lib pkgs; };
   types = lib.types;
   cfg = config.los.home."${username}".progs.git;
 
