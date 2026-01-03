@@ -1,6 +1,7 @@
 { lib, config, ... }:
 
 let
+  extend = import ../../liblos/extend.nix { inherit lib; };
   types = lib.types;
   cfg = config.los.net.unboundDoT;
 
@@ -9,7 +10,12 @@ in
   options.los.net.unboundDoT = {
     enable = lib.mkEnableOption "Enable DNS-over-TLS with unbound";
     nameserversDoT = lib.mkOption {
-      type = types.addCheck (types.listOf types.str) (li: builtins.length li != 0);
+      type = extend {
+        base = types.listOf types.str;
+        check = (
+          li: builtins.length li != 0
+        );
+      };
       example = [ "1.1.1.1@853#one.one.one.one" "9.9.9.9@853#dns.quad9.net" ];
       default = [ "1.1.1.1@853#one.one.one.one" "9.9.9.9@853#dns.quad9.net" ];
       description = "List of DNS server string addresses";
