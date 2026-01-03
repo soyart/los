@@ -32,16 +32,6 @@ in
         XDG_CURRENT_DESKTOP = lib.mkIf cfgSway.enable "sway";
       };
 
-      xdg.portal = {
-        enable = true;
-        extraPortals = [
-          pkgs.xdg-desktop-portal-wlr
-        ];
-
-        # Any back-end found first in lexical order
-        config.common.default = "*";
-      };
-
       programs.firefox = {
         enable = true;
         package =
@@ -57,6 +47,21 @@ in
 
           else pkgs.firefox;
       };
+
+      xdg.portal = {
+        enable = true;
+        extraPortals = [
+          pkgs.xdg-desktop-portal-wlr
+        ];
+
+        # Any back-end found first in lexical order
+        config.common.default = "*";
+      };
     };
+
+    environment.pathsToLink = [
+      "/share/applications"
+      "/share/xdg-desktop-portal"
+    ];
   };
 }
