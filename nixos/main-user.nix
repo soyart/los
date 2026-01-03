@@ -11,18 +11,18 @@ in
 
     username = lib.mkOption {
       description = "Username";
-      type = types.str // {
-        check = (s: s != "root");
-      };
+      type = types.addCheck types.str (
+        s: s != "root"
+      );
       default = "los";
       example = "bob";
     };
 
     groups = lib.mkOption {
       description = "Extra groups other than 'weel' and `users`";
-      type = types.listOf types.str // {
-        check = (li: !(builtins.elem "wheel" li));
-      };
+      type = types.addCheck (types.listOf types.str) (
+        li: !(builtins.elem "wheel" li)
+      );
       default = [ ];
       example = [ "video" "docker" ];
     };
