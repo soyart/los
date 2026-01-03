@@ -40,9 +40,9 @@ in
 
           options.binPath = lib.mkOption {
             description = "Path to executable from the derivation root of package";
-            type = types.str // {
-              check = (s: (builtins.stringLength s) != 0);
-            };
+            type = types.addCheck types.str (
+              p: (builtins.stringLength p) != 0
+            );
             default = "bin/hx";
           };
         };

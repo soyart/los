@@ -28,9 +28,9 @@ in
     };
 
     hashedPassword = lib.mkOption {
-      type = types.str // {
-        check = (s: s != "");
-      };
+      type = types.addCheck types.str (
+        s: s != ""
+      );
     };
   };
 

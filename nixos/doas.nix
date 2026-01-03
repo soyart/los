@@ -50,11 +50,10 @@ in
             type = types.str;
           };
           cmd = lib.mkOption {
-            type = types.path // {
-              check = (p: builtins.pathExists p);
-            };
+            type = types.addCheck types.path (
+              p: builtins.pathExists p
+            );
           };
-
           keepEnv = lib.mkOption {
             type = types.bool;
             default = true;
