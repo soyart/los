@@ -1,9 +1,7 @@
 { pkgs }:
 
-let
-  lib = pkgs.lib;
-in
 
+with pkgs;
 target: lib.pipe target [
   builtins.readFile
   (lib.splitString "\n")
