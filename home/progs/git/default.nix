@@ -64,13 +64,10 @@ in
 
           git = {
             enable = true;
+            lfs.enable = cfg.withLfs;
             settings.user = {
               name = cfg.username;
               email = cfg.email;
-            };
-
-            lfs.enable = cfg.withLfs;
-            extraConfig = {
               push = {
                 autoSetupRemote = true;
               };
