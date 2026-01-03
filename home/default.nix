@@ -23,10 +23,8 @@ in
   "artnoi@los-t14" = mkHome rec {
     username = "artnoi";
     modules = [
-      ({ inputs, config, ... }: {
+      ({ inputs, ... }: {
         config.home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
           extraSpecialArgs = { inherit inputs; };
         };
       })
