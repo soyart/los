@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, liblos, ... }:
 
 let
   types = lib.types;
@@ -11,26 +11,29 @@ in
 
     username = lib.mkOption {
       description = "Username";
-      type = types.addCheck types.str (
-        s: s != "root"
-      );
+      type = liblos.extend {
+        base = types.str;
+        check = (s: s != "root");
+      };
       default = "los";
       example = "bob";
     };
 
     groups = lib.mkOption {
       description = "Extra groups other than 'weel' and `users`";
-      type = types.addCheck (types.listOf types.str) (
-        li: !(builtins.elem "wheel" li)
-      );
+      type = liblos.extend {
+        base = types.listOf types.str;
+        check = (li: !(builtins.elem "wheel" li));
+      };
       default = [ ];
       example = [ "video" "docker" ];
     };
 
     hashedPassword = lib.mkOption {
-      type = types.addCheck types.str (
-        s: s != ""
-      );
+      type = liblos.extend {
+        base = types.str;
+        check = (s: s != "");
+      };
     };
   };
 

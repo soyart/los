@@ -1,7 +1,6 @@
-{ lib, config, ... }:
+{ lib, config, liblos, ... }:
 
 let
-  extend = import ../../liblos/extend.nix { inherit lib; };
   types = lib.types;
   cfg = config.los.net.unboundDoT;
 
@@ -10,7 +9,7 @@ in
   options.los.net.unboundDoT = {
     enable = lib.mkEnableOption "Enable DNS-over-TLS with unbound";
     nameserversDoT = lib.mkOption {
-      type = extend {
+      type = liblos.extend {
         base = types.listOf types.str;
         check = (
           li: builtins.length li != 0

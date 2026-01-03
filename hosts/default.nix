@@ -5,6 +5,12 @@ let
   # inherit (inputs.disko.nixosModules) disko;
   # inherit (inputs.sops-nix.nixosModules) sops;
 
+  liblos = {
+    extend = (import ../liblos/extend.nix) { lib = inputs.nixpkgs.lib; };
+    importTxt = (import ../liblos/import-txt.nix) { inherit inputs; };
+    ip = (import ../liblos/ip.nix) { inherit inputs; };
+  };
+
   mkHost =
     { modules
     , mainUsername
@@ -16,7 +22,7 @@ let
       inherit system modules;
 
       specialArgs = {
-        inherit hostname mainUsername inputs stateVersion;
+        inherit hostname mainUsername inputs stateVersion liblos;
       };
 
       # modules = [ sops disko ./shared ] ++ modules; 

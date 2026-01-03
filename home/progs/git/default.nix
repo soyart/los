@@ -1,6 +1,6 @@
 username:
 
-{ lib, pkgs, config, hostname, ... }:
+{ lib, pkgs, config, hostname, liblos, ... }:
 
 let
   types = lib.types;
@@ -40,9 +40,10 @@ in
 
           options.binPath = lib.mkOption {
             description = "Path to executable from the derivation root of package";
-            type = types.addCheck types.str (
-              p: (builtins.stringLength p) != 0
-            );
+            type = liblos.extend {
+              base = types.str;
+              check = (p: (builtins.stringLength p) != 0);
+            };
             default = "bin/hx";
           };
         };

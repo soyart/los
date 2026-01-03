@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, liblos, ... }:
 
 let
   types = lib.types;
@@ -50,9 +50,10 @@ in
             type = types.str;
           };
           cmd = lib.mkOption {
-            type = types.addCheck types.path (
-              p: builtins.pathExists p
-            );
+            type = liblos.extend {
+              base = types.path;
+              check = (p: builtins.pathExists p);
+            };
           };
           keepEnv = lib.mkOption {
             type = types.bool;
