@@ -1,7 +1,5 @@
-{ pkgs }:
+{ lib, pkgs, ... }:
 
-
-with pkgs;
 target: lib.pipe target [
   builtins.readFile
   (lib.splitString "\n")

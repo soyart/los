@@ -1,9 +1,8 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, liblos, ... }:
 
 let
   types = lib.types;
   cfg = config.los.syspkgs;
-  importTxt = import ../liblos/import-txt.nix { inherit pkgs; };
 
 in
 {
@@ -15,6 +14,6 @@ in
   };
 
   config = {
-    environment.systemPackages = lib.lists.flatten (builtins.map (p: importTxt p) cfg);
+    environment.systemPackages = lib.lists.flatten (builtins.map liblos.import-txt cfg);
   };
 }
