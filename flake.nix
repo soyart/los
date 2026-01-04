@@ -3,10 +3,15 @@
 
   outputs = { ... }@inputs: 
     let
-      nixosConfigurations = import ./hosts { inherit inputs; };
+      pkgsFor = system: import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+      nixosConfigurations = import ./hosts { inherit inputs pkgsFor; };
     in
     {
-      homeConfigurations = import ./home { inherit inputs; };
+      homeConfigurations = import ./home { inherit inputs pkgsFor; };
       inherit nixosConfigurations;
 
       # Extract home-manager dotfiles from NixOS builds
