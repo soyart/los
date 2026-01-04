@@ -64,11 +64,10 @@ in
   };
 
   config = lib.mkIf (cfg.users != []) {
-    # Shared group for ramdisk access
-    users.groups.los-users.members = allUsernames;
-
-    # Personal group for each user
-    users.groups = lib.listToAttrs (map (u: {
+    # Groups: shared los-users + personal group per user
+    users.groups = {
+      los-users.members = allUsernames;
+    } // lib.listToAttrs (map (u: {
       name = u.username;
       value.members = [ u.username ];
     }) cfg.users);

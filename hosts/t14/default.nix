@@ -109,5 +109,4 @@ in
     locate.enable = true;
     automatic-timezoned.enable = true;
   };
-
 }
