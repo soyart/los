@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgsFor, ... }:
 
 let
   inherit (inputs.nixpkgs.lib) nixosSystem;
@@ -14,6 +14,7 @@ let
     , # disk ? ./disks/thinkpad.nix,
     }: nixosSystem {
       inherit system modules;
+      pkgs = pkgsFor system;
 
       specialArgs = {
         inherit hostname mainUsername inputs stateVersion;

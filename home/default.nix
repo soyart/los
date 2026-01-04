@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ inputs, pkgsFor, ... }:
 
 let
-  inherit (inputs) nixpkgs home-manager;
+  inherit (inputs) home-manager;
 
   mkHome =
     { modules
@@ -10,10 +10,7 @@ let
     , system ? "x86_64-linux"
     ,
     }: home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
+      pkgs = pkgsFor system;
 
       inherit modules;
       extraSpecialArgs = { inherit inputs username stateVersion; };
