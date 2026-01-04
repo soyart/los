@@ -37,15 +37,9 @@ in
         package =
           if cfg.withPipewire
           then
-            (pkgs.wrapFirefox
-              (
-                pkgs.firefox-unwrapped.override {
-                  pipewireSupport = true;
-                })
-              { }
-            )
-
-          else pkgs.firefox;
+            pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
+          else
+            pkgs.firefox;
       };
 
       xdg.portal = {
@@ -53,7 +47,6 @@ in
         extraPortals = [
           pkgs.xdg-desktop-portal-wlr
         ];
-
         # Any back-end found first in lexical order
         config.common.default = "*";
       };
