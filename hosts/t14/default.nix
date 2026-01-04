@@ -1,16 +1,14 @@
 { pkgs, hostname, ... }:
 
 let
-  username = "artnoi";
+  artnoi = "artnoi";
+
 in
 {
   imports = [
     ./hardware.nix
     ./impermanence.nix
     ./configuration.nix
-
-    # Programming/editor setup
-    (import ./devel.nix username)
 
     ../../defaults/nix
     ../../defaults/net
@@ -22,8 +20,8 @@ in
     ../../nixos/ramdisk.nix
 
     # User-specific presets (moved from hosts/default.nix)
-    (import ../../presets/sway-dev username)
-    (import ../../defaults/devel-gui/vscodium.nix username)
+    (import ../../presets/sway-dev artnoi)
+    (import ../../defaults/devel-gui/vscodium.nix artnoi)
   ];
 
   networking.hostName = hostname;
@@ -54,20 +52,9 @@ in
   };
 
   los = {
-    ramDisks = {
-      "/tmp" = {
-        group = "wheel";
-      };
-      "/rd" = {
-        size = "2G";
-        group = "los-users";
-        owner = username;
-      };
-    };
-
     users = [
       {
-        inherit username;
+        username = artnoi;
         superuser = true;
         hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
         homeStateVersion = "24.05";
@@ -80,6 +67,17 @@ in
       settings = {
         keepEnv = true;
         persist = true;
+      };
+    };
+
+    ramDisks = {
+      "/tmp" = {
+        group = "wheel";
+      };
+      "/rd" = {
+        size = "2G";
+        group = artnoi;
+        owner = artnoi;
       };
     };
 
