@@ -2,8 +2,11 @@
 
 let
   liblos = import ../liblos { inherit lib pkgs; };
+  constants = import ../liblos/constants.nix;
   types = lib.types;
   cfg = config.los;
+  
+  inherit (constants.groups) defaultUserGroup;
 
   allUsernames = map (u: u.username) cfg.users;
   superusers = builtins.filter (u: u.superuser) cfg.users;
@@ -64,9 +67,9 @@ in
   };
 
   config = lib.mkIf (cfg.users != []) {
-    # Groups: shared los-users + personal group per user
+    # Groups: shared defaultUserGroup + personal group per user
     users.groups = {
-      los-users.members = allUsernames;
+      ${defaultUserGroup}.members = allUsernames;
     } // lib.listToAttrs (map (u: {
       name = u.username;
       value.members = [ u.username ];
@@ -81,7 +84,7 @@ in
         createHome = true;
         hashedPassword = u.hashedPassword;
         extraGroups = (if u.extraGroups == null then [] else u.extraGroups)
-          ++ [ "los-users" ]
+          ++ [ defaultUserGroup ]
           ++ lib.optional u.superuser "wheel";
       };
     }) cfg.users);
