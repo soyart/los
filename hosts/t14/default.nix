@@ -25,6 +25,7 @@ in
   ];
 
   networking.hostName = hostname;
+  users.mutableUsers = false;
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
