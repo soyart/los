@@ -60,6 +60,12 @@ in
         hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
         homeStateVersion = "24.05";
       }
+      {
+        username = "los-t14-normal-user";
+        superuser = false;
+        hashedPassword = "$6$3/KBWh.tWFriD8Pr$WCQHYNEbz2BnOF0ZLmXclgEGHSiSTi0S87nImMk2dH.lKGk.wfgJkjPsKbu7vLXsiZRugfwW5EBHSDTfy04rt1";
+        homeStateVersion = "24.05";
+      }
     ];
 
     doas = {
