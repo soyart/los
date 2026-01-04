@@ -1,6 +1,7 @@
 { lib, config, pkgs, ... }:
 
 let
+  liblos = import ../liblos { inherit lib pkgs; };
   types = lib.types;
   cfg = config.los.doas;
 
@@ -50,11 +51,11 @@ in
             type = types.str;
           };
           cmd = lib.mkOption {
-            type = types.path // {
+            type = liblos.extend {
+              base = types.path;
               check = (p: builtins.pathExists p);
             };
           };
-
           keepEnv = lib.mkOption {
             type = types.bool;
             default = true;

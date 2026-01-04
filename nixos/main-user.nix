@@ -1,6 +1,7 @@
-{ lib, config, ... }:
+{ lib, pkgs, config, ... }:
 
 let
+  liblos = import ../liblos { inherit lib pkgs; };
   types = lib.types;
   cfg = config.los.mainUser;
 
@@ -11,7 +12,8 @@ in
 
     username = lib.mkOption {
       description = "Username";
-      type = types.str // {
+      type = liblos.extend {
+        base = types.str;
         check = (s: s != "root");
       };
       default = "los";
@@ -20,7 +22,8 @@ in
 
     groups = lib.mkOption {
       description = "Extra groups other than 'weel' and `users`";
-      type = types.listOf types.str // {
+      type = liblos.extend {
+        base = types.listOf types.str;
         check = (li: !(builtins.elem "wheel" li));
       };
       default = [ ];
@@ -28,7 +31,8 @@ in
     };
 
     hashedPassword = lib.mkOption {
-      type = types.str // {
+      type = liblos.extend {
+        base = types.str;
         check = (s: s != "");
       };
     };

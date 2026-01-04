@@ -3,6 +3,7 @@ username:
 { lib, pkgs, config, hostname, ... }:
 
 let
+  liblos = import ../../../liblos { inherit lib pkgs; };
   types = lib.types;
   cfg = config.los.home."${username}".progs.git;
 
@@ -40,8 +41,9 @@ in
 
           options.binPath = lib.mkOption {
             description = "Path to executable from the derivation root of package";
-            type = types.str // {
-              check = (s: (builtins.stringLength s) != 0);
+            type = liblos.extend {
+              base = types.str;
+              check = (p: (builtins.stringLength p) != 0);
             };
             default = "bin/hx";
           };
