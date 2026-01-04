@@ -20,10 +20,4 @@
       dates = [ "03:45" "17:45" ];
     };
   };
-
-  nixpkgs.config = {
-    allowBroken = true;
-    allowUnfree = true;
-    allowUnsupportedSystem = true;
-  };
 }
