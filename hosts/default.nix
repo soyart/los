@@ -7,9 +7,9 @@ let
 
   mkHost =
     { modules
+    , stateVersion
     , mainUsername
     , hostname ? "los"
-    , stateVersion ? "23.11"
     , system ? "x86_64-linux"
     , # disk ? ./disks/thinkpad.nix,
     }: nixosSystem {
@@ -44,6 +44,7 @@ in
     let username = "artnoi";
     in mkHost {
       hostname = "los-t14";
+      stateVersion = "23.11"; # DO NOT CHANGE
       mainUsername = username;
 
       modules = [
