@@ -1,25 +1,31 @@
-{ pkgs, hostname, mainUsername, ... }:
+{ pkgs, hostname, ... }:
 
+let
+  artnoi = "artnoi";
+
+in
 {
   imports = [
     ./hardware.nix
     ./impermanence.nix
     ./configuration.nix
 
-    # Programming/editor setup
-    (import ./devel.nix mainUsername)
-
     ../../defaults/nix
     ../../defaults/net
 
     ../../nixos/net
     ../../nixos/syspkgs.nix
-    ../../nixos/main-user.nix
+    ../../nixos/users.nix
     ../../nixos/doas.nix # doas is considered a system setting
     ../../nixos/ramdisk.nix
+
+    # User-specific presets (moved from hosts/default.nix)
+    (import ../../presets/sway-dev artnoi)
+    (import ../../defaults/devel-gui/vscodium.nix artnoi)
   ];
 
   networking.hostName = hostname;
+  users.mutableUsers = false;
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -47,30 +53,38 @@
   };
 
   los = {
+    users = [
+      {
+        username = artnoi;
+        superuser = true;
+        hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
+        homeStateVersion = "24.05";
+      }
+      {
+        username = "los-t14-normal-user";
+        superuser = false;
+        hashedPassword = "$6$3/KBWh.tWFriD8Pr$WCQHYNEbz2BnOF0ZLmXclgEGHSiSTi0S87nImMk2dH.lKGk.wfgJkjPsKbu7vLXsiZRugfwW5EBHSDTfy04rt1";
+        homeStateVersion = "24.05";
+      }
+    ];
+
+    doas = {
+      # enable and settings.users are set by users.nix for superusers
+      keepSudo = false;
+      settings = {
+        keepEnv = true;
+        persist = true;
+      };
+    };
+
     ramDisks = {
       "/tmp" = {
         group = "wheel";
       };
       "/rd" = {
         size = "2G";
-        group = mainUsername;
-        owner = mainUsername;
-      };
-    };
-
-    mainUser = {
-      enable = true;
-      username = mainUsername;
-      hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
-    };
-
-    doas = {
-      enable = true;
-      keepSudo = false;
-      settings = {
-        users = [ mainUsername ];
-        keepEnv = true;
-        persist = true;
+        group = artnoi;
+        owner = artnoi;
       };
     };
 
@@ -99,9 +113,5 @@
     fwupd.enable = true;
     locate.enable = true;
     automatic-timezoned.enable = true;
-  };
-
-  home-manager.users."${mainUsername}" = {
-    home.stateVersion = "24.05";
   };
 }

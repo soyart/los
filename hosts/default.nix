@@ -7,9 +7,8 @@ let
 
   mkHost =
     { modules
-    , mainUsername
+    , stateVersion
     , hostname ? "los"
-    , stateVersion ? "23.11"
     , system ? "x86_64-linux"
     , # disk ? ./disks/thinkpad.nix,
     }: nixosSystem {
@@ -17,7 +16,7 @@ let
       pkgs = pkgsFor system;
 
       specialArgs = {
-        inherit hostname mainUsername inputs stateVersion;
+        inherit hostname inputs stateVersion;
       };
 
       # modules = [ sops disko ./shared ] ++ modules; 
@@ -40,18 +39,13 @@ let
 
 in
 {
-  "los-t14" =
-    let username = "artnoi";
-    in mkHost {
-      hostname = "los-t14";
-      mainUsername = username;
+  "los-t14" = mkHost {
+    hostname = "los-t14";
+    stateVersion = "23.11"; # DO NOT CHANGE
 
-      modules = [
-        ./t14
-        withDefaultHomeManager
-
-        (import ../presets/sway-dev username)
-        (import ../defaults/devel-gui/vscodium.nix username)
-      ];
-    };
+    modules = [
+      ./t14
+      withDefaultHomeManager
+    ];
+  };
 }
