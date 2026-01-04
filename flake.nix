@@ -15,9 +15,14 @@
       inherit nixosConfigurations;
 
       # Extract home-manager dotfiles from NixOS builds
-      dotfiles = {
-        los-t14 = nixosConfigurations.los-t14.config.home-manager.users.artnoi.home.activationPackage;
-      };
+      dotfiles =
+        let
+          t14 = nixosConfigurations.los-t14.config;
+          firstSuperuser = (builtins.head (builtins.filter (u: u.superuser) t14.los.users)).username;
+        in
+        {
+          los-t14 = t14.home-manager.users.${firstSuperuser}.home.activationPackage;
+        };
     };
 
   inputs = {
