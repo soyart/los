@@ -1,5 +1,8 @@
-{ pkgs, hostname, mainUsername, ... }:
+{ pkgs, hostname, ... }:
 
+let
+  username = "artnoi";
+in
 {
   imports = [
     ./hardware.nix
@@ -7,16 +10,20 @@
     ./configuration.nix
 
     # Programming/editor setup
-    (import ./devel.nix mainUsername)
+    (import ./devel.nix username)
 
     ../../defaults/nix
     ../../defaults/net
 
     ../../nixos/net
     ../../nixos/syspkgs.nix
-    ../../nixos/main-user.nix
+    ../../nixos/users.nix
     ../../nixos/doas.nix # doas is considered a system setting
     ../../nixos/ramdisk.nix
+
+    # User-specific presets (moved from hosts/default.nix)
+    (import ../../presets/sway-dev username)
+    (import ../../defaults/devel-gui/vscodium.nix username)
   ];
 
   networking.hostName = hostname;
@@ -53,22 +60,24 @@
       };
       "/rd" = {
         size = "2G";
-        group = mainUsername;
-        owner = mainUsername;
+        group = "los-users";
+        owner = username;
       };
     };
 
-    mainUser = {
-      enable = true;
-      username = mainUsername;
-      hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
-    };
+    users = [
+      {
+        inherit username;
+        superuser = true;
+        hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
+        homeStateVersion = "24.05";
+      }
+    ];
 
     doas = {
-      enable = true;
+      # enable and settings.users are set by users.nix for superusers
       keepSudo = false;
       settings = {
-        users = [ mainUsername ];
         keepEnv = true;
         persist = true;
       };
@@ -101,7 +110,4 @@
     automatic-timezoned.enable = true;
   };
 
-  home-manager.users."${mainUsername}" = {
-    home.stateVersion = "24.05";
-  };
 }
