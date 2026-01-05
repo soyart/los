@@ -1,8 +1,8 @@
 { lib, pkgs, config, ... }:
 
 let
-  liblos = import ../liblos { inherit lib pkgs; };
-  constants = import ../liblos/constants.nix;
+  liblos = import ../../liblos { inherit lib pkgs; };
+  constants = import ../../liblos/constants.nix;
   types = lib.types;
   cfg = config.los;
   

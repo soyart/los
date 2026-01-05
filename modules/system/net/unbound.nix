@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
 
 let
-  liblos = import ../../liblos { inherit lib pkgs; };
+  liblos = import ../../../liblos { inherit lib pkgs; };
   types = lib.types;
   cfg = config.los.net.unboundDoT;
 

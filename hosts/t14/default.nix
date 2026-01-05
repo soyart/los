@@ -10,10 +10,10 @@ in
     ./impermanence.nix
     ./configuration.nix
 
-    ../../nixos/syspkgs.nix
-    ../../nixos/users.nix
-    ../../nixos/doas.nix # doas is considered a system setting
-    ../../nixos/ramdisk.nix
+    ../../modules/system/syspkgs.nix
+    ../../modules/system/users.nix
+    ../../modules/system/doas.nix # doas is considered a system setting
+    ../../modules/system/ramdisk.nix
 
     ../../defaults/nix
     ../../defaults/net/laptop.nix

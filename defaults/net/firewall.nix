@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../nixos/net/firewall.nix
+    ../../modules/system/net/firewall.nix
   ];
 
   los.net.firewall = {

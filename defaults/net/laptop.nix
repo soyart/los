@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../nixos/net
+    ../../modules/system/net
     ./.
   ];
 

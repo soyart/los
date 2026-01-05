@@ -8,22 +8,24 @@ The L in los was picked randomly, and could stand for last, light, or even loser
 
 ### Modules
 
-Modules in los is put under 2 directories: [system module in `nixos`](./nixos/)
-and [user home module in `home`](./home/).
+Modules are organized under [`./modules`](./modules/):
 
-There's only 1 rule for modules: **a system module must never touch user home modules**.
+- [`modules/system/`](./modules/system/) — System-wide NixOS modules
+- [`modules/user/`](./modules/user/) — Per-user modules (with `username:` closure)
 
-> We allow home modules to read or even set values of system modules,
-> or even `nixosConfigurations` itself, *if* that's the natural way to implement the home module.
+There's only 1 rule for modules: **a system module must never touch user modules**.
 
-- [System modules in `nixos`](./nixos/)
+> We allow user modules to read or even set values of system modules,
+> or even `nixosConfigurations` itself, *if* that's the natural way to implement the module.
+
+- [System modules in `modules/system/`](./modules/system/)
 
   The root of this module is the top-level `los`
 
   The modules here provide los system options like networking, mountpoints,
-  and main user.
+  users, and doas.
 
-- [User home modules in `./home`](./home/)
+- [User modules in `modules/user/`](./modules/user/)
 
   The modules here provide `los.home` user options like program configurations,
   user-specific packages, etc.
@@ -39,13 +41,18 @@ There's only 1 rule for modules: **a system module must never touch user home mo
   Note that `home-manager.sharedModules` is not used because some modules here might need to set
   system configurations too, usually low-level or security-related NixOS options.
 
+- [Standalone Home Manager entry](./home/default.nix)
+
+  The `home/default.nix` file is the flake entry point for standalone `homeConfigurations`,
+  used for non-NixOS systems (e.g., macOS).
+
 ### Host configurations
 
 Per-host configurations should be consolidated into a single module
-under [`./nixos/hosts`](./nixos/hosts/).
+under [`./hosts`](./hosts/).
 
 Preferrably, these *hosts* modules should not declare any options (i.e.
-they are `imports`-only modules), and they should not touch home modules.
+they are `imports`-only modules), and they should not touch user modules directly.
 
 This is because *hosts* are bare-minimum builds that can boot and connect
 to the internet.
@@ -61,7 +68,7 @@ there with modules and [presets](./presets/).
 
 - [Package lists](./packages/)
 
-  List of package names to be imported by [syspkgs module](./nixos/syspkgs.nix).
+  List of package names to be imported by [syspkgs module](./modules/system/syspkgs.nix).
 
   Each text line is treated as pname of a Nix package.
 
