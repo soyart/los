@@ -17,7 +17,9 @@ in
       historySize = 256;
 
       shellAliases = {
+        ".." = "cd ..";
         "c" = "clear";
+        "e" = "exit";
         "g" = "git";
         "ga" = "git add";
         "gc" = "git commit";
