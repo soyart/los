@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    ../../modules/user/devel  # No closure needed - module uses types.attrsOf
+    (import ../../modules/user/devel username)
   ];
 
   los.home."${username}".devel = {

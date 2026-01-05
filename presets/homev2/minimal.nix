@@ -1,0 +1,17 @@
+# Minimal preset for homev2
+# Just the basics: git, helix, lf
+#
+# Usage:
+#   los.homev2.bob = import ./presets/homev2/minimal.nix {};
+
+{ withLfs ? false }:
+
+{
+  git = {
+    enable = true;
+    inherit withLfs;
+  };
+  helix.enable = true;
+  lf.enable = true;
+}
+
