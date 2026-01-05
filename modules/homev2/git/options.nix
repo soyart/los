@@ -1,6 +1,6 @@
 # Git submodule options for los.homev2.<user>
 
-{ lib, pkgs, ... }:
+{ lib, ... }:
 
 let
   types = lib.types;
@@ -30,9 +30,9 @@ in
 
     editor = {
       package = lib.mkOption {
-        description = "Nix package for git $EDITOR program";
-        type = types.package;
-        default = pkgs.helix;
+        description = "Nix package for git $EDITOR program (defaults to helix)";
+        type = types.nullOr types.package;
+        default = null;
       };
 
       binPath = lib.mkOption {
@@ -43,4 +43,3 @@ in
     };
   };
 }
-

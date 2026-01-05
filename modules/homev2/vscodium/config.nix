@@ -6,11 +6,18 @@ let
   nixd = "${pkgs.nixd}/bin/nixd";
   nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
 
+  defaultExtensions = with pkgs.vscode-extensions; [
+    golang.go
+    jnoortheen.nix-ide
+    rust-lang.rust-analyzer
+  ];
+
 in
 {
   config.home-manager.users = lib.mapAttrs (username: userCfg:
     let
       cfg = userCfg.vscodium;
+      extensions = if cfg.extensions == [] then defaultExtensions else cfg.extensions;
     in
     lib.mkIf cfg.enable {
       programs.vscode = {
@@ -21,7 +28,7 @@ in
           else pkgs.vscodium;
 
         profiles.default = {
-          extensions = cfg.extensions;
+          inherit extensions;
           userSettings = {
             nix = {
               enableLanguageServer = true;
@@ -35,4 +42,3 @@ in
     }
   ) config.los.homev2;
 }
-
