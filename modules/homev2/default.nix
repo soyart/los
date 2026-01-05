@@ -24,13 +24,15 @@
   options.los.homev2 = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submoduleWith {
       modules = [
+        ./alacritty/options.nix
+        ./bash/options.nix
         ./devel/options.nix
-        ./fonts/options.nix
-        ./sway/options.nix
         ./firefox/options.nix
+        ./fonts/options.nix
         ./git/options.nix
         ./helix/options.nix
         ./lf/options.nix
+        ./sway/options.nix
         ./vscodium/options.nix
       ];
     });
@@ -40,13 +42,15 @@
 
   # Import config modules that use los.homev2
   imports = [
+    ./alacritty/config.nix
+    ./bash/config.nix
     ./devel/config.nix
-    ./fonts/config.nix
-    ./sway/config.nix
     ./firefox/config.nix
+    ./fonts/config.nix
     ./git/config.nix
     ./helix/config.nix
     ./lf/config.nix
+    ./sway/config.nix
     ./vscodium/config.nix
   ];
 }

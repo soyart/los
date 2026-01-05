@@ -15,6 +15,12 @@
 }:
 
 {
+  # Shell
+  bash.enable = true;
+
+  # Terminal
+  alacritty.enable = true;
+
   # Display manager
   sway.enable = true;
 
