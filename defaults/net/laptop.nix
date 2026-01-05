@@ -3,7 +3,7 @@
 {
   imports = [
     ../../nixos/net
-    ./default.nix
+    ./.
   ];
 
   los.net = {
