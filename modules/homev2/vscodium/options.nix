@@ -1,6 +1,6 @@
 # VSCodium submodule options for los.homev2.<user>
 
-{ lib, pkgs, ... }:
+{ lib, ... }:
 
 {
   options.vscodium = {
@@ -8,13 +8,8 @@
     fhs = lib.mkEnableOption "Use FHS-compatible VSCodium package";
     extensions = lib.mkOption {
       type = lib.types.listOf lib.types.package;
-      default = with pkgs.vscode-extensions; [
-        golang.go
-        jnoortheen.nix-ide
-        rust-lang.rust-analyzer
-      ];
-      example = "with pkgs.vscode-extensions; [ golang.go jnoortheen.nix-ide rust-lang.rust-analyzer ]";
+      default = [];
+      description = "VSCode extensions to install (defaults to go, nix-ide, rust-analyzer)";
     };
   };
 }
-

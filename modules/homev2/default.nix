@@ -18,12 +18,11 @@
 #     };
 #   };
 
-{ lib, pkgs, ... }:
+{ lib, ... }:
 
 {
   options.los.homev2 = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submoduleWith {
-      specialArgs = { inherit pkgs; };
       modules = [
         ./alacritty/options.nix
         ./bash/options.nix
