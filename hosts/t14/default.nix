@@ -10,14 +10,13 @@ in
     ./impermanence.nix
     ./configuration.nix
 
-    ../../defaults/nix
-    ../../defaults/net
-
-    ../../nixos/net
     ../../nixos/syspkgs.nix
     ../../nixos/users.nix
     ../../nixos/doas.nix # doas is considered a system setting
     ../../nixos/ramdisk.nix
+
+    ../../defaults/nix
+    ../../defaults/net/laptop.nix
 
     # User-specific presets (moved from hosts/default.nix)
     (import ../../presets/sway-dev artnoi)
@@ -86,10 +85,6 @@ in
         group = artnoi;
         owner = artnoi;
       };
-    };
-
-    net = {
-      iwd.enable = true;
     };
 
     syspkgs = [
