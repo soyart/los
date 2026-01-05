@@ -4,10 +4,10 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/gui/fonts.nix username)
+    (import ../../modules/user/dm username)
   ];
 
-  los.home."${username}".gui.fonts = {
+  los.home."${username}".dm.fonts = {
     enable = true;
 
     packages = with pkgs; [

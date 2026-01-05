@@ -5,37 +5,41 @@ username:
 let
   types = lib.types;
 
-  perUser = config.los.home."${username}";
-  cfg = perUser.gui.progs.firefox;
-  cfgSway = perUser.gui.progs.sway;
+  cfg = config.los.home."${username}".firefox;
+
+  # Read pipewire status from NixOS config directly
+  pipewireEnabled = config.services.pipewire.enable;
+
+  # Resolve pipewire: use override if set, otherwise follow system's pipewire setting
+  usePipewire =
+    if cfg.pipewireOverride != null
+    then cfg.pipewireOverride
+    else pipewireEnabled;
 
 in
 {
   options = {
-    los.home."${username}".gui.progs.firefox = {
+    los.home."${username}".firefox = {
       enable = lib.mkEnableOption "Enable Firefox (Wayland-only)";
-      withPipewire = lib.mkOption {
-        description = "Enable Pipewire support in Firefox (i.e. for screen sharing and web conferences)";
-        type = types.bool;
-        default = false;
+      pipewireOverride = lib.mkOption {
+        description = "Override Pipewire support in Firefox. null = auto-detect from system config";
+        type = types.nullOr types.bool;
+        default = null;
       };
     };
   };
 
   config = lib.mkIf cfg.enable {
-    services.pipewire.enable = cfg.withPipewire;
-
     home-manager.users."${username}" = {
       home.sessionVariables = {
         BROWSER = "firefox";
         MOZ_ENABLE_WAYLAND = "1";
-        XDG_CURRENT_DESKTOP = lib.mkIf cfgSway.enable "sway";
       };
 
       programs.firefox = {
         enable = true;
         package =
-          if cfg.withPipewire
+          if usePipewire
           then
             pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
           else
@@ -58,3 +62,4 @@ in
     ];
   };
 }
+

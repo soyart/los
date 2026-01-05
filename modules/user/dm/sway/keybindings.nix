@@ -3,7 +3,7 @@ username:
 { lib, inputs, config, ... }:
 
 let
-  cfg = config.los.home."${username}".gui.progs.sway;
+  cfg = config.los.home."${username}".dm.sway;
 
   mod = "Mod1";
 in
@@ -116,3 +116,4 @@ in
       };
     };
 }
+

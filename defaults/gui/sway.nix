@@ -4,8 +4,8 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/gui/progs/sway username)
+    (import ../../modules/user/dm/sway username)
   ];
 
-  los.home."${username}".gui.progs.sway.enable = true;
+  los.home."${username}".dm.sway.enable = true;
 }

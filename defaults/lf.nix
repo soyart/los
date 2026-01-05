@@ -4,8 +4,8 @@ username:
 
 {
   imports = [
-    (import ../modules/user/progs/lf username)
+    (import ../modules/user/lf username)
   ];
 
-  los.home."${username}".progs.lf.enable = true;
+  los.home."${username}".lf.enable = true;
 }

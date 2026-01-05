@@ -4,10 +4,10 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/progs/git username)
+    (import ../../modules/user/git username)
   ];
 
-  los.home."${username}".progs.git = {
+  los.home."${username}".git = {
     enable = true;
     withLfs = false;
     username = "soyart";

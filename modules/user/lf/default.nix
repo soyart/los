@@ -3,11 +3,11 @@ username:
 { lib, config, ... }:
 
 let
-  cfg = config.los.home."${username}".progs.lf;
+  cfg = config.los.home."${username}".lf;
 
 in
 {
-  options.los.home."${username}".progs.lf = {
+  options.los.home."${username}".lf = {
     enable = lib.mkEnableOption "Enable lf for user ${username}";
   };
 
@@ -76,3 +76,4 @@ in
     };
   };
 }
+

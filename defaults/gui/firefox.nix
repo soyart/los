@@ -4,11 +4,9 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/gui/progs/firefox username)
+    (import ../../modules/user/firefox username)
   ];
 
-  los.home."${username}".gui.progs.firefox = {
-    enable = true;
-    withPipewire = true;
-  };
+  los.home."${username}".firefox.enable = true;
+  # pipewireOverride = null means auto-detect from config.services.pipewire.enable
 }

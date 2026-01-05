@@ -3,7 +3,7 @@ username:
 { lib, config, pkgs, inputs, ... }:
 
 let
-  cfg = config.los.home."${username}".gui.progs.sway;
+  cfg = config.los.home."${username}".dm.sway;
   unix = inputs.unix;
   scripts = import ./scripts.nix { inherit pkgs; };
 
@@ -18,12 +18,19 @@ in
   ];
 
   options = {
-    los.home."${username}".gui.progs.sway = {
+    los.home."${username}".dm.sway = {
       enable = lib.mkEnableOption "Enable los Sway DM";
     };
   };
 
   config = lib.mkIf cfg.enable {
+    # Enable pipewire directly (read by firefox via config.services.pipewire.enable)
+    services.pipewire = {
+      enable = true;
+      pulse.enable = true;
+      alsa.enable = true;
+    };
+
     security = {
       polkit.enable = true;
       rtkit.enable = true;
@@ -36,13 +43,6 @@ in
         cmd = "${scripts.wofipower}";
       }
     ];
-
-    services.pipewire = {
-      enable = true;
-
-      pulse.enable = true; # Emulate PulseAudio
-      alsa.enable = true;
-    };
 
     users.users."${username}" = {
       extraGroups = [ "audio" "video" ];
@@ -84,3 +84,4 @@ in
     };
   };
 }
+
