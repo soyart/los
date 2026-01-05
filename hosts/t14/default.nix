@@ -18,15 +18,18 @@ in
     ../../defaults/system/nix
     ../../defaults/system/net/laptop.nix
 
+    # Old user-specific presets (username closure pattern)
+    (import ../../presets/sway-dev artnoi)
+    (import ../../defaults/devel-gui/vscodium.nix artnoi)
+
     # homev2 module system (attrsOf-based per-user config)
     ../../modules/homev2
   ];
 
-  # Per-user configuration using homev2
-  los.homev2.${artnoi} = import ../../presets/homev2/sway-dev.nix {
-    inherit pkgs;
-    withRust = true;
-    withGo = true;
+  # Per-user configuration using homev2 (explicit for debugging)
+  los.homev2.${artnoi} = {
+    # Start minimal - just devel
+    devel.go.enable = true;
   };
 
   networking.hostName = hostname;
