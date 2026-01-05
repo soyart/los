@@ -4,10 +4,10 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/gui/progs/vscodium username)
+    (import ../../modules/user/vscodium username)
   ];
 
-  los.home."${username}".progs.vscodium = {
+  los.home."${username}".vscodium = {
     enable = true;
   };
 }

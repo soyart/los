@@ -3,14 +3,14 @@ username:
 { lib, pkgs, config, hostname, ... }:
 
 let
-  liblos = import ../../../../liblos { inherit lib pkgs; };
+  liblos = import ../../../liblos { inherit lib pkgs; };
   types = lib.types;
-  cfg = config.los.home."${username}".progs.git;
+  cfg = config.los.home."${username}".git;
 
 in
 {
   options = {
-    los.home."${username}".progs.git = {
+    los.home."${username}".git = {
       enable = lib.mkEnableOption "Enable los Git";
 
       withLfs = lib.mkOption {
@@ -79,3 +79,4 @@ in
       };
   };
 }
+

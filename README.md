@@ -30,6 +30,18 @@ There's only 1 rule for modules: **a system module must never touch user modules
   The modules here provide `los.home` user options like program configurations,
   user-specific packages, etc.
 
+  #### Directory structure
+
+  - `dm/` — Display manager related configs (sway, pipewire, fonts)
+  - `devel/` — Development environment tools
+  - `firefox/` — Firefox browser configuration
+  - `git/` — Git version control configuration
+  - `helix/` — Helix editor configuration
+  - `lf/` — lf file manager configuration
+  - `vscodium/` — VSCodium editor configuration
+
+  And it goes on.
+
   #### User-specific options
 
   Options under `los.home` are user-specific. The per-user configuration
@@ -40,6 +52,16 @@ There's only 1 rule for modules: **a system module must never touch user modules
 
   Note that `home-manager.sharedModules` is not used because some modules here might need to set
   system configurations too, usually low-level or security-related NixOS options.
+
+  #### DM abstraction
+
+  The `dm/` module provides shared display manager settings:
+  - `los.home.${username}.dm.pipewire.enable` — Audio/screen sharing support
+  - `los.home.${username}.dm.fonts` — Font configuration
+  - `los.home.${username}.dm.sway` — Sway window manager
+
+  Other modules (like Firefox) can reference `dm.pipewire.enable` to determine
+  whether to enable Pipewire support, avoiding configuration races.
 
 - [Standalone Home Manager entry](./home/default.nix)
 

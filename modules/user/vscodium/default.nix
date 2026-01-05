@@ -4,7 +4,7 @@ username:
 
 let
   types = lib.types;
-  cfg = config.los.home."${username}".progs.vscodium;
+  cfg = config.los.home."${username}".vscodium;
 
   nixd = "${pkgs.nixd}/bin/nixd";
   nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
@@ -12,7 +12,7 @@ let
 in
 {
   options = {
-    los.home."${username}".progs.vscodium = {
+    los.home."${username}".vscodium = {
       enable = lib.mkEnableOption "Enable VSCodium module, with Nix support";
       fhs = lib.mkEnableOption "Use FHS-compatible VSCodium package";
       extensions = lib.mkOption {
@@ -58,3 +58,4 @@ in
     };
   };
 }
+

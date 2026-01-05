@@ -4,10 +4,10 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/progs/helix username)
+    (import ../../modules/user/helix username)
   ];
 
-  los.home."${username}".progs.helix = {
+  los.home."${username}".helix = {
     enable = true;
     langServers = with pkgs; [
       nixd
