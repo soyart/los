@@ -15,6 +15,6 @@ in
   };
 
   config = {
-    environment.systemPackages = lib.lists.flatten (builtins.map liblos.import-txt cfg);
+    environment.systemPackages = lib.lists.flatten (map liblos.import-txt cfg);
   };
 }
