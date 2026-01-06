@@ -27,11 +27,7 @@ in
     defaults = lib.mkOption {
       description = "Default font names for each typeface family";
       type = types.nullOr (types.attrsOf (types.listOf types.str));
-      default = {
-        serif = [ "Ubuntu" ];
-        sansSerif = [ "Liberation" "Noto" ];
-        monospace = [ "Hack" ];
-      };
+      default = { };
       example = {
         serif = [ "Ubuntu" ];
         sansSerif = [ "Liberation" "Noto" ];
