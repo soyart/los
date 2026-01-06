@@ -1,4 +1,4 @@
-{ pkgs, hostname, ... }:
+{ lib, pkgs, hostname, ... }:
 
 let
   artnoi = "artnoi";
@@ -24,7 +24,7 @@ in
 
   # Per-user configuration using homev2
   los.homev2.${artnoi} = import ../../presets/homev2/sway-dev.nix {
-    inherit pkgs;
+    inherit lib pkgs;
     withRust = true;
     withGo = true;
   };

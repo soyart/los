@@ -2,17 +2,20 @@
 # Just the basics: bash, git, helix, lf
 #
 # Usage:
-#   los.homev2.bob = import ./presets/homev2/minimal.nix {};
+#   los.homev2.bob = import ./presets/homev2/minimal.nix { inherit lib; };
 
-{ withLfs ? false }:
+{ lib
+, withLfs ? false
+}:
 
-{
-  bash.enable = true;
-  git = {
-    enable = true;
-    inherit withLfs;
-  };
-  helix.enable = true;
-  lf.enable = true;
-}
+lib.foldl lib.recursiveUpdate {} [
+  (import ../../defaults/homev2/bash.nix)
+  (import ../../defaults/homev2/git.nix)
+  (import ../../defaults/homev2/helix.nix)
+  (import ../../defaults/homev2/lf.nix)
 
+  # Override for parameter
+  {
+    git.withLfs = withLfs;
+  }
+]

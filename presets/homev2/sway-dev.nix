@@ -3,57 +3,34 @@
 #
 # Usage:
 #   los.homev2.artnoi = import ./presets/homev2/sway-dev.nix {
-#     inherit pkgs;
+#     inherit lib pkgs;
 #     withRust = true;
 #     withGo = true;
 #   };
 
-{ pkgs
+{ lib
+, pkgs
 , withRust ? true
 , withGo ? true
 , withLfs ? false
 }:
 
-{
-  # Shell
-  bash.enable = true;
+lib.foldl lib.recursiveUpdate {} [
+  (import ../../defaults/homev2/bash.nix)
+  (import ../../defaults/homev2/alacritty.nix)
+  (import ../../defaults/homev2/sway.nix)
+  (import ../../defaults/homev2/fonts.nix { inherit pkgs; })
+  (import ../../defaults/homev2/firefox.nix)
+  (import ../../defaults/homev2/helix.nix)
+  (import ../../defaults/homev2/vscodium.nix)
+  (import ../../defaults/homev2/lf.nix)
+  (import ../../defaults/homev2/git.nix)
+  (import ../../defaults/homev2/languages.nix)
 
-  # Terminal
-  alacritty.enable = true;
-
-  # Display manager
-  sway.enable = true;
-
-  # Fonts
-  fonts = {
-    enable = true;
-    packages = with pkgs; [
-      hack-font
-      inconsolata
-      liberation_ttf
-    ];
-  };
-
-  # Browser
-  firefox.enable = true;
-
-  # Editor and IDE
-  helix.enable = true;
-  vscodium.enable = true;
-
-  # File manager
-  lf.enable = true;
-
-  # Git
-  git = {
-    enable = true;
-    inherit withLfs;
-  };
-
-  # Development languages
-  languages = {
-    go.enable = withGo;
-    rust.enable = withRust;
-  };
-}
-
+  # Overrides for parameters
+  {
+    git.withLfs = withLfs;
+    languages.go.enable = withGo;
+    languages.rust.enable = withRust;
+  }
+]
