@@ -4,12 +4,12 @@ username:
 
 let
   types = lib.types;
-  cfg = config.los.home."${username}".helix;
+  cfg = config.los.homev1."${username}".helix;
 
 in
 {
   options = {
-    los.home."${username}".helix = {
+    los.homev1."${username}".helix = {
       enable = lib.mkEnableOption "Enable Helix editor from los";
       langServers = lib.mkOption {
         description = "List of LSP Nix packages only available to Helix";

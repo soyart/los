@@ -5,12 +5,12 @@ username:
 let
   liblos = import ../../../liblos { inherit lib pkgs; };
   types = lib.types;
-  cfg = config.los.home."${username}".git;
+  cfg = config.los.homev1."${username}".git;
 
 in
 {
   options = {
-    los.home."${username}".git = {
+    los.homev1."${username}".git = {
       enable = lib.mkEnableOption "Enable los Git";
 
       withLfs = lib.mkOption {

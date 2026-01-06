@@ -3,7 +3,7 @@ username:
 { lib, inputs, config, ... }:
 
 let
-  cfg = config.los.home."${username}".dm.sway;
+  cfg = config.los.homev1."${username}".dm.sway;
 
   mod = "Mod1";
 in

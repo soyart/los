@@ -4,14 +4,14 @@ username:
 
 {
   imports = [
-    (import ../../defaults/home/languages.nix username)
-    (import ../../defaults/home/helix.nix username)
-    (import ../../defaults/home/git.nix username)
-    (import ../../defaults/home/bash.nix username)
-    (import ../../defaults/home/lf.nix username)
-    (import ../../defaults/home/firefox.nix username)
-    (import ../../defaults/home/dm/sway.nix username)
-    (import ../../defaults/home/dm/fonts.nix username)
-    (import ../../defaults/home/dm/alacritty.nix username)
+    (import ../../defaults/homev1/languages.nix username)
+    (import ../../defaults/homev1/helix.nix username)
+    (import ../../defaults/homev1/git.nix username)
+    (import ../../defaults/homev1/bash.nix username)
+    (import ../../defaults/homev1/lf.nix username)
+    (import ../../defaults/homev1/firefox.nix username)
+    (import ../../defaults/homev1/dm/sway.nix username)
+    (import ../../defaults/homev1/dm/fonts.nix username)
+    (import ../../defaults/homev1/dm/alacritty.nix username)
   ];
 }

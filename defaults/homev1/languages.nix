@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../modules/home/languages username)
+    (import ../../modules/homev1/languages username)
   ];
 
   los.home."${username}".languages = {

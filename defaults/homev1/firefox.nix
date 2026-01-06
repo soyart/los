@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../modules/home/firefox username)
+    (import ../../modules/homev1/firefox username)
   ];
 
   los.home."${username}".firefox.enable = true;

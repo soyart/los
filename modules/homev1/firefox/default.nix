@@ -5,7 +5,7 @@ username:
 let
   types = lib.types;
 
-  cfg = config.los.home."${username}".firefox;
+  cfg = config.los.homev1."${username}".firefox;
 
   # Read pipewire status from NixOS config directly
   pipewireEnabled = config.services.pipewire.enable;
@@ -19,7 +19,7 @@ let
 in
 {
   options = {
-    los.home."${username}".firefox = {
+    los.homev1."${username}".firefox = {
       enable = lib.mkEnableOption "Enable Firefox (Wayland-only)";
       pipewireOverride = lib.mkOption {
         description = "Override Pipewire support in Firefox. null = auto-detect from system config";

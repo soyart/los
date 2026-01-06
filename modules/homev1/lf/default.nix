@@ -3,11 +3,11 @@ username:
 { lib, config, ... }:
 
 let
-  cfg = config.los.home."${username}".lf;
+  cfg = config.los.homev1."${username}".lf;
 
 in
 {
-  options.los.home."${username}".lf = {
+  options.los.homev1."${username}".lf = {
     enable = lib.mkEnableOption "Enable lf for user ${username}";
   };
 

@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../modules/home/git username)
+    (import ../../modules/homev1/git username)
   ];
 
   los.home."${username}".git = {

@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../modules/home/lf username)
+    (import ../../modules/homev1/lf username)
   ];
 
   los.home."${username}".lf.enable = true;

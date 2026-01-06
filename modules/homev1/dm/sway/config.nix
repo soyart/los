@@ -4,7 +4,7 @@ username:
 
 let
   colors = import ./colors.nix;
-  cfg = config.los.home."${username}".dm.sway;
+  cfg = config.los.homev1."${username}".dm.sway;
   barCommand = "${inputs.unix}/dotfiles/linux/.config/dwm/dwmbar.sh";
   wallpaper = "${inputs.self}/assets/wall/scene2.jpg";
 

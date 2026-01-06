@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../../modules/home/dm/fonts.nix username)
+    (import ../../../modules/homev1/dm/fonts.nix username)
   ];
 
   los.home."${username}".dm.fonts = {

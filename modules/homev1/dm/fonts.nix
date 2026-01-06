@@ -4,12 +4,12 @@ username:
 
 let
   types = lib.types;
-  cfg = config.los.home."${username}".dm;
+  cfg = config.los.homev1."${username}".dm;
 
 in
 {
   options = {
-    los.home."${username}".dm = {
+    los.homev1."${username}".dm = {
       fonts = {
         enable = lib.mkEnableOption "Install fonts for GUI";
 

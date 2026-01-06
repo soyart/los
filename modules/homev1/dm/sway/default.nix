@@ -3,7 +3,7 @@ username:
 { lib, config, pkgs, inputs, ... }:
 
 let
-  cfg = config.los.home."${username}".dm.sway;
+  cfg = config.los.homev1."${username}".dm.sway;
   unix = inputs.unix;
   scripts = import ./scripts.nix { inherit pkgs; };
 
@@ -18,7 +18,7 @@ in
   ];
 
   options = {
-    los.home."${username}".dm.sway = {
+    los.homev1."${username}".dm.sway = {
       enable = lib.mkEnableOption "Enable los Sway DM";
     };
   };
