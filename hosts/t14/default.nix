@@ -22,48 +22,11 @@ in
     ../../modules/homev2
   ];
 
-  # Per-user configuration using homev2 (hardcoded for testing)
-  los.homev2.${artnoi} = {
-    # Shell
-    bash.enable = true;
-
-    # Terminal
-    alacritty.enable = true;
-
-    # Display manager
-    sway.enable = true;
-
-    # Fonts
-    fonts = {
-      enable = true;
-      packages = with pkgs; [
-        hack-font
-        inconsolata
-        liberation_ttf
-      ];
-    };
-
-    # Browser
-    firefox.enable = true;
-
-    # Editor and IDE
-    helix.enable = true;
-    vscodium.enable = true;
-
-    # File manager
-    lf.enable = true;
-
-    # Git
-    git = {
-      enable = true;
-      withLfs = false;
-    };
-
-    # Development languages
-    languages = {
-      go.enable = true;
-      rust.enable = true;
-    };
+  # Per-user configuration using homev2
+  los.homev2.${artnoi} = import ../../presets/homev2/sway-dev.nix {
+    inherit pkgs;
+    withRust = true;
+    withGo = true;
   };
 
   networking.hostName = hostname;
