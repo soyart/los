@@ -15,12 +15,12 @@ in
     ../../modules/system/doas.nix # doas is considered a system setting
     ../../modules/system/ramdisk.nix
 
-    ../../defaults/nix
-    ../../defaults/net/laptop.nix
+    ../../defaults/system/nix
+    ../../defaults/system/net/laptop.nix
 
     # User-specific presets (moved from hosts/default.nix)
     (import ../../presets/sway-dev artnoi)
-    (import ../../defaults/devel-gui/vscodium.nix artnoi)
+    (import ../../defaults/home/vscodium.nix artnoi)
   ];
 
   networking.hostName = hostname;

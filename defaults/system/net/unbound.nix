@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../modules/system/net/unbound.nix
+    ../../../modules/system/net/unbound.nix
   ];
 
   los.net.unboundDoT = {

@@ -8,8 +8,6 @@ let
 
 in
 {
-  # No imports - sway is imported directly by defaults/gui/sway.nix
-
   options = {
     los.home."${username}".dm = {
       fonts = {

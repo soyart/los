@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../modules/system/net
+    ../../../modules/system/net
     ./.
   ];
 
