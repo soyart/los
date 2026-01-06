@@ -1,6 +1,6 @@
 # Fonts submodule options for los.homev2.<user>
 
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 let
   types = lib.types;
@@ -11,9 +11,17 @@ in
     enable = lib.mkEnableOption "Install fonts for GUI";
 
     packages = lib.mkOption {
-      description = "Font packages to install";
+      description = "Normal TTF fonts";
       type = types.listOf types.package;
-      default = [];
+      default = with pkgs; [
+        hack-font
+        inconsolata
+        liberation_ttf
+      ];
+      example = with pkgs; [
+        inconsolata
+        liberation_ttf
+      ];
     };
 
     defaults = lib.mkOption {
