@@ -10,6 +10,14 @@
       inconsolata
       liberation_ttf
     ];
+    defaults = {
+      sansSerif = [
+        "Liberation"
+      ];
+      monospace = [
+        "Hack"
+      ];
+    };
   };
 }
 
