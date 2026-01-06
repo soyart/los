@@ -4,7 +4,7 @@ username:
 
 let
   types = lib.types;
-  cfg = config.los.home."${username}".devel;
+  cfg = config.los.home."${username}".languages;
 
   mappings = {
     go = with pkgs; [
@@ -59,7 +59,7 @@ let
 
 in
 {
-  options.los.home."${username}".devel = lib.mkOption {
+  options.los.home."${username}".languages = lib.mkOption {
     description = ''
       Programming languages to be made available to either user shell or global packages.
     '';

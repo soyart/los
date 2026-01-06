@@ -33,7 +33,7 @@ There's only 1 rule for modules: **a system module must never touch user modules
   #### Directory structure
 
   - `dm/` — Display manager related configs (sway, pipewire, fonts)
-  - `devel/` — Development environment tools
+  - `languages/` — Programming language support
   - `firefox/` — Firefox browser configuration
   - `git/` — Git version control configuration
   - `helix/` — Helix editor configuration
