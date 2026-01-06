@@ -10,18 +10,17 @@ in
     ./impermanence.nix
     ./configuration.nix
 
-    ../../defaults/nix
-    ../../defaults/net
+    ../../modules/system/syspkgs.nix
+    ../../modules/system/users.nix
+    ../../modules/system/doas.nix # doas is considered a system setting
+    ../../modules/system/ramdisk.nix
 
-    ../../nixos/net
-    ../../nixos/syspkgs.nix
-    ../../nixos/users.nix
-    ../../nixos/doas.nix # doas is considered a system setting
-    ../../nixos/ramdisk.nix
+    ../../defaults/system/nix
+    ../../defaults/system/net/laptop.nix
 
     # User-specific presets (moved from hosts/default.nix)
     (import ../../presets/sway-dev artnoi)
-    (import ../../defaults/devel-gui/vscodium.nix artnoi)
+    (import ../../defaults/home/vscodium.nix artnoi)
   ];
 
   networking.hostName = hostname;
@@ -86,10 +85,6 @@ in
         group = artnoi;
         owner = artnoi;
       };
-    };
-
-    net = {
-      iwd.enable = true;
     };
 
     syspkgs = [
