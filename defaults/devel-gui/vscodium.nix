@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/vscodium username)
+    (import ../../modules/home/vscodium username)
   ];
 
   los.home."${username}".vscodium = {

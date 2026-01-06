@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/devel username)
+    (import ../../modules/home/devel username)
   ];
 
   los.home."${username}".devel = {

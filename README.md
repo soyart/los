@@ -11,7 +11,7 @@ The L in los was picked randomly, and could stand for last, light, or even loser
 Modules are organized under [`./modules`](./modules/):
 
 - [`modules/system/`](./modules/system/) — System-wide NixOS modules
-- [`modules/user/`](./modules/user/) — Per-user modules (with `username:` closure)
+- [`modules/home/`](./modules/home/) — Per-user modules (with `username:` closure)
 
 There's only 1 rule for modules: **a system module must never touch user modules**.
 
@@ -25,7 +25,7 @@ There's only 1 rule for modules: **a system module must never touch user modules
   The modules here provide los system options like networking, mountpoints,
   users, and doas.
 
-- [User modules in `modules/user/`](./modules/user/)
+- [User modules in `modules/home/`](./modules/home/)
 
   The modules here provide `los.home` user options like program configurations,
   user-specific packages, etc.

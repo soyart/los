@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/helix username)
+    (import ../../modules/home/helix username)
   ];
 
   los.home."${username}".helix = {

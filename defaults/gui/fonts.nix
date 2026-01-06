@@ -4,7 +4,7 @@ username:
 
 {
   imports = [
-    (import ../../modules/user/dm username)
+    (import ../../modules/home/dm username)
   ];
 
   los.home."${username}".dm.fonts = {
