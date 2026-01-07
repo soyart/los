@@ -4,54 +4,48 @@
 # from all per-user modules. Each module contributes its options via
 # the submoduleWith pattern.
 #
+# Modules are auto-discovered from sibling directories. Each directory
+# must contain options.nix and config.nix files.
+#
 # Usage in host config:
 #   imports = [ ../../modules/homev2 ];
 #   los.homev2 = {
 #     artnoi = {
-#       devel.go.enable = true;
+#       languages.go.enable = true;
 #       sway.enable = true;
 #       firefox.enable = true;
 #     };
 #     bob = {
-#       devel.rust.enable = true;
+#       languages.rust.enable = true;
 #       git.enable = true;
 #     };
 #   };
 
 { lib, pkgs, ... }:
 
+let
+  # Get all entries in this directory
+  entries = builtins.readDir ./.;
+
+  # Filter for directories only (these are the module directories)
+  moduleDirs = lib.filterAttrs (name: type: type == "directory") entries;
+
+  # Build list of options.nix paths
+  optionsModules = lib.mapAttrsToList (name: _: ./${name}/options.nix) moduleDirs;
+
+  # Build list of config.nix paths
+  configModules = lib.mapAttrsToList (name: _: ./${name}/config.nix) moduleDirs;
+
+in
 {
   options.los.homev2 = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submoduleWith {
       specialArgs = { inherit pkgs; };
-      modules = [
-        ./alacritty/options.nix
-        ./bash/options.nix
-        ./languages/options.nix
-        ./firefox/options.nix
-        ./fonts/options.nix
-        ./git/options.nix
-        ./helix/options.nix
-        ./lf/options.nix
-        ./sway/options.nix
-        ./vscodium/options.nix
-      ];
+      modules = optionsModules;
     });
     default = {};
     description = "Per-user configuration (attrsOf-based modules)";
   };
 
-  # Import config modules that use los.homev2
-  imports = [
-    ./alacritty/config.nix
-    ./bash/config.nix
-    ./languages/config.nix
-    ./firefox/config.nix
-    ./fonts/config.nix
-    ./git/config.nix
-    ./helix/config.nix
-    ./lf/config.nix
-    ./sway/config.nix
-    ./vscodium/config.nix
-  ];
+  imports = configModules;
 }
