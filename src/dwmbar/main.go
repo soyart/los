@@ -10,65 +10,56 @@ import (
 
 func main() {
 	identity := getIdentity()
-
+	lastStatus := ""
 	for {
-		status := formatStatus(identity)
-		fmt.Println(status)
+		now := time.Now()
+		status := formatStatus(identity, now)
+		if status != lastStatus {
+			fmt.Println(status)
+			lastStatus = status
+		}
 		time.Sleep(1 * time.Second)
 	}
 }
 
-// getIdentity returns the "user@host" string from args or environment.
+// getIdentity returns "user@host" from args or environment.
 func getIdentity() string {
 	if len(os.Args) > 1 && os.Args[1] != "" {
 		return os.Args[1]
 	}
-
 	user := os.Getenv("USER")
 	if user == "" {
 		user = "unknown"
 	}
-
 	host, err := os.Hostname()
 	if err != nil {
 		host = "unknown"
 	}
-
 	return fmt.Sprintf("%s@%s", user, host)
 }
 
-// formatStatus builds the complete status line.
-func formatStatus(identity string) string {
-	now := time.Now()
-	timeStr := strings.ToLower(now.Format("Monday, Jan 02 > 15:04"))
-
+// formatStatus builds the status line.
+// Example: "user@host | rpm: 2500 | discharging: 85% | bright: 500/1000 | 0.75 | monday, jan 08 > 14:30"
+func formatStatus(identity string, now time.Time) string {
 	parts := []string{
 		identity,
 	}
-
 	if fan := getFanRPM(); fan != "" {
 		parts = append(parts, fan)
 	}
-
 	if batt := getBattery(); batt != "" {
 		parts = append(parts, batt)
 	}
-
 	if bright := getBrightness(); bright != "" {
 		parts = append(parts, bright)
 	}
-
 	if vol := getVolume(); vol != "" {
 		parts = append(parts, vol)
 	}
-
-	parts = append(parts, timeStr)
-
+	parts = append(parts, strings.ToLower(now.Format("Monday, Jan 02 > 15:04")))
 	return strings.Join(parts, " | ")
 }
 
-// readFile reads a sysfs file and returns its trimmed content.
-// Returns empty string if the file cannot be read.
 func readFile(path string) string {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -77,8 +68,6 @@ func readFile(path string) string {
 	return strings.TrimSpace(string(data))
 }
 
-// findFirstMatch returns the first path matching the glob pattern.
-// Returns empty string if no match is found.
 func findFirstMatch(pattern string) string {
 	matches, err := filepath.Glob(pattern)
 	if err != nil || len(matches) == 0 {
@@ -87,8 +76,6 @@ func findFirstMatch(pattern string) string {
 	return matches[0]
 }
 
-// findAllMatches returns all paths matching the glob pattern.
-// Returns nil if no matches are found.
 func findAllMatches(pattern string) []string {
 	matches, err := filepath.Glob(pattern)
 	if err != nil {

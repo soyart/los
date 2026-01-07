@@ -5,10 +5,9 @@ import (
 	"path/filepath"
 )
 
-// getBrightness reads screen brightness from sysfs.
-// Returns a formatted string like "bright: 500/1000" or empty if unavailable.
+// getBrightness returns screen brightness.
+// Example: "bright: 500/1000"
 func getBrightness() string {
-	// Find first backlight device
 	blPath := findFirstMatch("/sys/class/backlight/*")
 	if blPath == "" {
 		return ""
@@ -23,4 +22,3 @@ func getBrightness() string {
 
 	return fmt.Sprintf("bright: %s/%s", current, max)
 }
-

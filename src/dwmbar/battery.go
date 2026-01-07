@@ -6,10 +6,9 @@ import (
 	"strings"
 )
 
-// getBattery reads battery status and capacity from sysfs.
-// Returns a formatted string like "discharging: 85%" or empty if no battery.
+// getBattery returns battery status.
+// Example: "discharging: 85%"
 func getBattery() string {
-	// Try BAT0, BAT1, etc.
 	batPath := findFirstMatch("/sys/class/power_supply/BAT*")
 	if batPath == "" {
 		return ""
@@ -24,4 +23,3 @@ func getBattery() string {
 
 	return fmt.Sprintf("%s: %s%%", strings.ToLower(status), capacity)
 }
-

@@ -4,10 +4,9 @@ import (
 	"fmt"
 )
 
-// getFanRPM reads fan speed from hwmon sysfs entries.
-// Returns a formatted string like "rpm: 2500" or empty if no fan data.
+// getFanRPM returns fan speed.
+// Example: "rpm: 2500"
 func getFanRPM() string {
-	// Find all fan input files across hwmon devices
 	fanFiles := findAllMatches("/sys/class/hwmon/hwmon*/fan*_input")
 
 	for _, fanFile := range fanFiles {
@@ -19,4 +18,3 @@ func getFanRPM() string {
 
 	return ""
 }
-

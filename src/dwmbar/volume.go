@@ -1,53 +1,84 @@
 package main
 
 import (
+	"fmt"
 	"os/exec"
 	"strings"
 
 	"github.com/godbus/dbus/v5"
 )
 
-// getVolume retrieves the current audio volume.
-// Tries D-Bus first, falls back to wpctl if D-Bus fails.
-// Returns a string like "0.75" or "0.50 [MUTED]".
+// getVolume returns audio volume. Tries D-Bus, falls back to wpctl.
+// Example: "0.75" or "0.50 [MUTED]"
 func getVolume() string {
-	vol := getVolumeDBus()
-	if vol != "" {
+	vol, err := getVolumeDBus()
+	if err == nil && vol != "" {
 		return vol
 	}
 	return getVolumeWpctl()
 }
 
-// getVolumeDBus tries to get volume via WirePlumber D-Bus interface.
-// WirePlumber doesn't expose a simple D-Bus API for volume queries,
-// so this is a placeholder for future implementation.
-// For now, it returns empty to trigger the fallback.
-func getVolumeDBus() string {
+// getVolumeDBus queries PulseAudio D-Bus interface (PipeWire compatible).
+func getVolumeDBus() (string, error) {
 	conn, err := dbus.ConnectSessionBus()
 	if err != nil {
-		return ""
+		return "", fmt.Errorf("session bus: %w", err)
 	}
 	defer conn.Close()
 
-	// WirePlumber uses a custom protocol over PipeWire, not a standard D-Bus API.
-	// The most reliable D-Bus approach would be through org.freedesktop.portal.Desktop
-	// or by implementing the PipeWire wire protocol.
-	//
-	// For now, we fall back to wpctl which is reliable.
-	// TODO: Implement proper PipeWire D-Bus volume query if a stable API becomes available.
+	pulseObj := conn.Object("org.PulseAudio1", "/org/pulseaudio/core1")
 
-	return ""
+	var sinkPath dbus.ObjectPath
+	err = pulseObj.Call("org.freedesktop.DBus.Properties.Get", 0,
+		"org.PulseAudio.Core1", "FallbackSink").Store(&sinkPath)
+	if err != nil {
+		return "", fmt.Errorf("get sink: %w", err)
+	}
+
+	sinkObj := conn.Object("org.PulseAudio1", sinkPath)
+
+	var volume []uint32
+	err = sinkObj.Call("org.freedesktop.DBus.Properties.Get", 0,
+		"org.PulseAudio.Core1.Device", "Volume").Store(&volume)
+	if err != nil {
+		return "", fmt.Errorf("get volume: %w", err)
+	}
+
+	var muted bool
+	err = sinkObj.Call("org.freedesktop.DBus.Properties.Get", 0,
+		"org.PulseAudio.Core1.Device", "Mute").Store(&muted)
+	if err != nil {
+		return "", fmt.Errorf("get mute: %w", err)
+	}
+
+	if len(volume) == 0 {
+		return "", fmt.Errorf("no channels")
+	}
+
+	// PA volume: 0-65536 (100% = 65536)
+	avgVolume := uint32(0)
+	for _, v := range volume {
+		avgVolume += v
+	}
+	avgVolume /= uint32(len(volume))
+	normalizedVol := float64(avgVolume) / 65536.0
+
+	result := fmt.Sprintf("%.2f", normalizedVol)
+	if muted {
+		result += " [MUTED]"
+	}
+
+	return result, nil
 }
 
-// getVolumeWpctl gets volume by executing wpctl command.
-// This is the fallback when D-Bus is unavailable or fails.
+// getVolumeWpctl queries volume via wpctl command.
 func getVolumeWpctl() string {
 	out, err := exec.Command("wpctl", "get-volume", "@DEFAULT_SINK@").Output()
 	if err != nil {
 		return ""
 	}
 
-	// Output format: "Volume: 0.50" or "Volume: 0.50 [MUTED]"
+	// Example: "Volume: 0.50" or "Volume: 0.50 [MUTED]"
 	output := strings.TrimSpace(string(out))
 	parts := strings.Fields(output)
 
@@ -55,7 +86,6 @@ func getVolumeWpctl() string {
 		return ""
 	}
 
-	// parts[0] = "Volume:", parts[1] = "0.50", parts[2] = "[MUTED]" (optional)
 	volume := parts[1]
 	if len(parts) >= 3 && parts[2] == "[MUTED]" {
 		volume += " [MUTED]"
@@ -63,4 +93,3 @@ func getVolumeWpctl() string {
 
 	return volume
 }
-
