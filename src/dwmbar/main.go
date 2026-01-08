@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	updates := make(chan stateUpdate, 8)
+	updates := make(chan statusField, 8)
 
 	go watch(updates, updateVolume, getVolumeV2)
 	go watch(updates, updateFans, getFansV2)
@@ -19,17 +19,16 @@ func main() {
 
 	state := statusBar{title: getIdentity()}
 	lastOutput := ""
-
 	for update := range updates {
 		switch update.kind {
 		case updateVolume:
-			state.volume = update.value.(volume)
+			state.volume = update
 		case updateFans:
-			state.fans = update.value.(fans)
+			state.fans = update
 		case updateBattery:
-			state.battery = update.value.(battery)
+			state.battery = update
 		case updateBrightness:
-			state.brightness = update.value.(brightness)
+			state.brightness = update
 		case updateTime:
 			state.now = update.value.(time.Time)
 		}
@@ -67,6 +66,22 @@ const (
 	updateTime
 )
 
+func (u updateKind) String() string {
+	switch u {
+	case updateVolume:
+		return "volume"
+	case updateFans:
+		return "fans"
+	case updateBattery:
+		return "battery"
+	case updateBrightness:
+		return "brightness"
+	case updateTime:
+		return "time"
+	}
+	panic("uncaugh updateKind")
+}
+
 func updateInterval(u updateKind) time.Duration {
 	switch u {
 	case updateVolume:
@@ -83,18 +98,33 @@ func updateInterval(u updateKind) time.Duration {
 	panic("uncaught updateKind")
 }
 
-type stateUpdate struct {
+type field interface {
+	String() string
+}
+
+type statusField struct {
 	kind  updateKind
-	value any
+	value field
+	err   error
+}
+
+func (s statusField) String() string {
+	if s.err != nil {
+		return fmt.Sprintf("%s: %s", s.kind.String(), s.err.Error())
+	}
+	if s.value == nil {
+		return fmt.Sprintf("%s: null", s.kind.String())
+	}
+	return s.value.String()
 }
 
 type statusBar struct {
 	title      string
 	now        time.Time
-	fans       fans
-	volume     volume
-	battery    battery
-	brightness brightness
+	fans       statusField
+	volume     statusField
+	battery    statusField
+	brightness statusField
 }
 
 func (s statusBar) String() string {
@@ -103,28 +133,31 @@ func (s statusBar) String() string {
 }
 
 func watch[T fmt.Stringer](
-	ch chan<- stateUpdate,
+	ch chan<- statusField,
 	kind updateKind,
 	getter func() (T, error),
 ) {
 	var lastStr string
 	for {
-		val, _ := getter()
+		val, err := getter()
+		if err != nil {
+			ch <- statusField{kind: kind, err: err}
+		}
 		if s := val.String(); s != lastStr {
-			ch <- stateUpdate{kind, val}
+			ch <- statusField{kind: kind, value: val}
 			lastStr = s
 		}
 		time.Sleep(updateInterval(kind))
 	}
 }
 
-func watchTime(ch chan<- stateUpdate) {
+func watchTime(ch chan<- statusField) {
 	var lastStr string
 	for {
 		now := time.Now()
 		s := now.Format("Monday, Jan 02 > 15:04")
 		if s != lastStr {
-			ch <- stateUpdate{updateTime, now}
+			ch <- statusField{kind: updateTime, value: now}
 			lastStr = s
 		}
 		time.Sleep(1 * time.Second)
