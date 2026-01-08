@@ -13,7 +13,13 @@ func main() {
 	lastStatus := ""
 	for {
 		now := time.Now()
-		status := formatStatus(identity, now)
+		bar, err := getStatusBar(identity, now)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			time.Sleep(1 * time.Second)
+			continue
+		}
+		status := bar.String()
 		if status != lastStatus {
 			fmt.Println(status)
 			lastStatus = status
@@ -48,6 +54,11 @@ type statusBar struct {
 	brightness brightness
 }
 
+func (s statusBar) String() string {
+	timeStr := strings.ToLower(s.now.Format("Monday, Jan 02 > 15:04"))
+	return fmt.Sprintf("%s | %s | %s | %s | %s | %s", s.title, s.fans, s.battery, s.brightness, s.volume, timeStr)
+}
+
 func getStatusBar(title string, now time.Time) (statusBar, error) {
 	volume, err := getVolumeV2()
 	if err != nil {
@@ -73,31 +84,6 @@ func getStatusBar(title string, now time.Time) (statusBar, error) {
 		battery:    battery,
 		brightness: brightness,
 	}, nil
-}
-
-// formatStatus builds the status line.
-// Example: "user@host | rpm: 2500 | temp: 45°C | discharging: 85% | bright: 500/1000 | 0.75 | monday, jan 08 > 14:30"
-func formatStatus(identity string, now time.Time) string {
-	parts := []string{
-		identity,
-	}
-	if fan := getFanRPM(); fan != "" {
-		parts = append(parts, fan)
-	}
-	if temp := getCPUTemp(); temp != "" {
-		parts = append(parts, temp)
-	}
-	if batt := getBattery(); batt != "" {
-		parts = append(parts, batt)
-	}
-	if bright := getBrightness(); bright != "" {
-		parts = append(parts, bright)
-	}
-	if vol := getVolume(); vol != "" {
-		parts = append(parts, vol)
-	}
-	parts = append(parts, strings.ToLower(now.Format("Monday, Jan 02 > 15:04")))
-	return strings.Join(parts, " | ")
 }
 
 func readFile(path string) string {
