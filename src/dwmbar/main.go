@@ -80,7 +80,7 @@ func updateInterval(u kind) time.Duration {
 	case updateTime:
 		return 1 * time.Second
 	}
-	panic("uncaught kind: " + fmt.Sprintf("%d", u))
+	panic("uncaught kind=" + fmt.Sprintf("%d", u))
 }
 
 type statusField struct {
@@ -118,6 +118,7 @@ func watch[T fmt.Stringer](
 	kind kind,
 	getter func() (T, error),
 ) {
+	interval := updateInterval(kind)
 	var lastStr string
 	for {
 		val, err := getter()
@@ -126,15 +127,19 @@ func watch[T fmt.Stringer](
 				kind: kind,
 				err:  err,
 			}
+			time.Sleep(interval)
+			continue
 		}
-		if s := val.String(); s != lastStr {
+
+		s := val.String()
+		if s != lastStr {
 			ch <- statusField{
 				kind:  kind,
 				value: val,
 			}
 			lastStr = s
 		}
-		time.Sleep(updateInterval(kind))
+		time.Sleep(interval)
 	}
 }
 
