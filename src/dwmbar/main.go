@@ -9,26 +9,39 @@ import (
 )
 
 func main() {
-	identity := getIdentity()
-	lastStatus := ""
-	for {
-		now := time.Now()
-		bar, err := getStatusBar(identity, now)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error: %v\n", err)
-			time.Sleep(1 * time.Second)
-			continue
+	updates := make(chan stateUpdate, 8)
+
+	go watchVolume(updates)
+	go watchFans(updates)
+	go watchBattery(updates)
+	go watchBrightness(updates)
+	go watchTime(updates)
+
+	state := statusBar{title: getIdentity()}
+	lastOutput := ""
+
+	for update := range updates {
+		switch update.kind {
+		case updateVolume:
+			state.volume = update.value.(volume)
+		case updateFans:
+			state.fans = update.value.(fans)
+		case updateBattery:
+			state.battery = update.value.(battery)
+		case updateBrightness:
+			state.brightness = update.value.(brightness)
+		case updateTime:
+			state.now = update.value.(time.Time)
 		}
-		status := bar.String()
-		if status != lastStatus {
-			fmt.Println(status)
-			lastStatus = status
+
+		output := state.String()
+		if output != lastOutput {
+			fmt.Println(output)
+			lastOutput = output
 		}
-		time.Sleep(1 * time.Second)
 	}
 }
 
-// getIdentity returns "user@host" from args or environment.
 func getIdentity() string {
 	if len(os.Args) > 1 && os.Args[1] != "" {
 		return os.Args[1]
@@ -42,6 +55,21 @@ func getIdentity() string {
 		host = "unknown"
 	}
 	return fmt.Sprintf("%s@%s", user, host)
+}
+
+type updateKind int
+
+const (
+	updateVolume updateKind = iota
+	updateFans
+	updateBattery
+	updateBrightness
+	updateTime
+)
+
+type stateUpdate struct {
+	kind  updateKind
+	value any
 }
 
 type statusBar struct {
@@ -58,31 +86,65 @@ func (s statusBar) String() string {
 	return fmt.Sprintf("%s | %s | %s | %s | %s | %s", s.title, s.fans, s.battery, s.brightness, s.volume, timeStr)
 }
 
-func getStatusBar(title string, now time.Time) (statusBar, error) {
-	volume, err := getVolumeV2()
-	if err != nil {
-		return statusBar{}, err
+func watchVolume(ch chan<- stateUpdate) {
+	var lastStr string
+	for {
+		v, _ := getVolumeV2()
+		if s := v.String(); s != lastStr {
+			ch <- stateUpdate{updateVolume, v}
+			lastStr = s
+		}
+		time.Sleep(200 * time.Millisecond)
 	}
-	fans, err := getFansV2()
-	if err != nil {
-		return statusBar{}, err
+}
+
+func watchFans(ch chan<- stateUpdate) {
+	var lastStr string
+	for {
+		f, _ := getFansV2()
+		if s := f.String(); s != lastStr {
+			ch <- stateUpdate{updateFans, f}
+			lastStr = s
+		}
+		time.Sleep(1 * time.Second)
 	}
-	battery, err := getBatteryV2()
-	if err != nil {
-		return statusBar{}, err
+}
+
+func watchBattery(ch chan<- stateUpdate) {
+	var lastStr string
+	for {
+		b, _ := getBatteryV2()
+		if s := b.String(); s != lastStr {
+			ch <- stateUpdate{updateBattery, b}
+			lastStr = s
+		}
+		time.Sleep(5 * time.Second)
 	}
-	brightness, err := getBrightnessV2()
-	if err != nil {
-		return statusBar{}, err
+}
+
+func watchBrightness(ch chan<- stateUpdate) {
+	var lastStr string
+	for {
+		b, _ := getBrightnessV2()
+		if s := b.String(); s != lastStr {
+			ch <- stateUpdate{updateBrightness, b}
+			lastStr = s
+		}
+		time.Sleep(500 * time.Millisecond)
 	}
-	return statusBar{
-		title:      title,
-		now:        now,
-		volume:     volume,
-		fans:       fans,
-		battery:    battery,
-		brightness: brightness,
-	}, nil
+}
+
+func watchTime(ch chan<- stateUpdate) {
+	var lastStr string
+	for {
+		now := time.Now()
+		s := now.Format("Monday, Jan 02 > 15:04")
+		if s != lastStr {
+			ch <- stateUpdate{updateTime, now}
+			lastStr = s
+		}
+		time.Sleep(1 * time.Second)
+	}
 }
 
 func readFile(path string) string {
