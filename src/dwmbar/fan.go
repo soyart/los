@@ -7,32 +7,63 @@ import (
 )
 
 type fans struct {
-	rpms []uint64
+	rpms  []uint64
+	temps []int // degrees Celsius
 }
 
 func (f fans) String() string {
-	rpms := make([]string, len(f.rpms))
-	for i := range f.rpms {
-		rpms[i] = fmt.Sprintf("%d", f.rpms[i])
+	parts := []string{}
+	if len(f.rpms) > 0 {
+		rpms := make([]string, len(f.rpms))
+		for i := range f.rpms {
+			rpms[i] = fmt.Sprintf("%d", f.rpms[i])
+		}
+		parts = append(parts, "rpm: "+strings.Join(rpms, " "))
 	}
-	return strings.Join(rpms, " ")
+	if len(f.temps) > 0 {
+		temps := make([]string, len(f.temps))
+		for i := range f.temps {
+			temps[i] = fmt.Sprintf("%d°C", f.temps[i])
+		}
+		parts = append(parts, "temp: "+strings.Join(temps, " "))
+	}
+	return strings.Join(parts, " | ")
 }
 
 func getFansV2() (fans, error) {
 	fanFiles := findAllMatches("/sys/class/hwmon/hwmon*/fan*_input")
-	rpms := make([]uint64, len(fanFiles))
-	for i := range fanFiles {
-		state := readFile(fanFiles[i])
+	rpms := make([]uint64, 0, len(fanFiles))
+	for _, fanFile := range fanFiles {
+		state := readFile(fanFile)
 		if state == "" {
 			continue
 		}
-		rpm, err := strconv.ParseUint(state, 10, 32)
+		rpm, err := strconv.ParseUint(state, 10, 64)
 		if err != nil {
-			return fans{}, fmt.Errorf("failed to parse rpm sysfs state '%s' to float: %w", state, err)
+			return fans{}, fmt.Errorf("failed to parse rpm '%s': %w", state, err)
 		}
-		rpms[i] = rpm
+		if rpm > 0 {
+			rpms = append(rpms, rpm)
+		}
 	}
-	return fans{rpms: rpms}, nil
+
+	tempFiles := findAllMatches("/sys/class/hwmon/hwmon*/temp*_input")
+	temps := make([]int, 0, len(tempFiles))
+	for _, tempFile := range tempFiles {
+		state := readFile(tempFile)
+		if state == "" {
+			continue
+		}
+		millidegrees, err := strconv.Atoi(state)
+		if err != nil {
+			return fans{}, fmt.Errorf("failed to parse temp '%s': %w", state, err)
+		}
+		if millidegrees > 0 {
+			temps = append(temps, millidegrees/1000)
+		}
+	}
+
+	return fans{rpms: rpms, temps: temps}, nil
 }
 
 // getFanRPM returns fan speed.
