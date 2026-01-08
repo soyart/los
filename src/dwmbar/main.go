@@ -11,10 +11,10 @@ import (
 func main() {
 	updates := make(chan stateUpdate, 8)
 
-	go watchVolume(updates)
-	go watchFans(updates)
-	go watchBattery(updates)
-	go watchBrightness(updates)
+	go watch(updates, updateVolume, getVolumeV2)
+	go watch(updates, updateFans, getFansV2)
+	go watch(updates, updateBattery, getBatteryV2)
+	go watch(updates, updateBrightness, getBrightnessV2)
 	go watchTime(updates)
 
 	state := statusBar{title: getIdentity()}
@@ -60,12 +60,28 @@ func getIdentity() string {
 type updateKind int
 
 const (
-	updateVolume updateKind = iota
+	updateVolume updateKind = iota + 1
 	updateFans
 	updateBattery
 	updateBrightness
 	updateTime
 )
+
+func updateInterval(u updateKind) time.Duration {
+	switch u {
+	case updateVolume:
+		return 200 * time.Millisecond
+	case updateFans:
+		return 1 * time.Second
+	case updateBattery:
+		return 5 * time.Second
+	case updateBrightness:
+		return 500 * time.Millisecond
+	case updateTime:
+		return 1 * time.Second
+	}
+	panic("uncaught updateKind")
+}
 
 type stateUpdate struct {
 	kind  updateKind
@@ -86,51 +102,19 @@ func (s statusBar) String() string {
 	return fmt.Sprintf("%s | %s | %s | %s | %s | %s", s.title, s.fans, s.battery, s.brightness, s.volume, timeStr)
 }
 
-func watchVolume(ch chan<- stateUpdate) {
+func watch[T fmt.Stringer](
+	ch chan<- stateUpdate,
+	kind updateKind,
+	getter func() (T, error),
+) {
 	var lastStr string
 	for {
-		v, _ := getVolumeV2()
-		if s := v.String(); s != lastStr {
-			ch <- stateUpdate{updateVolume, v}
+		val, _ := getter()
+		if s := val.String(); s != lastStr {
+			ch <- stateUpdate{kind, val}
 			lastStr = s
 		}
-		time.Sleep(200 * time.Millisecond)
-	}
-}
-
-func watchFans(ch chan<- stateUpdate) {
-	var lastStr string
-	for {
-		f, _ := getFansV2()
-		if s := f.String(); s != lastStr {
-			ch <- stateUpdate{updateFans, f}
-			lastStr = s
-		}
-		time.Sleep(1 * time.Second)
-	}
-}
-
-func watchBattery(ch chan<- stateUpdate) {
-	var lastStr string
-	for {
-		b, _ := getBatteryV2()
-		if s := b.String(); s != lastStr {
-			ch <- stateUpdate{updateBattery, b}
-			lastStr = s
-		}
-		time.Sleep(5 * time.Second)
-	}
-}
-
-func watchBrightness(ch chan<- stateUpdate) {
-	var lastStr string
-	for {
-		b, _ := getBrightnessV2()
-		if s := b.String(); s != lastStr {
-			ch <- stateUpdate{updateBrightness, b}
-			lastStr = s
-		}
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(updateInterval(kind))
 	}
 }
 
