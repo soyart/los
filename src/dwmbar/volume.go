@@ -16,9 +16,9 @@ type volume struct {
 
 func (v volume) String() string {
 	if v.muted {
-		return fmt.Sprintf("%.2f [MUTED]", v.percent)
+		return fmt.Sprintf("vol: %.2f [MUTED]", v.percent)
 	}
-	return fmt.Sprintf("%.2f", v.percent)
+	return fmt.Sprintf("vol: %.2f", v.percent)
 }
 
 func getVolumeV2() (volume, error) {
