@@ -93,12 +93,8 @@ func getVolumeWpctlV2() (volume, error) {
 	}
 
 	volumeStr := parts[1]
-	muted := false
-	if len(parts) >= 3 && parts[2] == "[MUTED]" {
-		volumeStr += " [MUTED]"
-		muted = true
-	}
-	percent, err := strconv.ParseFloat(volumeStr, 32)
+	muted := len(parts) >= 3 && parts[2] == "[MUTED]"
+	percent, err := strconv.ParseFloat(volumeStr, 64)
 	if err != nil {
 		return volume{}, fmt.Errorf("failed to parse volumeStr '%s'", volumeStr)
 	}
