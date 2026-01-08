@@ -13,19 +13,20 @@ type fans struct {
 
 func (f fans) String() string {
 	parts := []string{}
-	if len(f.rpms) > 0 {
+	if len(f.rpms) != 0 {
 		rpms := make([]string, len(f.rpms))
 		for i := range f.rpms {
 			rpms[i] = fmt.Sprintf("%d", f.rpms[i])
 		}
 		parts = append(parts, "rpm: "+strings.Join(rpms, " "))
 	}
-	if len(f.temps) > 0 {
-		temps := make([]string, len(f.temps))
+	if len(f.temps) != 0 {
+		avg := 0
 		for i := range f.temps {
-			temps[i] = fmt.Sprintf("%d°C", f.temps[i])
+			avg += f.temps[i]
 		}
-		parts = append(parts, "temp: "+strings.Join(temps, " "))
+		avg /= len(f.temps)
+		parts = append(parts, fmt.Sprintf("temp (avg): %d°C", avg))
 	}
 	return strings.Join(parts, " | ")
 }
