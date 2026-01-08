@@ -11,25 +11,25 @@ import (
 func main() {
 	updates := make(chan statusField, 8)
 
-	go watch(updates, updateVolume, getVolumeV2)
-	go watch(updates, updateFans, getFansV2)
-	go watch(updates, updateBattery, getBatteryV2)
-	go watch(updates, updateBrightness, getBrightnessV2)
+	go watch(updates, kindVolume, getVolumeV2)
+	go watch(updates, kindFans, getFansV2)
+	go watch(updates, kindBattery, getBatteryV2)
+	go watch(updates, kindBrightness, getBrightnessV2)
 	go watchTime(updates)
 
 	state := statusBar{title: getIdentity()}
 	lastOutput := ""
 	for update := range updates {
 		switch update.kind {
-		case updateVolume:
+		case kindVolume:
 			state.volume = update
-		case updateFans:
+		case kindFans:
 			state.fans = update
-		case updateBattery:
+		case kindBattery:
 			state.battery = update
-		case updateBrightness:
+		case kindBrightness:
 			state.brightness = update
-		case updateTime:
+		case kindTimeNow:
 			state.now = update.value.(time.Time)
 		}
 
@@ -44,24 +44,24 @@ func main() {
 type kind int
 
 const (
-	updateVolume kind = iota + 1
-	updateFans
-	updateBattery
-	updateBrightness
-	updateTime
+	kindVolume kind = iota + 1
+	kindFans
+	kindBattery
+	kindBrightness
+	kindTimeNow
 )
 
 func (u kind) String() string {
 	switch u {
-	case updateVolume:
+	case kindVolume:
 		return "volume"
-	case updateFans:
+	case kindFans:
 		return "fans"
-	case updateBattery:
+	case kindBattery:
 		return "battery"
-	case updateBrightness:
+	case kindBrightness:
 		return "brightness"
-	case updateTime:
+	case kindTimeNow:
 		return "time"
 	}
 	panic("uncaught kind=" + fmt.Sprintf("%d", u))
@@ -69,15 +69,15 @@ func (u kind) String() string {
 
 func updateInterval(u kind) time.Duration {
 	switch u {
-	case updateVolume:
+	case kindVolume:
 		return 200 * time.Millisecond
-	case updateFans:
+	case kindFans:
 		return 1 * time.Second
-	case updateBattery:
+	case kindBattery:
 		return 5 * time.Second
-	case updateBrightness:
+	case kindBrightness:
 		return 500 * time.Millisecond
-	case updateTime:
+	case kindTimeNow:
 		return 1 * time.Second
 	}
 	panic("uncaught kind=" + fmt.Sprintf("%d", u))
@@ -90,13 +90,20 @@ type statusField struct {
 }
 
 func (s statusField) String() string {
+	empty := statusField{}
+	if s.kind == 0 {
+		if s != empty {
+			panic("unexpected kind=0 from non-empty statusField")
+		}
+		return "initializing ..."
+	}
 	if s.err != nil {
 		return fmt.Sprintf("%s: %s", s.kind.String(), s.err.Error())
 	}
-	if s.value == nil {
-		return fmt.Sprintf("%s: null", s.kind.String())
+	if s.value != nil {
+		return s.value.String()
 	}
-	return s.value.String()
+	return fmt.Sprintf("%s: null", s.kind.String())
 }
 
 type statusBar struct {
@@ -149,7 +156,7 @@ func watchTime(ch chan<- statusField) {
 		now := time.Now()
 		s := now.Format("Monday, Jan 02 > 15:04")
 		if s != lastStr {
-			ch <- statusField{kind: updateTime, value: now}
+			ch <- statusField{kind: kindTimeNow, value: now}
 			lastStr = s
 		}
 		time.Sleep(1 * time.Second)
