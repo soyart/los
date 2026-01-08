@@ -3,10 +3,19 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 type fans struct {
 	rpms []uint64
+}
+
+func (f fans) String() string {
+	rpms := make([]string, len(f.rpms))
+	for i := range f.rpms {
+		rpms[i] = fmt.Sprintf("%d", f.rpms[i])
+	}
+	return strings.Join(rpms, " ")
 }
 
 func getFansV2() (fans, error) {

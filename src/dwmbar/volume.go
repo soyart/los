@@ -14,6 +14,13 @@ type volume struct {
 	muted   bool
 }
 
+func (v volume) String() string {
+	if v.muted {
+		return fmt.Sprintf("%.2f [MUTED]", v.percent)
+	}
+	return fmt.Sprintf("%.2f", v.percent)
+}
+
 func getVolumeV2() (volume, error) {
 	result, err := getVolumeDBusV2()
 	if err == nil {

@@ -11,6 +11,10 @@ type brightness struct {
 	max   uint
 }
 
+func (b brightness) String() string {
+	return fmt.Sprintf("bright: %d/%d", b.value, b.max)
+}
+
 func getBrightnessV2() (brightness, error) {
 	path := findFirstMatch("/sys/class/backlight/*")
 	if path == "" {

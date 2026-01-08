@@ -13,6 +13,13 @@ type battery struct {
 	charging   bool
 }
 
+func (b battery) String() string {
+	if b.charging {
+		return fmt.Sprintf("charging: %d%%", b.percentage)
+	}
+	return fmt.Sprintf("battery: %d%%", b.percentage)
+}
+
 func getBatteryV2() (battery, error) {
 	path := findFirstMatch("/sys/class/power_supply/BAT*")
 	if path == "" {
