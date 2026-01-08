@@ -41,21 +41,6 @@ func main() {
 	}
 }
 
-func getIdentity() string {
-	if len(os.Args) > 1 && os.Args[1] != "" {
-		return os.Args[1]
-	}
-	user := os.Getenv("USER")
-	if user == "" {
-		user = "unknown"
-	}
-	host, err := os.Hostname()
-	if err != nil {
-		host = "unknown"
-	}
-	return fmt.Sprintf("%s@%s", user, host)
-}
-
 type kind int
 
 const (
@@ -79,7 +64,7 @@ func (u kind) String() string {
 	case updateTime:
 		return "time"
 	}
-	panic("uncaught updateKind: " + fmt.Sprintf("%d", u))
+	panic("uncaught kind=" + fmt.Sprintf("%d", u))
 }
 
 func updateInterval(u kind) time.Duration {
@@ -95,16 +80,12 @@ func updateInterval(u kind) time.Duration {
 	case updateTime:
 		return 1 * time.Second
 	}
-	panic("uncaught updateKind: " + fmt.Sprintf("%d", u))
-}
-
-type field interface {
-	String() string
+	panic("uncaught kind: " + fmt.Sprintf("%d", u))
 }
 
 type statusField struct {
 	kind  kind
-	value field
+	value fmt.Stringer
 	err   error
 }
 
@@ -141,10 +122,16 @@ func watch[T fmt.Stringer](
 	for {
 		val, err := getter()
 		if err != nil {
-			ch <- statusField{kind: kind, err: err}
+			ch <- statusField{
+				kind: kind,
+				err:  err,
+			}
 		}
 		if s := val.String(); s != lastStr {
-			ch <- statusField{kind: kind, value: val}
+			ch <- statusField{
+				kind:  kind,
+				value: val,
+			}
 			lastStr = s
 		}
 		time.Sleep(updateInterval(kind))
@@ -162,6 +149,21 @@ func watchTime(ch chan<- statusField) {
 		}
 		time.Sleep(1 * time.Second)
 	}
+}
+
+func getIdentity() string {
+	if len(os.Args) > 1 && os.Args[1] != "" {
+		return os.Args[1]
+	}
+	user := os.Getenv("USER")
+	if user == "" {
+		user = "unknown"
+	}
+	host, err := os.Hostname()
+	if err != nil {
+		host = "unknown"
+	}
+	return fmt.Sprintf("%s@%s", user, host)
 }
 
 func readFile(path string) string {
