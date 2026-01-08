@@ -56,17 +56,17 @@ func getIdentity() string {
 	return fmt.Sprintf("%s@%s", user, host)
 }
 
-type updateKind int
+type kind int
 
 const (
-	updateVolume updateKind = iota + 1
+	updateVolume kind = iota + 1
 	updateFans
 	updateBattery
 	updateBrightness
 	updateTime
 )
 
-func (u updateKind) String() string {
+func (u kind) String() string {
 	switch u {
 	case updateVolume:
 		return "volume"
@@ -79,10 +79,10 @@ func (u updateKind) String() string {
 	case updateTime:
 		return "time"
 	}
-	panic("uncaugh updateKind")
+	panic("uncaught updateKind" + fmt.Sprintf("%d", u))
 }
 
-func updateInterval(u updateKind) time.Duration {
+func updateInterval(u kind) time.Duration {
 	switch u {
 	case updateVolume:
 		return 200 * time.Millisecond
@@ -95,7 +95,7 @@ func updateInterval(u updateKind) time.Duration {
 	case updateTime:
 		return 1 * time.Second
 	}
-	panic("uncaught updateKind")
+	panic("uncaught updateKind" + fmt.Sprintf("%d", u))
 }
 
 type field interface {
@@ -103,7 +103,7 @@ type field interface {
 }
 
 type statusField struct {
-	kind  updateKind
+	kind  kind
 	value field
 	err   error
 }
@@ -134,7 +134,7 @@ func (s statusBar) String() string {
 
 func watch[T fmt.Stringer](
 	ch chan<- statusField,
-	kind updateKind,
+	kind kind,
 	getter func() (T, error),
 ) {
 	var lastStr string
