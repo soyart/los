@@ -45,11 +45,10 @@ func getIdentity() string {
 }
 
 type statusBar struct {
-	title string
-	now   time.Time
-
-	volume     volume
+	title      string
+	now        time.Time
 	fans       fans
+	volume     volume
 	battery    battery
 	brightness brightness
 }

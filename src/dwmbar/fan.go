@@ -64,38 +64,3 @@ func getFansV2() (fans, error) {
 
 	return fans{rpms: rpms, temps: temps}, nil
 }
-
-// getFanRPM returns fan speed.
-// Example: "rpm: 2500"
-func getFanRPM() string {
-	fanFiles := findAllMatches("/sys/class/hwmon/hwmon*/fan*_input")
-	for _, fanFile := range fanFiles {
-		rpm := readFile(fanFile)
-		if rpm != "" && rpm != "0" {
-			return fmt.Sprintf("rpm: %s", rpm)
-		}
-	}
-
-	return ""
-}
-
-// getCPUTemp returns CPU temperature.
-// Example: "temp: 45°C"
-func getCPUTemp() string {
-	tempFiles := findAllMatches("/sys/class/hwmon/hwmon*/temp*_input")
-
-	for _, tempFile := range tempFiles {
-		raw := readFile(tempFile)
-		if raw == "" {
-			continue
-		}
-		millidegrees, err := strconv.Atoi(raw)
-		if err != nil || millidegrees == 0 {
-			continue
-		}
-		// Convert millidegrees to degrees
-		return fmt.Sprintf("temp: %d°C", millidegrees/1000)
-	}
-
-	return ""
-}
