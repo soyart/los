@@ -10,6 +10,7 @@ let
     go = with pkgs; [
       go
       gopls
+      gcc
     ];
 
     rust = with pkgs; [
@@ -21,14 +22,16 @@ let
 
 in
 {
-  config.home-manager.users = lib.mapAttrs (username: userCfg:
-    let
-      enabledLangs = lib.filterAttrs (name: lang: lang.enable) userCfg.languages;
-      packages = lib.flatten (lib.mapAttrsToList (name: _: mappings.${name} or []) enabledLangs);
-    in
-    lib.mkIf (packages != []) {
-      home.packages = packages;
-    }
-  ) config.los.homev2;
+  config.home-manager.users = lib.mapAttrs
+    (username: userCfg:
+      let
+        enabledLangs = lib.filterAttrs (name: lang: lang.enable) userCfg.languages;
+        packages = lib.flatten (lib.mapAttrsToList (name: _: mappings.${name} or [ ]) enabledLangs);
+      in
+      {
+        home.packages = packages;
+      }
+    )
+    config.los.homev2;
 }
 
