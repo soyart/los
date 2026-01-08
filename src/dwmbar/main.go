@@ -79,7 +79,7 @@ func (u kind) String() string {
 	case updateTime:
 		return "time"
 	}
-	panic("uncaught updateKind" + fmt.Sprintf("%d", u))
+	panic("uncaught updateKind: " + fmt.Sprintf("%d", u))
 }
 
 func updateInterval(u kind) time.Duration {
@@ -95,7 +95,7 @@ func updateInterval(u kind) time.Duration {
 	case updateTime:
 		return 1 * time.Second
 	}
-	panic("uncaught updateKind" + fmt.Sprintf("%d", u))
+	panic("uncaught updateKind: " + fmt.Sprintf("%d", u))
 }
 
 type field interface {
