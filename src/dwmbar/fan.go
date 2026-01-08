@@ -48,3 +48,24 @@ func getFanRPM() string {
 
 	return ""
 }
+
+// getCPUTemp returns CPU temperature.
+// Example: "temp: 45°C"
+func getCPUTemp() string {
+	tempFiles := findAllMatches("/sys/class/hwmon/hwmon*/temp*_input")
+
+	for _, tempFile := range tempFiles {
+		raw := readFile(tempFile)
+		if raw == "" {
+			continue
+		}
+		millidegrees, err := strconv.Atoi(raw)
+		if err != nil || millidegrees == 0 {
+			continue
+		}
+		// Convert millidegrees to degrees
+		return fmt.Sprintf("temp: %d°C", millidegrees/1000)
+	}
+
+	return ""
+}

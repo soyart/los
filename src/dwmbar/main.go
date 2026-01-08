@@ -76,13 +76,16 @@ func getStatusBar(title string, now time.Time) (statusBar, error) {
 }
 
 // formatStatus builds the status line.
-// Example: "user@host | rpm: 2500 | discharging: 85% | bright: 500/1000 | 0.75 | monday, jan 08 > 14:30"
+// Example: "user@host | rpm: 2500 | temp: 45°C | discharging: 85% | bright: 500/1000 | 0.75 | monday, jan 08 > 14:30"
 func formatStatus(identity string, now time.Time) string {
 	parts := []string{
 		identity,
 	}
 	if fan := getFanRPM(); fan != "" {
 		parts = append(parts, fan)
+	}
+	if temp := getCPUTemp(); temp != "" {
+		parts = append(parts, temp)
 	}
 	if batt := getBattery(); batt != "" {
 		parts = append(parts, batt)
