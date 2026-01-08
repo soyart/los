@@ -21,12 +21,12 @@ func (f fans) String() string {
 		parts = append(parts, "rpm: "+strings.Join(rpms, " "))
 	}
 	if len(f.temps) != 0 {
-		avg := 0
+		avg := float64(0)
 		for i := range f.temps {
-			avg += f.temps[i]
+			avg += float64(f.temps[i])
 		}
-		avg /= len(f.temps)
-		parts = append(parts, fmt.Sprintf("temp (avg): %d°C", avg))
+		avg /= float64(len(f.temps))
+		parts = append(parts, fmt.Sprintf("temp (avg): %.2f°C", avg))
 	}
 	return strings.Join(parts, " | ")
 }
