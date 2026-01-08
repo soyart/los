@@ -43,9 +43,7 @@ func getFansV2() (fans, error) {
 		if err != nil {
 			return fans{}, fmt.Errorf("failed to parse rpm '%s': %w", state, err)
 		}
-		if rpm > 0 {
-			rpms = append(rpms, rpm)
-		}
+		rpms = append(rpms, rpm)
 	}
 
 	tempFiles := findAllMatches("/sys/class/hwmon/hwmon*/temp*_input")
