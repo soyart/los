@@ -38,6 +38,43 @@ func getIdentity() string {
 	return fmt.Sprintf("%s@%s", user, host)
 }
 
+type statusBar struct {
+	title string
+	now   time.Time
+
+	volume     volume
+	fans       fans
+	battery    battery
+	brightness brightness
+}
+
+func getStatusBar(title string, now time.Time) (statusBar, error) {
+	volume, err := getVolumeV2()
+	if err != nil {
+		return statusBar{}, err
+	}
+	fans, err := getFansV2()
+	if err != nil {
+		return statusBar{}, err
+	}
+	battery, err := getBatteryV2()
+	if err != nil {
+		return statusBar{}, err
+	}
+	brightness, err := getBrightnessV2()
+	if err != nil {
+		return statusBar{}, err
+	}
+	return statusBar{
+		title:      title,
+		now:        now,
+		volume:     volume,
+		fans:       fans,
+		battery:    battery,
+		brightness: brightness,
+	}, nil
+}
+
 // formatStatus builds the status line.
 // Example: "user@host | rpm: 2500 | discharging: 85% | bright: 500/1000 | 0.75 | monday, jan 08 > 14:30"
 func formatStatus(identity string, now time.Time) string {

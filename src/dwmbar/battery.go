@@ -1,10 +1,36 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
+
+type battery struct {
+	percentage uint
+	charging   bool
+}
+
+func getBatteryV2() (battery, error) {
+	path := findFirstMatch("/sys/class/power_supply/BAT*")
+	if path == "" {
+		return battery{}, errors.New("no battery path")
+	}
+
+	capacityState := readFile(filepath.Join(path, "capacity"))
+	percent, err := strconv.ParseInt(capacityState, 10, 32)
+	if err != nil {
+		return battery{}, err
+	}
+
+	statusState := readFile(filepath.Join(path, "status"))
+	return battery{
+		percentage: uint(percent),
+		charging:   statusState == "charging",
+	}, nil
+}
 
 // getBattery returns battery status.
 // Example: "discharging: 85%"
