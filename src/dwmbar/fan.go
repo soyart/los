@@ -31,10 +31,24 @@ func (f fans) String() string {
 	return strings.Join(parts, " | ")
 }
 
-func getFansV2() (fans, error) {
+func getFansV3() getter[fans] {
+	paths := findAllMatches("/sys/class/hwmon/hwmon*/fan*_input")
+	g, err := cache(paths, getFans)
+	if err != nil {
+		panic(err.Error())
+	}
+	return g
+}
+
+func getFansAndTempV2() (fans, error) {
 	fanFiles := findAllMatches("/sys/class/hwmon/hwmon*/fan*_input")
-	rpms := make([]uint64, 0, len(fanFiles))
-	for _, fanFile := range fanFiles {
+	tempFiles := findAllMatches("/sys/class/hwmon/hwmon*/temp*_input")
+	return getFansAndTemps(fanFiles, tempFiles)
+}
+
+func getFansAndTemps(fanPaths []string, temperatures []string) (fans, error) {
+	rpms := make([]uint64, 0, len(fanPaths))
+	for _, fanFile := range fanPaths {
 		state := readFile(fanFile)
 		if state == "" {
 			continue
@@ -46,9 +60,8 @@ func getFansV2() (fans, error) {
 		rpms = append(rpms, rpm)
 	}
 
-	tempFiles := findAllMatches("/sys/class/hwmon/hwmon*/temp*_input")
-	temps := make([]int, 0, len(tempFiles))
-	for _, tempFile := range tempFiles {
+	temps := make([]int, 0, len(temperatures))
+	for _, tempFile := range temperatures {
 		state := readFile(tempFile)
 		if state == "" {
 			continue
@@ -63,4 +76,20 @@ func getFansV2() (fans, error) {
 	}
 
 	return fans{rpms: rpms, temps: temps}, nil
+}
+
+func getFans(fanPaths []string) (fans, error) {
+	rpms := make([]uint64, 0, len(fanPaths))
+	for _, fanFile := range fanPaths {
+		state := readFile(fanFile)
+		if state == "" {
+			continue
+		}
+		rpm, err := strconv.ParseUint(state, 10, 64)
+		if err != nil {
+			return fans{}, fmt.Errorf("failed to parse rpm '%s': %w", state, err)
+		}
+		rpms = append(rpms, rpm)
+	}
+	return fans{rpms: rpms, temps: nil}, nil
 }

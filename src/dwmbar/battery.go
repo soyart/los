@@ -20,10 +20,24 @@ func (b battery) String() string {
 	return fmt.Sprintf("battery(%s): %d%%", b.status, b.percentage)
 }
 
-func getBatteryV2() (battery, error) {
+func getBatteryV3() getter[battery] {
 	path := findFirstMatch("/sys/class/power_supply/BAT*")
+	g, err := cache(path, getBattery)
+	if err != nil {
+		panic(err.Error())
+	}
+	return g
+}
+
+func getBatteryV2() (battery, error) {
+	return getBattery(
+		findFirstMatch("/sys/class/power_supply/BAT*"),
+	)
+}
+
+func getBattery(path string) (battery, error) {
 	if path == "" {
-		return battery{}, errors.New("no battery path")
+		return battery{}, errors.New("empty battery path")
 	}
 	capacityState := readFile(filepath.Join(path, "capacity"))
 	percent, err := strconv.ParseInt(capacityState, 10, 32)

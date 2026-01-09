@@ -15,8 +15,20 @@ func (b brightness) String() string {
 	return fmt.Sprintf("bright: %.2f%%", float64(b.value)/float64(b.max)*100.0)
 }
 
-func getBrightnessV2() (brightness, error) {
+func getBrightnessV3() getter[brightness] {
 	path := findFirstMatch("/sys/class/backlight/*")
+	g, err := cache(path, getBrightness)
+	if err != nil {
+		panic(err.Error())
+	}
+	return g
+}
+
+func getBrightnessV2() (brightness, error) {
+	return getBrightness(findFirstMatch("/sys/class/backlight/*"))
+}
+
+func getBrightness(path string) (brightness, error) {
 	if path == "" {
 		return brightness{}, fmt.Errorf("")
 	}
