@@ -23,7 +23,7 @@
               pname = "dwmbar";
               version = "0.1.0";
               src = ./src/dwmbar;
-              vendorHash = pkgs.lib.fakeHash;
+              vendorHash = "sha256-WUTGAYigUjuZLHO1YpVhFSWpvULDZfGMfOXZQqVYAfs=";
             };
           in
           {
