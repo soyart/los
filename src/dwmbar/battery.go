@@ -5,18 +5,19 @@ import (
 	"fmt"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 type battery struct {
 	percentage uint
-	charging   bool
+	status     string
 }
 
 func (b battery) String() string {
-	if b.charging {
-		return fmt.Sprintf("charging: %d%%", b.percentage)
+	if b.status == "" {
+		return fmt.Sprintf("battery(unknown): %d%%", b.percentage)
 	}
-	return fmt.Sprintf("battery: %d%%", b.percentage)
+	return fmt.Sprintf("battery(%s): %d%%", b.status, b.percentage)
 }
 
 func getBatteryV2() (battery, error) {
@@ -32,6 +33,6 @@ func getBatteryV2() (battery, error) {
 	statusState := readFile(filepath.Join(path, "status"))
 	return battery{
 		percentage: uint(percent),
-		charging:   statusState == "charging",
+		status:     strings.ToLower(statusState),
 	}, nil
 }
