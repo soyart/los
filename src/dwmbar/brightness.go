@@ -12,7 +12,7 @@ type brightness struct {
 }
 
 func (b brightness) String() string {
-	return fmt.Sprintf("bright: %d/%d", b.value, b.max)
+	return fmt.Sprintf("bright: %.2f%%", float64(b.value)/float64(b.max)*100.0)
 }
 
 func getBrightnessV2() (brightness, error) {
