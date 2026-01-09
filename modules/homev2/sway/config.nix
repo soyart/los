@@ -9,7 +9,8 @@ let
   colors = import ./colors.nix;
   scripts = import ./scripts.nix { inherit pkgs; };
   unix = inputs.unix;
-  barCommand = "${inputs.unix}/dotfiles/linux/.config/dwm/dwmbar.sh";
+  dwmbar = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}".dwmbar;
+  barCommand = "${dwmbar}/bin/dwmbar";
   wallpaper = "${inputs.self}/assets/wall/scene2.jpg";
 
   # Get usernames who have sway enabled
@@ -261,7 +262,7 @@ in
                   workspaceButtons = true;
                   workspaceNumbers = true;
                   fonts = { names = [ "Hack" ]; size = 14.0; };
-                  statusCommand = "dash ${barCommand} '${username}' '${config.networking.hostName}'";
+                  statusCommand = barCommand;
                   colors = {
                     background = colors.black;
                     statusline = colors.blue;
