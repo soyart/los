@@ -1,7 +1,7 @@
 {
   description = "NixOS configuration";
 
-  outputs = { ... }@inputs: 
+  outputs = { ... }@inputs:
     let
       pkgsFor = system: import inputs.nixpkgs {
         inherit system;
@@ -15,19 +15,22 @@
       homeConfigurations = import ./home { inherit inputs pkgsFor; };
 
       # Linux-only packages
-      packages = builtins.listToAttrs (map (system: 
-        let 
-          dwmbar = (pkgsFor system).buildGoModule {
-            pname = "dwmbar";
-            version = "0.1.0";
-            src = ./src/dwmbar;
-            vendorHash = null;
-          };
-        in {
-          name = system;
-          value = { inherit dwmbar; default = dwmbar; };
-        }
-      ) [ "x86_64-linux" "aarch64-linux" ]);
+      packages = builtins.listToAttrs (map
+        (system:
+          let
+            pkgs = pkgsFor system;
+            dwmbar = pkgs.buildGoModule {
+              pname = "dwmbar";
+              version = "0.1.0";
+              src = ./src/dwmbar;
+              vendorHash = pkgs.lib.fakeHash;
+            };
+          in
+          {
+            name = system;
+            value = { inherit dwmbar; default = dwmbar; };
+          }
+        ) [ "x86_64-linux" "aarch64-linux" ]);
 
       # Extract home-manager dotfiles from NixOS builds
       dotfiles =
