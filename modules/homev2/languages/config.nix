@@ -26,7 +26,9 @@ in
       enabledLangs = lib.filterAttrs (name: lang: lang.enable) userCfg.languages;
       packages = lib.flatten (lib.mapAttrsToList (name: _: mappings.${name} or []) enabledLangs);
     in
-    { home.packages = packages; }
+    lib.mkIf (packages != []) {
+      home.packages = packages;
+    }
   ) config.los.homev2;
 }
 

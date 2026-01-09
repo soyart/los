@@ -6,11 +6,7 @@
       lib.mkIf userCfg.fonts.enable {
         home.packages = userCfg.fonts.packages;
         fonts = {
-          fontconfig = lib.mkIf
-            (
-              userCfg.fonts.defaults != null &&
-              userCfg.fonts.defaults != { }
-            )
+          fontconfig = lib.mkIf (userCfg.fonts.defaults != null)
             {
               enable = true;
               defaultFonts = userCfg.fonts.defaults;

@@ -17,6 +17,8 @@ in
         hack-font
         inconsolata
         liberation_ttf
+        tlwg
+        nerd-fonts.hack
       ];
       example = with pkgs; [
         inconsolata
