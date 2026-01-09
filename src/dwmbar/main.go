@@ -70,13 +70,13 @@ func (u kind) String() string {
 func updateInterval(u kind) time.Duration {
 	switch u {
 	case kindVolume:
-		return 200 * time.Millisecond
+		return 1 * time.Second
 	case kindFans:
 		return 1 * time.Second
 	case kindBattery:
-		return 5 * time.Second
+		return 1 * time.Second
 	case kindBrightness:
-		return 500 * time.Millisecond
+		return 1 * time.Second
 	case kindTimeNow:
 		return 1 * time.Second
 	}
