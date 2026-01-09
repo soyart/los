@@ -21,13 +21,11 @@ func (f temperature) String() string {
 	return fmt.Sprintf("temperature: %.2f°C", avg)
 }
 
-func getTemperaturesV3() getter[temperature] {
-	paths := findAllMatches("/sys/class/hwmon/hwmon*/temp*_input")
-	g, err := cache(paths, getTemperatures)
-	if err != nil {
-		panic(err.Error())
-	}
-	return g
+func getTemperaturesCached() getter[temperature] {
+	return cache(
+		findAllMatches("/sys/class/hwmon/hwmon*/temp*_input"),
+		getTemperatures,
+	)
 }
 
 func getTemperatures(temperatures []string) (temperature, error) {

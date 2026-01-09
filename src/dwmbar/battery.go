@@ -20,13 +20,11 @@ func (b battery) String() string {
 	return fmt.Sprintf("battery(%s): %d%%", b.status, b.percentage)
 }
 
-func getBatteryV3() getter[battery] {
-	path := findFirstMatch("/sys/class/power_supply/BAT*")
-	g, err := cache(path, getBattery)
-	if err != nil {
-		panic(err.Error())
-	}
-	return g
+func getBatteryCached() getter[battery] {
+	return cache(
+		findFirstMatch("/sys/class/power_supply/BAT*"),
+		getBattery,
+	)
 }
 
 func getBatteryV2() (battery, error) {

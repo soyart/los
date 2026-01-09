@@ -40,12 +40,12 @@ const (
 func main() {
 	updates := make(chan statusField, 8)
 
-	go watch(updates, kindVolume, getVolumeV2)
-	go watch(updates, kindFans, getFansV3())
-	go watch(updates, kindBattery, getBatteryV3())
-	go watch(updates, kindBrightness, getBrightnessV3())
-	go watch(updates, kindTemperature, getTemperaturesV3())
 	go watchTime(updates)
+	go watch(updates, kindVolume, getVolumeV2)
+	go watch(updates, kindFans, getFansCached())
+	go watch(updates, kindBattery, getBatteryCached())
+	go watch(updates, kindBrightness, getBrightnessCached())
+	go watch(updates, kindTemperature, getTemperaturesCached())
 
 	state := statusBar{title: getIdentity()}
 	lastOutput := ""
