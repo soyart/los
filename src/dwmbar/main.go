@@ -140,7 +140,7 @@ func (u kind) String() string {
 }
 
 func (s statusBar) String() string {
-	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s | %s", s.title, s.wifi, s.fans, s.temperatures, s.battery, s.brightness, s.volume, s.clock)
+	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s | %s\n", s.title, s.volume, s.brightness, s.fans, s.temperatures, s.wifi, s.battery, s.clock)
 }
 
 func (s statusField) String() string {
