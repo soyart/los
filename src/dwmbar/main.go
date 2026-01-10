@@ -46,6 +46,7 @@ func main() {
 	}))
 	go watch(updates, kindFans, getterFans(argsFans{
 		cache: true,
+		limit: 2,
 	}))
 	go watch(updates, kindBattery, getterBattery(argsBattery{
 		cache: true,

@@ -9,10 +9,12 @@ import (
 type fans struct {
 	rpms  []uint64
 	temps []int // degrees Celsius
+	limit int   // limit defines max number of fans to show on the status bar
 }
 
 type argsFans struct {
 	cache bool
+	limit int
 }
 
 func (f fans) String() string {
@@ -40,18 +42,24 @@ func getterFans(args argsFans) getter[fans] {
 	if args.cache {
 		cachedPaths := findAllMatches(pattern)
 		return func() (fans, error) {
-			return getFans(cachedPaths)
+			return getFans(cachedPaths, args.limit)
 		}
 	}
 	return func() (fans, error) {
 		cachedPaths := findAllMatches(pattern)
-		return getFans(cachedPaths)
+		return getFans(cachedPaths, args.limit)
 	}
 }
 
-func getFans(fanPaths []string) (fans, error) {
-	rpms := make([]uint64, 0, len(fanPaths))
-	for _, fanFile := range fanPaths {
+func getFans(fanPaths []string, limit int) (fans, error) {
+	if limit <= 0 {
+		limit = len(fanPaths)
+	}
+	rpms := make([]uint64, 0, limit)
+	for i, fanFile := range fanPaths {
+		if i >= limit {
+			break
+		}
 		state := readFile(fanFile)
 		if state == "" {
 			continue
