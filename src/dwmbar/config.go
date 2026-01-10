@@ -16,6 +16,7 @@ type config struct {
 	Temperatures withInterval[argsTemperatures] `json:"temperatures"`
 	Battery      withInterval[argsBattery]      `json:"battery"`
 	Brightness   withInterval[argsBrightness]   `json:"brightness"`
+	Wifi         withInterval[argsWifi]         `json:"wifi"`
 }
 
 type withInterval[T any] struct {
@@ -92,6 +93,13 @@ func configDefault() config {
 			Interval: duration(500 * time.Millisecond),
 			Settings: argsBrightness{
 				Cache: true,
+			},
+		},
+		Wifi: withInterval[argsWifi]{
+			Interval: duration(5 * time.Second),
+			Settings: argsWifi{
+				Backend: backendWifiAuto,
+				Cache:   true,
 			},
 		},
 	}

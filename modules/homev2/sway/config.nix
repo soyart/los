@@ -120,6 +120,10 @@ in
                 interval = "500ms";
                 settings = { cache = true; };
               };
+              wifi = {
+                interval = "5s";
+                settings = { backend = "iwd"; cache = true; };
+              };
             };
 
             programs.swaylock = swaylockCfg;

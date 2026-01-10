@@ -19,6 +19,7 @@ type statusBar struct {
 	volume       statusField
 	battery      statusField
 	brightness   statusField
+	wifi         statusField
 }
 
 // poller is any simple function that returns a stringer.
@@ -44,6 +45,7 @@ func main() {
 	go poll(updates, kindBattery, pollBattery(conf.Battery.Settings), conf.Battery.Interval.Duration())
 	go poll(updates, kindBrightness, pollBrightness(conf.Brightness.Settings), conf.Brightness.Interval.Duration())
 	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures.Settings), conf.Temperatures.Interval.Duration())
+	go poll(updates, kindWifi, pollWifi(conf.Wifi.Settings), conf.Wifi.Interval.Duration())
 
 	state := newStatusBar(conf)
 	lastOutput := ""
@@ -61,6 +63,8 @@ func main() {
 			state.brightness = update
 		case kindTemperatures:
 			state.temperatures = update
+		case kindWifi:
+			state.wifi = update
 		}
 
 		output := state.String()
@@ -129,12 +133,14 @@ func (u kind) String() string {
 		return "brightness"
 	case kindTemperatures:
 		return "temperature"
+	case kindWifi:
+		return "wifi"
 	}
 	panic("uncaught kind=" + fmt.Sprintf("%d", u))
 }
 
 func (s statusBar) String() string {
-	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s", s.title, s.fans, s.temperatures, s.battery, s.brightness, s.volume, s.clock)
+	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s | %s", s.title, s.wifi, s.fans, s.temperatures, s.battery, s.brightness, s.volume, s.clock)
 }
 
 func (s statusField) String() string {
@@ -169,6 +175,7 @@ const (
 	kindBattery
 	kindBrightness
 	kindTemperatures
+	kindWifi
 )
 
 func newConfig() (config, error) {
