@@ -1,1106 +1,1298 @@
-Linux 6.18.2 (los-t14) 	01/10/2026 	_x86_64_	(16 CPU)
-
-12:28:05 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:06 AM  1000     51987    0.00    1.00    0.00    0.00    1.00    14  dash
-12:28:06 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     4  dwmbar
-
-12:28:05 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:06 AM  1000     51987        40        60         0  dash
-12:28:06 AM  1000     78066        20        10         0  dwmbar
-
-12:28:05 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:06 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:06 AM  1000     78066      1.00      0.00 1896164   10240   0.07  dwmbar
-
-12:28:05 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:06 AM  1000     51987      3070         0  dash
-12:28:06 AM  1000     78066       648         0  dwmbar
-
-12:28:06 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:07 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:07 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     9  dwmbar
-
-12:28:06 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:07 AM  1000     51987         0         0         0  dash
-12:28:07 AM  1000     78066        10        30         0  dwmbar
-
-12:28:06 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:07 AM  1000     51987      0.00      0.00    6664    2912   0.02  dash
-12:28:07 AM  1000     78066      4.00      0.00 1896164   10240   0.07  dwmbar
-
-12:28:06 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:07 AM  1000     51987         0         0  dash
-12:28:07 AM  1000     78066       653         0  dwmbar
-
-12:28:07 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:08 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    10  dash
-12:28:08 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     4  dwmbar
-
-12:28:07 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:08 AM  1000     51987        20        30         0  dash
-12:28:08 AM  1000     78066        10        20         0  dwmbar
-
-12:28:07 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:08 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:08 AM  1000     78066      0.00      0.00 1896164   10240   0.07  dwmbar
-
-12:28:07 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:08 AM  1000     51987      3074         0  dash
-12:28:08 AM  1000     78066       647         0  dwmbar
-
-12:28:08 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:09 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    10  dash
-12:28:09 AM  1000     78066    1.00    0.00    0.00    0.00    1.00     9  dwmbar
-
-12:28:08 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:09 AM  1000     51987        40        40         0  dash
-12:28:09 AM  1000     78066        20        10         0  dwmbar
-
-12:28:08 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:09 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:09 AM  1000     78066     14.00      0.00 1896164   10240   0.07  dwmbar
-
-12:28:08 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:09 AM  1000     51987      3070         0  dash
-12:28:09 AM  1000     78066       667         0  dwmbar
-
-12:28:09 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:10 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:10 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     9  dwmbar
-
-12:28:09 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:10 AM  1000     51987        30        50         0  dash
-12:28:10 AM  1000     78066        10        20         0  dwmbar
-
-12:28:09 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:10 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:10 AM  1000     78066      3.00      0.00 1896164   10368   0.07  dwmbar
-
-12:28:09 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:10 AM  1000     51987      3077         0  dash
-12:28:10 AM  1000     78066       656         0  dwmbar
-
-12:28:10 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:11 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:11 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     9  dwmbar
-
-12:28:10 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:11 AM  1000     51987        50        50         0  dash
-12:28:11 AM  1000     78066        10        30         0  dwmbar
-
-12:28:10 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:11 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:11 AM  1000     78066      0.00      0.00 1896164   10368   0.07  dwmbar
-
-12:28:10 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:11 AM  1000     51987      3075         0  dash
-12:28:11 AM  1000     78066       649         0  dwmbar
-
-12:28:11 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:12 AM  1000     51987    0.00    1.00    0.00    0.00    1.00    14  dash
-12:28:12 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     9  dwmbar
-
-12:28:11 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:12 AM  1000     51987        50        40         0  dash
-12:28:12 AM  1000     78066        10         0         0  dwmbar
-
-12:28:11 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:12 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:12 AM  1000     78066      1.00      0.00 1896164   10368   0.07  dwmbar
-
-12:28:11 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:12 AM  1000     51987      3070         0  dash
-12:28:12 AM  1000     78066       646         0  dwmbar
-
-12:28:12 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:13 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:13 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     9  dwmbar
-
-12:28:12 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:13 AM  1000     51987        30        40         0  dash
-12:28:13 AM  1000     78066        10        30         0  dwmbar
-
-12:28:12 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:13 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:13 AM  1000     78066      0.00      0.00 1896164   10368   0.07  dwmbar
-
-12:28:12 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:13 AM  1000     51987      3078         0  dash
-12:28:13 AM  1000     78066       650         0  dwmbar
-
-12:28:13 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:14 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:14 AM  1000     78066    1.00    1.00    0.00    0.00    2.00     9  dwmbar
-
-12:28:13 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:14 AM  1000     51987        40        40         0  dash
-12:28:14 AM  1000     78066        20        10         0  dwmbar
-
-12:28:13 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:14 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:14 AM  1000     78066      1.00      0.00 1896164   10368   0.07  dwmbar
-
-12:28:13 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:14 AM  1000     51987      3075         0  dash
-12:28:14 AM  1000     78066       651         0  dwmbar
-
-12:28:14 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:15 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     0  dash
-12:28:15 AM  1000     78066    0.00    0.00    0.00    0.00    0.00    10  dwmbar
-
-12:28:14 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:15 AM  1000     51987        10        10         0  dash
-12:28:15 AM  1000     78066        10        10         0  dwmbar
-
-12:28:14 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:15 AM  1000     51987     12.00      0.00    6664    2912   0.02  dash
-12:28:15 AM  1000     78066     16.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:14 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:15 AM  1000     51987       908         0  dash
-12:28:15 AM  1000     78066       662         0  dwmbar
-
-12:28:15 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:16 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:16 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:15 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:16 AM  1000     51987        30        40         0  dash
-12:28:16 AM  1000     78066        10        20         0  dwmbar
-
-12:28:15 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:16 AM  1000     51987     35.00      0.00    6664    2912   0.02  dash
-12:28:16 AM  1000     78066      0.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:15 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:16 AM  1000     51987      2156         0  dash
-12:28:16 AM  1000     78066       649         0  dwmbar
-
-12:28:16 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:17 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:17 AM  1000     78066    1.00    1.00    0.00    0.00    2.00     6  dwmbar
-
-12:28:16 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:17 AM  1000     51987        40        50         0  dash
-12:28:17 AM  1000     78066        20        20         0  dwmbar
-
-12:28:16 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:17 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:17 AM  1000     78066      0.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:16 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:17 AM  1000     51987      3073         0  dash
-12:28:17 AM  1000     78066       649         0  dwmbar
-
-12:28:17 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:18 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:18 AM  1000     78066    0.00    0.00    0.00    0.00    0.00    15  dwmbar
-
-12:28:17 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:18 AM  1000     51987        30        40         0  dash
-12:28:18 AM  1000     78066        10        10         0  dwmbar
-
-12:28:17 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:18 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:18 AM  1000     78066      1.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:17 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:18 AM  1000     51987      3069         0  dash
-12:28:18 AM  1000     78066       649         0  dwmbar
-
-12:28:18 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:19 AM  1000     51987    0.00    1.00    0.00    0.00    1.00    12  dash
-12:28:19 AM  1000     78066    0.00    1.00    0.00    0.00    1.00    15  dwmbar
-
-12:28:18 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:19 AM  1000     51987        40        60         0  dash
-12:28:19 AM  1000     78066        20        30         0  dwmbar
-
-12:28:18 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:19 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:19 AM  1000     78066      0.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:18 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:19 AM  1000     51987      3072         0  dash
-12:28:19 AM  1000     78066       649         0  dwmbar
-
-12:28:19 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:20 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    10  dash
-12:28:20 AM  1000     78066    1.00    0.00    0.00    0.00    1.00    15  dwmbar
-
-12:28:19 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:20 AM  1000     51987        30        40         0  dash
-12:28:20 AM  1000     78066        20         0         0  dwmbar
-
-12:28:19 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:20 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:20 AM  1000     78066      0.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:19 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:20 AM  1000     51987      3075         0  dash
-12:28:20 AM  1000     78066       647         0  dwmbar
-
-12:28:20 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:21 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:21 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:20 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:21 AM  1000     51987        20        40         0  dash
-12:28:21 AM  1000     78066        10        20         0  dwmbar
-
-12:28:20 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:21 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:21 AM  1000     78066      0.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:20 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:21 AM  1000     51987      3068         0  dash
-12:28:21 AM  1000     78066       649         0  dwmbar
-
-12:28:21 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:22 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    10  dash
-12:28:22 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     6  dwmbar
-
-12:28:21 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:22 AM  1000     51987        40        50         0  dash
-12:28:22 AM  1000     78066         0         0         0  dwmbar
-
-12:28:21 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:22 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:22 AM  1000     78066      0.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:21 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:22 AM  1000     51987      3071         0  dash
-12:28:22 AM  1000     78066         0         0  dwmbar
-
-12:28:22 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:23 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     2  dash
-12:28:23 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:22 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:23 AM  1000     51987        10        20         0  dash
-12:28:23 AM  1000     78066        20        20         0  dwmbar
-
-12:28:22 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:23 AM  1000     51987     21.00      0.00    6664    2912   0.02  dash
-12:28:23 AM  1000     78066      0.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:22 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:23 AM  1000     51987      1273         0  dash
-12:28:23 AM  1000     78066       647         0  dwmbar
-
-12:28:23 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:24 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:24 AM  1000     78066    0.00    0.99    0.00    0.00    0.99     7  dwmbar
-
-12:28:23 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:24 AM  1000     51987        20        20         0  dash
-12:28:24 AM  1000     78066        10        20         0  dwmbar
-
-12:28:23 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:24 AM  1000     51987     25.74      0.00    6664    2912   0.02  dash
-12:28:24 AM  1000     78066      0.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:23 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:24 AM  1000     51987      1797         0  dash
-12:28:24 AM  1000     78066       647         0  dwmbar
-
-12:28:24 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:25 AM  1000     51987    0.00    1.00    0.00    0.00    1.00     8  dash
-12:28:25 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     7  dwmbar
-
-12:28:24 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:25 AM  1000     51987        30        60         0  dash
-12:28:25 AM  1000     78066        10        20         0  dwmbar
-
-12:28:24 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:25 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:25 AM  1000     78066     18.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:24 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:25 AM  1000     51987      3073         0  dash
-12:28:25 AM  1000     78066       669         0  dwmbar
-
-12:28:25 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:26 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:26 AM  1000     78066    1.00    0.00    0.00    0.00    1.00     8  dwmbar
-
-12:28:25 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:26 AM  1000     51987        30        40         0  dash
-12:28:26 AM  1000     78066        20        10         0  dwmbar
-
-12:28:25 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:26 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:26 AM  1000     78066     15.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:25 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:26 AM  1000     51987      3081         0  dash
-12:28:26 AM  1000     78066       665         0  dwmbar
-
-12:28:26 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:27 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:27 AM  1000     78066    0.00    1.00    0.00    0.00    1.00    12  dwmbar
-
-12:28:26 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:27 AM  1000     51987        40        50         0  dash
-12:28:27 AM  1000     78066        10        20         0  dwmbar
-
-12:28:26 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:27 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:27 AM  1000     78066     16.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:26 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:27 AM  1000     51987      3075         0  dash
-12:28:27 AM  1000     78066       666         0  dwmbar
-
-12:28:27 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:28 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:28 AM  1000     78066    1.00    0.00    0.00    0.00    1.00     2  dwmbar
-
-12:28:27 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:28 AM  1000     51987        30        50         0  dash
-12:28:28 AM  1000     78066        30        10         0  dwmbar
-
-12:28:27 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:28 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:28 AM  1000     78066      5.00      0.00 1896164   10084   0.06  dwmbar
-
-12:28:27 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:28 AM  1000     51987      3069         0  dash
-12:28:28 AM  1000     78066       655         0  dwmbar
-
-12:28:28 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:29 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     0  dash
-12:28:29 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     3  dwmbar
-
-12:28:28 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:29 AM  1000     51987        10        10         0  dash
-12:28:29 AM  1000     78066        10        20         0  dwmbar
-
-12:28:28 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:29 AM  1000     51987     21.00      0.00    6664    2912   0.02  dash
-12:28:29 AM  1000     78066     13.00      0.00 1896164   10212   0.07  dwmbar
-
-12:28:28 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:29 AM  1000     51987      1275         0  dash
-12:28:29 AM  1000     78066       664         0  dwmbar
-
-12:28:29 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:30 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:30 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     3  dwmbar
-
-12:28:29 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:30 AM  1000     51987        30        30         0  dash
-12:28:30 AM  1000     78066        10        20         0  dwmbar
-
-12:28:29 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:30 AM  1000     51987     26.00      0.00    6664    2912   0.02  dash
-12:28:30 AM  1000     78066      0.00      0.00 1896164   10212   0.07  dwmbar
-
-12:28:29 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:30 AM  1000     51987      1802         0  dash
-12:28:30 AM  1000     78066       645         0  dwmbar
-
-12:28:30 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:31 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:31 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     6  dwmbar
-
-12:28:30 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:31 AM  1000     51987        20        40         0  dash
-12:28:31 AM  1000     78066        10        10         0  dwmbar
-
-12:28:30 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:31 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:31 AM  1000     78066      9.00      0.00 1896164   10212   0.07  dwmbar
-
-12:28:30 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:31 AM  1000     51987      3069         0  dash
-12:28:31 AM  1000     78066       654         0  dwmbar
-
-12:28:31 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:32 AM  1000     51987    0.00    1.00    0.00    0.00    1.00     0  dash
-12:28:32 AM  1000     78066    1.00    1.00    0.00    0.00    2.00    12  dwmbar
-
-12:28:31 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:32 AM  1000     51987        40        50         0  dash
-12:28:32 AM  1000     78066        30        10         0  dwmbar
-
-12:28:31 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:32 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:32 AM  1000     78066      0.00      0.00 1896164   10212   0.07  dwmbar
-
-12:28:31 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:32 AM  1000     51987      3078         0  dash
-12:28:32 AM  1000     78066       650         0  dwmbar
-
-12:28:32 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:33 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:33 AM  1000     78066    1.00    0.00    0.00    0.00    1.00    12  dwmbar
-
-12:28:32 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:33 AM  1000     51987        30        50         0  dash
-12:28:33 AM  1000     78066        20        20         0  dwmbar
-
-12:28:32 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:33 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:33 AM  1000     78066      0.00      0.00 1896164   10212   0.07  dwmbar
-
-12:28:32 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:33 AM  1000     51987      3069         0  dash
-12:28:33 AM  1000     78066       650         0  dwmbar
-
-12:28:33 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:34 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    10  dash
-12:28:34 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:33 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:34 AM  1000     51987        30        50         0  dash
-12:28:34 AM  1000     78066        10        20         0  dwmbar
-
-12:28:33 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:34 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:34 AM  1000     78066     31.00      0.00 1896164   10468   0.07  dwmbar
-
-12:28:33 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:34 AM  1000     51987      3071         0  dash
-12:28:34 AM  1000     78066       681         0  dwmbar
-
-12:28:34 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:35 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:35 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:34 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:35 AM  1000     51987        40        40         0  dash
-12:28:35 AM  1000     78066        10        20         0  dwmbar
-
-12:28:34 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:35 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:35 AM  1000     78066     19.00      0.00 1896164   10596   0.07  dwmbar
-
-12:28:34 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:35 AM  1000     51987      3065         0  dash
-12:28:35 AM  1000     78066       667         0  dwmbar
-
-12:28:35 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:36 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:36 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     6  dwmbar
-
-12:28:35 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:36 AM  1000     51987        10        20         0  dash
-12:28:36 AM  1000     78066        10        10         0  dwmbar
-
-12:28:35 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:36 AM  1000     51987     21.00      0.00    6664    2912   0.02  dash
-12:28:36 AM  1000     78066      0.00      0.00 1896164   10724   0.07  dwmbar
-
-12:28:35 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:36 AM  1000     51987      1276         0  dash
-12:28:36 AM  1000     78066       645         0  dwmbar
-
-12:28:36 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:37 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:37 AM  1000     78066    1.00    1.00    0.00    0.00    2.00     6  dwmbar
-
-12:28:36 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:37 AM  1000     51987        30        30         0  dash
-12:28:37 AM  1000     78066        30        10         0  dwmbar
-
-12:28:36 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:37 AM  1000     51987     26.00      0.00    6664    2912   0.02  dash
-12:28:37 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:36 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:37 AM  1000     51987      1797         0  dash
-12:28:37 AM  1000     78066       650         0  dwmbar
-
-12:28:37 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:38 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:38 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:37 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:38 AM  1000     51987        30        40         0  dash
-12:28:38 AM  1000     78066        10        20         0  dwmbar
-
-12:28:37 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:38 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:38 AM  1000     78066      1.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:37 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:38 AM  1000     51987      3075         0  dash
-12:28:38 AM  1000     78066       651         0  dwmbar
-
-12:28:38 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:39 AM  1000     51987    0.00    1.00    0.00    0.00    1.00    14  dash
-12:28:39 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:38 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:39 AM  1000     51987        40        50         0  dash
-12:28:39 AM  1000     78066        20        20         0  dwmbar
-
-12:28:38 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:39 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:39 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:38 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:39 AM  1000     51987      3075         0  dash
-12:28:39 AM  1000     78066       648         0  dwmbar
-
-12:28:39 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:40 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:40 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     6  dwmbar
-
-12:28:39 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:40 AM  1000     51987        30        50         0  dash
-12:28:40 AM  1000     78066        10        10         0  dwmbar
-
-12:28:39 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:40 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:40 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:39 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:40 AM  1000     51987      3068         0  dash
-12:28:40 AM  1000     78066       651         0  dwmbar
-
-12:28:40 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:41 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:41 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:40 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:41 AM  1000     51987        30        50         0  dash
-12:28:41 AM  1000     78066        10        20         0  dwmbar
-
-12:28:40 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:41 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:41 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:40 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:41 AM  1000     51987      3077         0  dash
-12:28:41 AM  1000     78066       649         0  dwmbar
-
-12:28:41 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:42 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:42 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:41 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:42 AM  1000     51987        40        40         0  dash
-12:28:42 AM  1000     78066        10        20         0  dwmbar
-
-12:28:41 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:42 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:42 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:41 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:42 AM  1000     51987      3079         0  dash
-12:28:42 AM  1000     78066       649         0  dwmbar
-
-12:28:42 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:43 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:43 AM  1000     78066    1.00    1.00    0.00    0.00    2.00     6  dwmbar
-
-12:28:42 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:43 AM  1000     51987        30        50         0  dash
-12:28:43 AM  1000     78066        20        20         0  dwmbar
-
-12:28:42 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:43 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:43 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:42 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:43 AM  1000     51987      3066         0  dash
-12:28:43 AM  1000     78066       648         0  dwmbar
-
-12:28:43 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:44 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:44 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     6  dwmbar
-
-12:28:43 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:44 AM  1000     51987        10        10         0  dash
-12:28:44 AM  1000     78066        10        10         0  dwmbar
-
-12:28:43 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:44 AM  1000     51987     21.00      0.00    6664    2912   0.02  dash
-12:28:44 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:43 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:44 AM  1000     51987      1275         0  dash
-12:28:44 AM  1000     78066       647         0  dwmbar
-
-12:28:44 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:45 AM  1000     51987    0.00    1.00    0.00    0.00    1.00     8  dash
-12:28:45 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:44 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:45 AM  1000     51987        20        40         0  dash
-12:28:45 AM  1000     78066        20        20         0  dwmbar
-
-12:28:44 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:45 AM  1000     51987     26.00      0.00    6664    2912   0.02  dash
-12:28:45 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:44 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:45 AM  1000     51987      1801         0  dash
-12:28:45 AM  1000     78066       649         0  dwmbar
-
-12:28:45 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:46 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:46 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     6  dwmbar
-
-12:28:45 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:46 AM  1000     51987        40        50         0  dash
-12:28:46 AM  1000     78066        10        10         0  dwmbar
-
-12:28:45 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:46 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:46 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:45 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:46 AM  1000     51987      3075         0  dash
-12:28:46 AM  1000     78066       646         0  dwmbar
-
-12:28:46 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:47 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:47 AM  1000     78066    1.00    1.00    0.00    0.00    2.00     6  dwmbar
-
-12:28:46 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:47 AM  1000     51987        40        50         0  dash
-12:28:47 AM  1000     78066        20        20         0  dwmbar
-
-12:28:46 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:47 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:47 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:46 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:47 AM  1000     51987      3076         0  dash
-12:28:47 AM  1000     78066       652         0  dwmbar
-
-12:28:47 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:48 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:48 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     6  dwmbar
-
-12:28:47 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:48 AM  1000     51987        30        40         0  dash
-12:28:48 AM  1000     78066        10        20         0  dwmbar
-
-12:28:47 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:48 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:48 AM  1000     78066      1.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:47 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:48 AM  1000     51987      3075         0  dash
-12:28:48 AM  1000     78066       648         0  dwmbar
-
-12:28:48 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:49 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:49 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     7  dwmbar
-
-12:28:48 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:49 AM  1000     51987        40        50         0  dash
-12:28:49 AM  1000     78066        10        20         0  dwmbar
-
-12:28:48 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:49 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:49 AM  1000     78066     34.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:48 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:49 AM  1000     51987      3071         0  dash
-12:28:49 AM  1000     78066       686         0  dwmbar
-
-12:28:49 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:50 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:50 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     7  dwmbar
-
-12:28:49 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:50 AM  1000     51987        30        60         0  dash
-12:28:50 AM  1000     78066        10        10         0  dwmbar
-
-12:28:49 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:50 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:50 AM  1000     78066      6.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:49 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:50 AM  1000     51987      3071         0  dash
-12:28:50 AM  1000     78066       656         0  dwmbar
-
-12:28:50 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:51 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:51 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     7  dwmbar
-
-12:28:50 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:51 AM  1000     51987        30        40         0  dash
-12:28:51 AM  1000     78066        10        20         0  dwmbar
-
-12:28:50 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:51 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:51 AM  1000     78066      1.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:50 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:51 AM  1000     51987      3073         0  dash
-12:28:51 AM  1000     78066       649         0  dwmbar
-
-12:28:51 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:52 AM  1000     51987    0.00    1.00    0.00    0.00    1.00    10  dash
-12:28:52 AM  1000     78066    1.00    0.00    0.00    0.00    1.00     7  dwmbar
-
-12:28:51 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:52 AM  1000     51987        10        30         0  dash
-12:28:52 AM  1000     78066        20        10         0  dwmbar
-
-12:28:51 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:52 AM  1000     51987     21.00      0.00    6664    2912   0.02  dash
-12:28:52 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:51 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:52 AM  1000     51987      1278         0  dash
-12:28:52 AM  1000     78066       647         0  dwmbar
-
-12:28:52 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:53 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:53 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     7  dwmbar
-
-12:28:52 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:53 AM  1000     51987        30        30         0  dash
-12:28:53 AM  1000     78066        20        20         0  dwmbar
-
-12:28:52 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:53 AM  1000     51987     26.00      0.00    6664    2912   0.02  dash
-12:28:53 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:52 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:53 AM  1000     51987      1797         0  dash
-12:28:53 AM  1000     78066       649         0  dwmbar
-
-12:28:53 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:54 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:54 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     7  dwmbar
-
-12:28:53 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:54 AM  1000     51987        30        50         0  dash
-12:28:54 AM  1000     78066         0        20         0  dwmbar
-
-12:28:53 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:54 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:54 AM  1000     78066      1.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:53 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:54 AM  1000     51987      3074         0  dash
-12:28:54 AM  1000     78066       651         0  dwmbar
-
-12:28:54 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:55 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:28:55 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     7  dwmbar
-
-12:28:54 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:55 AM  1000     51987        40        50         0  dash
-12:28:55 AM  1000     78066        10        10         0  dwmbar
-
-12:28:54 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:55 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:55 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:54 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:55 AM  1000     51987      3078         0  dash
-12:28:55 AM  1000     78066       649         0  dwmbar
-
-12:28:55 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:56 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:56 AM  1000     78066    1.00    1.00    0.00    0.00    2.00     7  dwmbar
-
-12:28:55 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:56 AM  1000     51987        50        40         0  dash
-12:28:56 AM  1000     78066        30        20         0  dwmbar
-
-12:28:55 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:56 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:56 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:55 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:56 AM  1000     51987      3074         0  dash
-12:28:56 AM  1000     78066       647         0  dwmbar
-
-12:28:56 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:57 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:28:57 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     7  dwmbar
-
-12:28:56 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:57 AM  1000     51987        20        40         0  dash
-12:28:57 AM  1000     78066        20        20         0  dwmbar
-
-12:28:56 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:57 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:57 AM  1000     78066      1.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:56 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:57 AM  1000     51987      3074         0  dash
-12:28:57 AM  1000     78066       649         0  dwmbar
-
-12:28:57 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:58 AM  1000     51987    0.00    1.00    0.00    0.00    1.00    14  dash
-12:28:58 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     7  dwmbar
-
-12:28:57 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:58 AM  1000     51987        40        60         0  dash
-12:28:58 AM  1000     78066        10         0         0  dwmbar
-
-12:28:57 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:58 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:58 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:57 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:58 AM  1000     51987      3078         0  dash
-12:28:58 AM  1000     78066       648         0  dwmbar
-
-12:28:58 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:28:59 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:28:59 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     7  dwmbar
-
-12:28:58 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:28:59 AM  1000     51987        40        50         0  dash
-12:28:59 AM  1000     78066        10        20         0  dwmbar
-
-12:28:58 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:28:59 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:28:59 AM  1000     78066      1.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:58 AM   UID       PID minflt-nr majflt-nr  Command
-12:28:59 AM  1000     51987      3077         0  dash
-12:28:59 AM  1000     78066       650         0  dwmbar
-
-12:28:59 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:00 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     8  dash
-12:29:00 AM  1000     78066    1.00    0.00    0.00    0.00    1.00     2  dwmbar
-
-12:28:59 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:00 AM  1000     51987        10        10         0  dash
-12:29:00 AM  1000     78066        20        10         0  dwmbar
-
-12:28:59 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:00 AM  1000     51987     21.00      0.00    6664    2912   0.02  dash
-12:29:00 AM  1000     78066     14.00      0.00 1896164   10292   0.07  dwmbar
-
-12:28:59 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:00 AM  1000     51987      1274         0  dash
-12:29:00 AM  1000     78066       663         0  dwmbar
-
-12:29:00 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:01 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    14  dash
-12:29:01 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     2  dwmbar
-
-12:29:00 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:01 AM  1000     51987        20        40         0  dash
-12:29:01 AM  1000     78066         0        10         0  dwmbar
-
-12:29:00 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:01 AM  1000     51987     26.00      0.00    6664    2912   0.02  dash
-12:29:01 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:00 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:01 AM  1000     51987      1797         0  dash
-12:29:01 AM  1000     78066         0         0  dwmbar
-
-12:29:01 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:02 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     6  dash
-12:29:02 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     2  dwmbar
-
-12:29:01 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:02 AM  1000     51987        40        40         0  dash
-12:29:02 AM  1000     78066        10        10         0  dwmbar
-
-12:29:01 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:02 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:02 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:01 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:02 AM  1000     51987      3080         0  dash
-12:29:02 AM  1000     78066       648         0  dwmbar
-
-12:29:02 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:03 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    10  dash
-12:29:03 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     2  dwmbar
-
-12:29:02 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:03 AM  1000     51987        40        50         0  dash
-12:29:03 AM  1000     78066        10        20         0  dwmbar
-
-12:29:02 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:03 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:03 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:02 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:03 AM  1000     51987      3071         0  dash
-12:29:03 AM  1000     78066       647         0  dwmbar
-
-12:29:03 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:04 AM  1000     51987    0.00    1.00    0.00    0.00    1.00     6  dash
-12:29:04 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     2  dwmbar
-
-12:29:03 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:04 AM  1000     51987        30        60         0  dash
-12:29:04 AM  1000     78066        20        20         0  dwmbar
-
-12:29:03 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:04 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:04 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:03 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:04 AM  1000     51987      3072         0  dash
-12:29:04 AM  1000     78066       648         0  dwmbar
-
-12:29:04 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:05 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:29:05 AM  1000     78066    1.00    1.00    0.00    0.00    2.00     2  dwmbar
-
-12:29:04 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:05 AM  1000     51987        30        40         0  dash
-12:29:05 AM  1000     78066        10        20         0  dwmbar
-
-12:29:04 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:05 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:05 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:04 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:05 AM  1000     51987      3075         0  dash
-12:29:05 AM  1000     78066       648         0  dwmbar
-
-12:29:05 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:06 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     2  dash
-12:29:06 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     2  dwmbar
-
-12:29:05 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:06 AM  1000     51987        40        40         0  dash
-12:29:06 AM  1000     78066        10        30         0  dwmbar
-
-12:29:05 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:06 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:06 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:05 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:06 AM  1000     51987      3074         0  dash
-12:29:06 AM  1000     78066       650         0  dwmbar
-
-12:29:06 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:07 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     2  dash
-12:29:07 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     2  dwmbar
-
-12:29:06 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:07 AM  1000     51987        10        10         0  dash
-12:29:07 AM  1000     78066        20        10         0  dwmbar
-
-12:29:06 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:07 AM  1000     51987     21.00      0.00    6664    2912   0.02  dash
-12:29:07 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:06 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:07 AM  1000     51987      1273         0  dash
-12:29:07 AM  1000     78066       647         0  dwmbar
-
-12:29:07 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:08 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    10  dash
-12:29:08 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     2  dwmbar
-
-12:29:07 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:08 AM  1000     51987        10        30         0  dash
-12:29:08 AM  1000     78066        10        20         0  dwmbar
-
-12:29:07 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:08 AM  1000     51987     26.00      0.00    6664    2912   0.02  dash
-12:29:08 AM  1000     78066      1.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:07 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:08 AM  1000     51987      1793         0  dash
-12:29:08 AM  1000     78066       650         0  dwmbar
-
-12:29:08 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:09 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     0  dash
-12:29:09 AM  1000     78066    0.00    0.99    0.00    0.00    0.99     2  dwmbar
-
-12:29:08 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:09 AM  1000     51987        40        50         0  dash
-12:29:09 AM  1000     78066         0        20         0  dwmbar
-
-12:29:08 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:09 AM  1000     51987     46.53      0.00    6664    2912   0.02  dash
-12:29:09 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:08 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:09 AM  1000     51987      3073         0  dash
-12:29:09 AM  1000     78066       651         0  dwmbar
-
-12:29:09 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:10 AM  1000     51987    0.00    0.00    0.00    0.00    0.00     2  dash
-12:29:10 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     2  dwmbar
-
-12:29:09 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:10 AM  1000     51987        30        50         0  dash
-12:29:10 AM  1000     78066        10        10         0  dwmbar
-
-12:29:09 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:10 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:10 AM  1000     78066      0.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:09 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:10 AM  1000     51987      3065         0  dash
-12:29:10 AM  1000     78066       647         0  dwmbar
-
-12:29:10 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:11 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:29:11 AM  1000     78066    1.00    1.00    0.00    0.00    2.00     2  dwmbar
-
-12:29:10 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:11 AM  1000     51987        40        40         0  dash
-12:29:11 AM  1000     78066        20        20         0  dwmbar
-
-12:29:10 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:11 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:11 AM  1000     78066      1.00      0.00 1896164   10292   0.07  dwmbar
-
-12:29:10 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:11 AM  1000     51987      3068         0  dash
-12:29:11 AM  1000     78066       647         0  dwmbar
-
-12:29:11 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:12 AM  1000     51987    0.00    1.00    0.00    0.00    1.00     6  dash
-12:29:12 AM  1000     78066    0.00    0.00    0.00    0.00    0.00     3  dwmbar
-
-12:29:11 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:12 AM  1000     51987        30        60         0  dash
-12:29:12 AM  1000     78066        10        10         0  dwmbar
-
-12:29:11 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:12 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:12 AM  1000     78066      9.00      0.00 1970408   10420   0.07  dwmbar
-
-12:29:11 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:12 AM  1000     51987      3073         0  dash
-12:29:12 AM  1000     78066       660         0  dwmbar
-
-12:29:12 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-12:29:13 AM  1000     51987    0.00    0.00    0.00    0.00    0.00    12  dash
-12:29:13 AM  1000     78066    0.00    1.00    0.00    0.00    1.00     3  dwmbar
-
-12:29:12 AM   UID       PID    usr-ms system-ms  guest-ms  Command
-12:29:13 AM  1000     51987        40        40         0  dash
-12:29:13 AM  1000     78066        10        20         0  dwmbar
-
-12:29:12 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-12:29:13 AM  1000     51987     47.00      0.00    6664    2912   0.02  dash
-12:29:13 AM  1000     78066      0.00      0.00 1970408   10420   0.07  dwmbar
-
-12:29:12 AM   UID       PID minflt-nr majflt-nr  Command
-12:29:13 AM  1000     51987      3073         0  dash
-12:29:13 AM  1000     78066       648         0  dwmbar
+Linux 6.18.2 (los-t14) 	01/11/2026 	_x86_64_	(16 CPU)
+
+12:52:26 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:27 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     4  dwmbar
+12:52:27 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:52:26 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:27 AM  1000      2907        10        10         0  dwmbar
+12:52:27 AM  1000      4040        30        40         0  dash
+
+12:52:26 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:27 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:27 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:26 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:27 AM  1000      2907       649         0  dwmbar
+12:52:27 AM  1000      4040      3081         0  dash
+
+12:52:27 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:28 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     4  dwmbar
+12:52:28 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:27 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:28 AM  1000      2907        20        10         0  dwmbar
+12:52:28 AM  1000      4040        40        50         0  dash
+
+12:52:27 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:28 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:28 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:27 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:28 AM  1000      2907       650         0  dwmbar
+12:52:28 AM  1000      4040      3076         0  dash
+
+12:52:28 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:29 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:29 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:52:28 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:29 AM  1000      2907        10        20         0  dwmbar
+12:52:29 AM  1000      4040        40        50         0  dash
+
+12:52:28 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:29 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:29 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:28 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:29 AM  1000      2907       647         0  dwmbar
+12:52:29 AM  1000      4040      3080         0  dash
+
+12:52:29 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:30 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     6  dwmbar
+12:52:30 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    12  dash
+
+12:52:29 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:30 AM  1000      2907        30         0         0  dwmbar
+12:52:30 AM  1000      4040        40        60         0  dash
+
+12:52:29 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:30 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:30 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:29 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:30 AM  1000      2907       650         0  dwmbar
+12:52:30 AM  1000      4040      3081         0  dash
+
+12:52:30 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:31 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:31 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:52:30 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:31 AM  1000      2907        10        20         0  dwmbar
+12:52:31 AM  1000      4040        30        60         0  dash
+
+12:52:30 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:31 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:31 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:30 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:31 AM  1000      2907       649         0  dwmbar
+12:52:31 AM  1000      4040      3072         0  dash
+
+12:52:31 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:32 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:52:32 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     0  dash
+
+12:52:31 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:32 AM  1000      2907        10        10         0  dwmbar
+12:52:32 AM  1000      4040        10        20         0  dash
+
+12:52:31 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:32 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:32 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:52:31 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:32 AM  1000      2907       647         0  dwmbar
+12:52:32 AM  1000      4040      1275         0  dash
+
+12:52:32 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:33 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:33 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:32 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:33 AM  1000      2907        20        20         0  dwmbar
+12:52:33 AM  1000      4040        20        40         0  dash
+
+12:52:32 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:33 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:33 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:52:32 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:33 AM  1000      2907       647         0  dwmbar
+12:52:33 AM  1000      4040      1808         0  dash
+
+12:52:33 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:34 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:52:34 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:52:33 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:34 AM  1000      2907        10        10         0  dwmbar
+12:52:34 AM  1000      4040        40        50         0  dash
+
+12:52:33 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:34 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:34 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:33 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:34 AM  1000      2907       650         0  dwmbar
+12:52:34 AM  1000      4040      3074         0  dash
+
+12:52:34 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:35 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:35 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:34 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:35 AM  1000      2907        20        20         0  dwmbar
+12:52:35 AM  1000      4040        50        50         0  dash
+
+12:52:34 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:35 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:35 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:34 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:35 AM  1000      2907       648         0  dwmbar
+12:52:35 AM  1000      4040      3079         0  dash
+
+12:52:35 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:36 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:36 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    12  dash
+
+12:52:35 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:36 AM  1000      2907        10        20         0  dwmbar
+12:52:36 AM  1000      4040        30        50         0  dash
+
+12:52:35 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:36 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:36 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:35 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:36 AM  1000      2907       647         0  dwmbar
+12:52:36 AM  1000      4040      3074         0  dash
+
+12:52:36 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:37 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:52:37 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:52:36 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:37 AM  1000      2907        10        10         0  dwmbar
+12:52:37 AM  1000      4040        40        40         0  dash
+
+12:52:36 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:37 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:37 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:36 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:37 AM  1000      2907       647         0  dwmbar
+12:52:37 AM  1000      4040      3079         0  dash
+
+12:52:37 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:38 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:38 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:52:37 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:38 AM  1000      2907        10        20         0  dwmbar
+12:52:38 AM  1000      4040        40        40         0  dash
+
+12:52:37 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:38 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:38 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:37 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:38 AM  1000      2907       648         0  dwmbar
+12:52:38 AM  1000      4040      3078         0  dash
+
+12:52:38 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:39 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     6  dwmbar
+12:52:39 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:38 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:39 AM  1000      2907        20        10         0  dwmbar
+12:52:39 AM  1000      4040        10        20         0  dash
+
+12:52:38 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:39 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:39 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:52:38 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:39 AM  1000      2907       650         0  dwmbar
+12:52:39 AM  1000      4040      1273         0  dash
+
+12:52:39 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:40 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:40 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:39 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:40 AM  1000      2907        20        20         0  dwmbar
+12:52:40 AM  1000      4040        20        40         0  dash
+
+12:52:39 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:40 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:40 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:52:39 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:40 AM  1000      2907       649         0  dwmbar
+12:52:40 AM  1000      4040      1804         0  dash
+
+12:52:40 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:41 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:41 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:40 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:41 AM  1000      2907        10        20         0  dwmbar
+12:52:41 AM  1000      4040        40        50         0  dash
+
+12:52:40 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:41 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:41 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:40 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:41 AM  1000      2907       646         0  dwmbar
+12:52:41 AM  1000      4040      3078         0  dash
+
+12:52:41 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:42 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:52:42 AM  1000      4040    0.00    1.00    0.00    0.00    1.00     8  dash
+
+12:52:41 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:42 AM  1000      2907        10        10         0  dwmbar
+12:52:42 AM  1000      4040        30        70         0  dash
+
+12:52:41 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:42 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:42 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:41 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:42 AM  1000      2907       646         0  dwmbar
+12:52:42 AM  1000      4040      3068         0  dash
+
+12:52:42 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:43 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     4  dwmbar
+12:52:43 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:52:42 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:43 AM  1000      2907        10        20         0  dwmbar
+12:52:43 AM  1000      4040        40        50         0  dash
+
+12:52:42 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:43 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:43 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:42 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:43 AM  1000      2907       651         0  dwmbar
+12:52:43 AM  1000      4040      3076         0  dash
+
+12:52:43 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:44 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     4  dwmbar
+12:52:44 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:43 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:44 AM  1000      2907        20        10         0  dwmbar
+12:52:44 AM  1000      4040        50        40         0  dash
+
+12:52:43 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:44 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:44 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:43 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:44 AM  1000      2907       648         0  dwmbar
+12:52:44 AM  1000      4040      3071         0  dash
+
+12:52:44 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:45 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     4  dwmbar
+12:52:45 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:52:44 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:45 AM  1000      2907        10        20         0  dwmbar
+12:52:45 AM  1000      4040        30        40         0  dash
+
+12:52:44 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:45 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:45 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:44 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:45 AM  1000      2907       654         0  dwmbar
+12:52:45 AM  1000      4040      3073         0  dash
+
+12:52:45 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:46 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     4  dwmbar
+12:52:46 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     6  dash
+
+12:52:45 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:46 AM  1000      2907        10        30         0  dwmbar
+12:52:46 AM  1000      4040        20        30         0  dash
+
+12:52:45 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:46 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:46 AM  1000      4040     29.00      0.00    6664    2952   0.02  dash
+
+12:52:45 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:46 AM  1000      2907       652         0  dwmbar
+12:52:46 AM  1000      4040      1745         0  dash
+
+12:52:46 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:47 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     4  dwmbar
+12:52:47 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:52:46 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:47 AM  1000      2907        10        10         0  dwmbar
+12:52:47 AM  1000      4040        20        20         0  dash
+
+12:52:46 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:47 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:47 AM  1000      4040     17.00      0.00    6664    2952   0.02  dash
+
+12:52:46 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:47 AM  1000      2907       650         0  dwmbar
+12:52:47 AM  1000      4040      1329         0  dash
+
+12:52:47 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:48 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     4  dwmbar
+12:52:48 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    14  dash
+
+12:52:47 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:48 AM  1000      2907        10        20         0  dwmbar
+12:52:48 AM  1000      4040        30        50         0  dash
+
+12:52:47 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:48 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:48 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:47 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:48 AM  1000      2907       647         0  dwmbar
+12:52:48 AM  1000      4040      3079         0  dash
+
+12:52:48 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:49 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     4  dwmbar
+12:52:49 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:52:48 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:49 AM  1000      2907         0        10         0  dwmbar
+12:52:49 AM  1000      4040        40        40         0  dash
+
+12:52:48 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:49 AM  1000      2907      2.00      0.00 1970700   10644   0.07  dwmbar
+12:52:49 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:48 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:49 AM  1000      2907         2         0  dwmbar
+12:52:49 AM  1000      4040      3078         0  dash
+
+12:52:49 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:50 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     4  dwmbar
+12:52:50 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:52:49 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:50 AM  1000      2907        20        10         0  dwmbar
+12:52:50 AM  1000      4040        40        50         0  dash
+
+12:52:49 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:50 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:50 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:49 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:50 AM  1000      2907       648         0  dwmbar
+12:52:50 AM  1000      4040      3088         0  dash
+
+12:52:50 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:51 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     4  dwmbar
+12:52:51 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:52:50 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:51 AM  1000      2907        10        20         0  dwmbar
+12:52:51 AM  1000      4040        40        40         0  dash
+
+12:52:50 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:51 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:51 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:50 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:51 AM  1000      2907       650         0  dwmbar
+12:52:51 AM  1000      4040      3074         0  dash
+
+12:52:51 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:52 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:52:52 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:51 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:52 AM  1000      2907        10        10         0  dwmbar
+12:52:52 AM  1000      4040        30        50         0  dash
+
+12:52:51 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:52 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:52 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:51 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:52 AM  1000      2907       650         0  dwmbar
+12:52:52 AM  1000      4040      3074         0  dash
+
+12:52:52 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:53 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:52:53 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    12  dash
+
+12:52:52 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:53 AM  1000      2907        10        20         0  dwmbar
+12:52:53 AM  1000      4040        40        60         0  dash
+
+12:52:52 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:53 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:53 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:52 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:53 AM  1000      2907       644         0  dwmbar
+12:52:53 AM  1000      4040      3077         0  dash
+
+12:52:53 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:54 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     0  dwmbar
+12:52:54 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:53 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:54 AM  1000      2907        20        10         0  dwmbar
+12:52:54 AM  1000      4040        10        20         0  dash
+
+12:52:53 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:54 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:54 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:52:53 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:54 AM  1000      2907       649         0  dwmbar
+12:52:54 AM  1000      4040      1277         0  dash
+
+12:52:54 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:55 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:52:55 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:52:54 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:55 AM  1000      2907        10        20         0  dwmbar
+12:52:55 AM  1000      4040        20        40         0  dash
+
+12:52:54 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:55 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:55 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:52:54 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:55 AM  1000      2907       647         0  dwmbar
+12:52:55 AM  1000      4040      1804         0  dash
+
+12:52:55 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:56 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:52:56 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:52:55 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:56 AM  1000      2907        20        10         0  dwmbar
+12:52:56 AM  1000      4040        40        40         0  dash
+
+12:52:55 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:56 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:56 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:55 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:56 AM  1000      2907       647         0  dwmbar
+12:52:56 AM  1000      4040      3066         0  dash
+
+12:52:56 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:57 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     0  dwmbar
+12:52:57 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:52:56 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:57 AM  1000      2907        20         0         0  dwmbar
+12:52:57 AM  1000      4040        40        60         0  dash
+
+12:52:56 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:57 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:57 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:56 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:57 AM  1000      2907       648         0  dwmbar
+12:52:57 AM  1000      4040      3077         0  dash
+
+12:52:57 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:58 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:52:58 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:52:57 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:58 AM  1000      2907        10        20         0  dwmbar
+12:52:58 AM  1000      4040        30        40         0  dash
+
+12:52:57 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:58 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:58 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:57 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:58 AM  1000      2907       648         0  dwmbar
+12:52:58 AM  1000      4040      3079         1  dash
+
+12:52:58 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:52:59 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:52:59 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    10  dash
+
+12:52:58 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:52:59 AM  1000      2907        20        10         0  dwmbar
+12:52:59 AM  1000      4040        40        60         0  dash
+
+12:52:58 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:52:59 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:52:59 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:58 AM   UID       PID minflt-nr majflt-nr  Command
+12:52:59 AM  1000      2907       650         0  dwmbar
+12:52:59 AM  1000      4040      3091         0  dash
+
+12:52:59 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:00 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:00 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:52:59 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:00 AM  1000      2907        10        20         0  dwmbar
+12:53:00 AM  1000      4040        30        50         0  dash
+
+12:52:59 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:00 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:00 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:52:59 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:00 AM  1000      2907       650         0  dwmbar
+12:53:00 AM  1000      4040      3075         0  dash
+
+12:53:00 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:01 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:53:01 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:00 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:01 AM  1000      2907        20        10         0  dwmbar
+12:53:01 AM  1000      4040        10        20         0  dash
+
+12:53:00 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:01 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:01 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:53:00 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:01 AM  1000      2907       648         0  dwmbar
+12:53:01 AM  1000      4040      1275         0  dash
+
+12:53:01 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:02 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:02 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:01 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:02 AM  1000      2907        10        20         0  dwmbar
+12:53:02 AM  1000      4040        30        30         0  dash
+
+12:53:01 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:02 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:02 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:53:01 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:02 AM  1000      2907       647         0  dwmbar
+12:53:02 AM  1000      4040      1807         0  dash
+
+12:53:02 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:03 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:53:03 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:02 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:03 AM  1000      2907        10        10         0  dwmbar
+12:53:03 AM  1000      4040        40        50         0  dash
+
+12:53:02 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:03 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:03 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:02 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:03 AM  1000      2907       646         0  dwmbar
+12:53:03 AM  1000      4040      3082         0  dash
+
+12:53:03 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:04 AM  1000      2907    0.00    0.99    0.00    0.00    0.99     0  dwmbar
+12:53:04 AM  1000      4040    0.00    0.99    0.00    0.00    0.99    10  dash
+
+12:53:03 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:04 AM  1000      2907        10        30         0  dwmbar
+12:53:04 AM  1000      4040        40        50         0  dash
+
+12:53:03 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:04 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:04 AM  1000      4040     45.54      0.00    6664    2952   0.02  dash
+
+12:53:03 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:04 AM  1000      2907       648         0  dwmbar
+12:53:04 AM  1000      4040      3075         0  dash
+
+12:53:04 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:05 AM  1000      2907    1.00    1.00    0.00    0.00    2.00     0  dwmbar
+12:53:05 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:04 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:05 AM  1000      2907        20        20         0  dwmbar
+12:53:05 AM  1000      4040        30        50         0  dash
+
+12:53:04 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:05 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:05 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:04 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:05 AM  1000      2907       645         0  dwmbar
+12:53:05 AM  1000      4040      3071         0  dash
+
+12:53:05 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:06 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:53:06 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:05 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:06 AM  1000      2907        20        10         0  dwmbar
+12:53:06 AM  1000      4040        30        50         0  dash
+
+12:53:05 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:06 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:06 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:05 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:06 AM  1000      2907       647         0  dwmbar
+12:53:06 AM  1000      4040      3076         0  dash
+
+12:53:06 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:07 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:07 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:53:06 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:07 AM  1000      2907        10        10         0  dwmbar
+12:53:07 AM  1000      4040        30        50         0  dash
+
+12:53:06 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:07 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:07 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:06 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:07 AM  1000      2907       654         0  dwmbar
+12:53:07 AM  1000      4040      3076         0  dash
+
+12:53:07 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:08 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:53:08 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     4  dash
+
+12:53:07 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:08 AM  1000      2907        20        20         0  dwmbar
+12:53:08 AM  1000      4040        20        40         0  dash
+
+12:53:07 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:08 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:08 AM  1000      4040     29.00      0.00    6664    2952   0.02  dash
+
+12:53:07 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:08 AM  1000      2907       651         0  dwmbar
+12:53:08 AM  1000      4040      1741         0  dash
+
+12:53:08 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:09 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     0  dwmbar
+12:53:09 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:08 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:09 AM  1000      2907        20        10         0  dwmbar
+12:53:09 AM  1000      4040        20        20         0  dash
+
+12:53:08 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:09 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:09 AM  1000      4040     17.00      0.00    6664    2952   0.02  dash
+
+12:53:08 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:09 AM  1000      2907       646         0  dwmbar
+12:53:09 AM  1000      4040      1329         0  dash
+
+12:53:09 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:10 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:10 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    12  dash
+
+12:53:09 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:10 AM  1000      2907        10        20         0  dwmbar
+12:53:10 AM  1000      4040        30        60         0  dash
+
+12:53:09 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:10 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:10 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:09 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:10 AM  1000      2907       647         0  dwmbar
+12:53:10 AM  1000      4040      3081         0  dash
+
+12:53:10 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:11 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:53:11 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:10 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:11 AM  1000      2907        10        20         0  dwmbar
+12:53:11 AM  1000      4040        40        50         0  dash
+
+12:53:10 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:11 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:11 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:10 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:11 AM  1000      2907       649         0  dwmbar
+12:53:11 AM  1000      4040      3068         0  dash
+
+12:53:11 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:12 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:53:12 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:11 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:12 AM  1000      2907        10        10         0  dwmbar
+12:53:12 AM  1000      4040        40        40         0  dash
+
+12:53:11 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:12 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:12 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:11 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:12 AM  1000      2907       647         0  dwmbar
+12:53:12 AM  1000      4040      3082         0  dash
+
+12:53:12 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:13 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:53:13 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:12 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:13 AM  1000      2907        10        20         0  dwmbar
+12:53:13 AM  1000      4040        30        40         0  dash
+
+12:53:12 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:13 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:13 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:12 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:13 AM  1000      2907       648         0  dwmbar
+12:53:13 AM  1000      4040      3078         0  dash
+
+12:53:13 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:14 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:53:14 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:13 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:14 AM  1000      2907        10        10         0  dwmbar
+12:53:14 AM  1000      4040        40        50         0  dash
+
+12:53:13 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:14 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:14 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:13 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:14 AM  1000      2907       650         0  dwmbar
+12:53:14 AM  1000      4040      3072         0  dash
+
+12:53:14 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:15 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     6  dwmbar
+12:53:15 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:14 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:15 AM  1000      2907        10        20         0  dwmbar
+12:53:15 AM  1000      4040        40        50         0  dash
+
+12:53:14 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:15 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:15 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:14 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:15 AM  1000      2907       649         0  dwmbar
+12:53:15 AM  1000      4040      3078         0  dash
+
+12:53:15 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:16 AM  1000      2907    1.00    1.00    0.00    0.00    2.00     6  dwmbar
+12:53:16 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    14  dash
+
+12:53:15 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:16 AM  1000      2907        30        20         0  dwmbar
+12:53:16 AM  1000      4040         0        30         0  dash
+
+12:53:15 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:16 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:16 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:53:15 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:16 AM  1000      2907       648         0  dwmbar
+12:53:16 AM  1000      4040      1275         0  dash
+
+12:53:16 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:17 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:53:17 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:53:16 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:17 AM  1000      2907        10        10         0  dwmbar
+12:53:17 AM  1000      4040        30        30         0  dash
+
+12:53:16 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:17 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:17 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:53:16 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:17 AM  1000      2907       652         0  dwmbar
+12:53:17 AM  1000      4040      1800         0  dash
+
+12:53:17 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:18 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:53:18 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:17 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:18 AM  1000      2907        10        10         0  dwmbar
+12:53:18 AM  1000      4040        40        50         0  dash
+
+12:53:17 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:18 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:18 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:17 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:18 AM  1000      2907       648         0  dwmbar
+12:53:18 AM  1000      4040      3070         0  dash
+
+12:53:18 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:19 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:19 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:18 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:19 AM  1000      2907        10        30         0  dwmbar
+12:53:19 AM  1000      4040        30        60         0  dash
+
+12:53:18 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:19 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:19 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:18 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:19 AM  1000      2907       652         0  dwmbar
+12:53:19 AM  1000      4040      3073         0  dash
+
+12:53:19 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:20 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:20 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:53:19 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:20 AM  1000      2907        20        10         0  dwmbar
+12:53:20 AM  1000      4040        40        50         0  dash
+
+12:53:19 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:20 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:20 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:19 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:20 AM  1000      2907       648         0  dwmbar
+12:53:20 AM  1000      4040      3080         0  dash
+
+12:53:20 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:21 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     0  dwmbar
+12:53:21 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:20 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:21 AM  1000      2907        20        10         0  dwmbar
+12:53:21 AM  1000      4040        40        40         0  dash
+
+12:53:20 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:21 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:21 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:20 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:21 AM  1000      2907       652         0  dwmbar
+12:53:21 AM  1000      4040      3074         0  dash
+
+12:53:21 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:22 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:22 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    12  dash
+
+12:53:21 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:22 AM  1000      2907        20        20         0  dwmbar
+12:53:22 AM  1000      4040        30        60         0  dash
+
+12:53:21 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:22 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:22 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:21 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:22 AM  1000      2907       647         0  dwmbar
+12:53:22 AM  1000      4040      3077         0  dash
+
+12:53:22 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:23 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     6  dwmbar
+12:53:23 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:22 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:23 AM  1000      2907        10        10         0  dwmbar
+12:53:23 AM  1000      4040        10        20         0  dash
+
+12:53:22 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:23 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:23 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:53:22 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:23 AM  1000      2907       648         0  dwmbar
+12:53:23 AM  1000      4040      1272         0  dash
+
+12:53:23 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:24 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:24 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:23 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:24 AM  1000      2907        10        20         0  dwmbar
+12:53:24 AM  1000      4040        30        30         0  dash
+
+12:53:23 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:24 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:24 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:53:23 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:24 AM  1000      2907       647         0  dwmbar
+12:53:24 AM  1000      4040      1803         0  dash
+
+12:53:24 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:25 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:53:25 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:24 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:25 AM  1000      2907        10        10         0  dwmbar
+12:53:25 AM  1000      4040        30        60         0  dash
+
+12:53:24 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:25 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:25 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:24 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:25 AM  1000      2907       646         0  dwmbar
+12:53:25 AM  1000      4040      3072         0  dash
+
+12:53:25 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:26 AM  1000      2907    1.00    1.00    0.00    0.00    2.00     0  dwmbar
+12:53:26 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:53:25 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:26 AM  1000      2907        30        20         0  dwmbar
+12:53:26 AM  1000      4040        40        50         0  dash
+
+12:53:25 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:26 AM  1000      2907      2.00      0.00 1970700   10644   0.07  dwmbar
+12:53:26 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:25 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:26 AM  1000      2907       649         0  dwmbar
+12:53:26 AM  1000      4040      3072         0  dash
+
+12:53:26 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:27 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:53:27 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:26 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:27 AM  1000      2907         0         0         0  dwmbar
+12:53:27 AM  1000      4040        40        40         0  dash
+
+12:53:26 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:27 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:27 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:26 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:27 AM  1000      2907         0         0  dwmbar
+12:53:27 AM  1000      4040      3079         0  dash
+
+12:53:27 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:28 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     0  dwmbar
+12:53:28 AM  1000      4040    0.00    1.00    0.00    0.00    1.00     8  dash
+
+12:53:27 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:28 AM  1000      2907        10        10         0  dwmbar
+12:53:28 AM  1000      4040        30        70         0  dash
+
+12:53:27 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:28 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:28 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:27 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:28 AM  1000      2907       648         0  dwmbar
+12:53:28 AM  1000      4040      3072         0  dash
+
+12:53:28 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:29 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:29 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:28 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:29 AM  1000      2907         0        20         0  dwmbar
+12:53:29 AM  1000      4040        30        60         0  dash
+
+12:53:28 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:29 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:29 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:28 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:29 AM  1000      2907       649         0  dwmbar
+12:53:29 AM  1000      4040      3070         0  dash
+
+12:53:29 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:30 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     5  dwmbar
+12:53:30 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:29 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:30 AM  1000      2907        20        20         0  dwmbar
+12:53:30 AM  1000      4040        10        10         0  dash
+
+12:53:29 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:30 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:30 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:53:29 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:30 AM  1000      2907       650         0  dwmbar
+12:53:30 AM  1000      4040      1273         0  dash
+
+12:53:30 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:31 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     5  dwmbar
+12:53:31 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:30 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:31 AM  1000      2907        10        10         0  dwmbar
+12:53:31 AM  1000      4040        30        40         0  dash
+
+12:53:30 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:31 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:31 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:53:30 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:31 AM  1000      2907       649         0  dwmbar
+12:53:31 AM  1000      4040      1801         0  dash
+
+12:53:31 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:32 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     5  dwmbar
+12:53:32 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:31 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:32 AM  1000      2907        10        10         0  dwmbar
+12:53:32 AM  1000      4040        30        40         0  dash
+
+12:53:31 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:32 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:32 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:31 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:32 AM  1000      2907       649         0  dwmbar
+12:53:32 AM  1000      4040      3079         0  dash
+
+12:53:32 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:33 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     5  dwmbar
+12:53:33 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:32 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:33 AM  1000      2907        10        20         0  dwmbar
+12:53:33 AM  1000      4040        40        50         0  dash
+
+12:53:32 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:33 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:33 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:32 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:33 AM  1000      2907       647         0  dwmbar
+12:53:33 AM  1000      4040      3067         0  dash
+
+12:53:33 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:34 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     5  dwmbar
+12:53:34 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    14  dash
+
+12:53:33 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:34 AM  1000      2907        10        20         0  dwmbar
+12:53:34 AM  1000      4040        40        60         0  dash
+
+12:53:33 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:34 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:34 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:33 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:34 AM  1000      2907       646         0  dwmbar
+12:53:34 AM  1000      4040      3077         0  dash
+
+12:53:34 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:35 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     5  dwmbar
+12:53:35 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:34 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:35 AM  1000      2907        20        10         0  dwmbar
+12:53:35 AM  1000      4040        40        50         0  dash
+
+12:53:34 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:35 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:35 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:34 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:35 AM  1000      2907       648         0  dwmbar
+12:53:35 AM  1000      4040      3081         0  dash
+
+12:53:35 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:36 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     5  dwmbar
+12:53:36 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    12  dash
+
+12:53:35 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:36 AM  1000      2907        10        20         0  dwmbar
+12:53:36 AM  1000      4040        30        50         0  dash
+
+12:53:35 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:36 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:36 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:35 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:36 AM  1000      2907       648         0  dwmbar
+12:53:36 AM  1000      4040      3079         0  dash
+
+12:53:36 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:37 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     5  dwmbar
+12:53:37 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:53:36 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:37 AM  1000      2907        10         0         0  dwmbar
+12:53:37 AM  1000      4040        40        50         0  dash
+
+12:53:36 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:37 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:37 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:36 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:37 AM  1000      2907       644         0  dwmbar
+12:53:37 AM  1000      4040      3084         0  dash
+
+12:53:37 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:38 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     5  dwmbar
+12:53:38 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:37 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:38 AM  1000      2907        20        20         0  dwmbar
+12:53:38 AM  1000      4040        10        20         0  dash
+
+12:53:37 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:38 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:38 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:53:37 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:38 AM  1000      2907       648         0  dwmbar
+12:53:38 AM  1000      4040      1276         0  dash
+
+12:53:38 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:39 AM  1000      2907    1.00    0.00    0.00    0.00    1.00     5  dwmbar
+12:53:39 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:38 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:39 AM  1000      2907        20        10         0  dwmbar
+12:53:39 AM  1000      4040        20        30         0  dash
+
+12:53:38 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:39 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:39 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:53:38 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:39 AM  1000      2907       650         0  dwmbar
+12:53:39 AM  1000      4040      1802         0  dash
+
+12:53:39 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:40 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     5  dwmbar
+12:53:40 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    14  dash
+
+12:53:39 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:40 AM  1000      2907        10        30         0  dwmbar
+12:53:40 AM  1000      4040        40        50         0  dash
+
+12:53:39 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:40 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:40 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:39 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:40 AM  1000      2907       648         0  dwmbar
+12:53:40 AM  1000      4040      3072         0  dash
+
+12:53:40 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:41 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     0  dwmbar
+12:53:41 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:53:40 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:41 AM  1000      2907        10        10         0  dwmbar
+12:53:41 AM  1000      4040        50        40         0  dash
+
+12:53:40 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:41 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:41 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:40 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:41 AM  1000      2907       650         0  dwmbar
+12:53:41 AM  1000      4040      3077         0  dash
+
+12:53:41 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:42 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     4  dwmbar
+12:53:42 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:41 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:42 AM  1000      2907        20        10         0  dwmbar
+12:53:42 AM  1000      4040        40        40         0  dash
+
+12:53:41 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:42 AM  1000      2907      6.00      0.00 1970700   10644   0.07  dwmbar
+12:53:42 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:41 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:42 AM  1000      2907       655         0  dwmbar
+12:53:42 AM  1000      4040      3082         0  dash
+
+12:53:42 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:43 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     4  dwmbar
+12:53:43 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    10  dash
+
+12:53:42 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:43 AM  1000      2907        10        20         0  dwmbar
+12:53:43 AM  1000      4040        40        60         0  dash
+
+12:53:42 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:43 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:43 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:42 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:43 AM  1000      2907       649         0  dwmbar
+12:53:43 AM  1000      4040      3078         0  dash
+
+12:53:43 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:44 AM  1000      2907    0.00    0.00    0.00    0.00    0.00     5  dwmbar
+12:53:44 AM  1000      4040    0.00    0.00    0.00    0.00    0.00     8  dash
+
+12:53:43 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:44 AM  1000      2907        10        10         0  dwmbar
+12:53:44 AM  1000      4040        30        40         0  dash
+
+12:53:43 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:44 AM  1000      2907     15.00      0.00 1970700   10644   0.07  dwmbar
+12:53:44 AM  1000      4040     46.00      0.00    6664    2952   0.02  dash
+
+12:53:43 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:44 AM  1000      2907       664         0  dwmbar
+12:53:44 AM  1000      4040      3074         0  dash
+
+12:53:44 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:45 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     5  dwmbar
+12:53:45 AM  1000      4040    0.00    1.00    0.00    0.00    1.00    12  dash
+
+12:53:44 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:45 AM  1000      2907        20        20         0  dwmbar
+12:53:45 AM  1000      4040        10        30         0  dash
+
+12:53:44 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:45 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:45 AM  1000      4040     20.00      0.00    6664    2952   0.02  dash
+
+12:53:44 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:45 AM  1000      2907       647         0  dwmbar
+12:53:45 AM  1000      4040      1272         0  dash
+
+12:53:45 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:53:46 AM  1000      2907    0.00    1.00    0.00    0.00    1.00     5  dwmbar
+12:53:46 AM  1000      4040    0.00    0.00    0.00    0.00    0.00    14  dash
+
+12:53:45 AM   UID       PID    usr-ms system-ms  guest-ms  Command
+12:53:46 AM  1000      2907        10        20         0  dwmbar
+12:53:46 AM  1000      4040        30        30         0  dash
+
+12:53:45 AM   UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
+12:53:46 AM  1000      2907      0.00      0.00 1970700   10644   0.07  dwmbar
+12:53:46 AM  1000      4040     26.00      0.00    6664    2952   0.02  dash
+
+12:53:45 AM   UID       PID minflt-nr majflt-nr  Command
+12:53:46 AM  1000      2907       651         0  dwmbar
+12:53:46 AM  1000      4040      1799         0  dash
 
 
 Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-Average:     1000     51987    0.00    0.16    0.00    0.00    0.16     -  dash
-Average:     1000     78066    0.24    0.66    0.00    0.00    0.90     -  dwmbar
+Average:     1000      2907    0.15    0.54    0.00    0.00    0.69     -  dwmbar
+Average:     1000      4040    0.00    0.17    0.00    0.00    0.17     -  dash
 
 Average:      UID       PID    usr-ms system-ms  guest-ms  Command
-Average:     1000     51987        30        41         0  dash
-Average:     1000     78066        14        16         0  dwmbar
+Average:     1000      2907        14        15         0  dwmbar
+Average:     1000      4040        32        44         0  dash
 
 Average:      UID       PID  minflt/s  majflt/s     VSZ     RSS   %MEM  Command
-Average:     1000     51987     40.77      0.00    6664    2912   0.02  dash
-Average:     1000     78066      3.50      0.00 1898348   10263   0.07  dwmbar
+Average:     1000      2907      0.31      0.00 1970700   10644   0.07  dwmbar
+Average:     1000      4040     39.67      0.00    6664    2952   0.02  dash
 
 Average:      UID       PID minflt-nr majflt-nr  Command
-Average:     1000     51987      2666         0  dash
-Average:     1000     78066       633         0  dwmbar
+Average:     1000      2907       633         0  dwmbar
+Average:     1000      4040      2653         0  dash
