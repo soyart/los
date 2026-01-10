@@ -34,12 +34,12 @@ func main() {
 		panic(err.Error())
 	}
 	updates := make(chan statusField, 8) // TODO: why 8 in the first place?
-	go poll(updates, kindClock, pollClock(conf.Clock.Settings), conf.Clock.Interval)
-	go poll(updates, kindVolume, pollVolume(conf.Volume.Settings), conf.Volume.Interval)
-	go poll(updates, kindFans, pollFans(conf.Fans.Settings), conf.Fans.Interval)
-	go poll(updates, kindBattery, pollBattery(conf.Battery.Settings), conf.Battery.Interval)
-	go poll(updates, kindBrightness, pollBrightness(conf.Brightness.Settings), conf.Brightness.Interval)
-	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures.Settings), conf.Temperatures.Interval)
+	go poll(updates, kindClock, pollClock(conf.Clock.Settings), conf.Clock.Interval.Duration())
+	go poll(updates, kindVolume, pollVolume(conf.Volume.Settings), conf.Volume.Interval.Duration())
+	go poll(updates, kindFans, pollFans(conf.Fans.Settings), conf.Fans.Interval.Duration())
+	go poll(updates, kindBattery, pollBattery(conf.Battery.Settings), conf.Battery.Interval.Duration())
+	go poll(updates, kindBrightness, pollBrightness(conf.Brightness.Settings), conf.Brightness.Interval.Duration())
+	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures.Settings), conf.Temperatures.Interval.Duration())
 
 	state := newStatusBar(conf)
 	lastOutput := ""

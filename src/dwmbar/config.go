@@ -1,6 +1,10 @@
 package main
 
-import "time"
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
 
 const configLocation = ".config/dwmbar/config.json"
 
@@ -15,48 +19,77 @@ type config struct {
 }
 
 type withInterval[T any] struct {
-	Interval time.Duration `json:"interval"`
-	Settings T             `json:"settings"`
+	Interval duration `json:"interval"`
+	Settings T        `json:"settings"`
+}
+
+// duration wraps time.duration with flexible JSON unmarshaling.
+// Accepts: "1s", "500ms", "5m" (Go duration strings) or numbers (seconds).
+type duration time.Duration
+
+func (d *duration) UnmarshalJSON(b []byte) error {
+	var v interface{}
+	if err := json.Unmarshal(b, &v); err != nil {
+		return err
+	}
+	switch value := v.(type) {
+	case string:
+		dur, err := time.ParseDuration(value)
+		if err != nil {
+			return err
+		}
+		*d = duration(dur)
+	case float64:
+		// Interpret as seconds
+		*d = duration(time.Duration(value * float64(time.Second)))
+	default:
+		return fmt.Errorf("invalid duration type: %T", v)
+	}
+	return nil
+}
+
+func (d duration) Duration() time.Duration {
+	return time.Duration(d)
 }
 
 func configDefault() config {
 	return config{
 		Title: usernameAtHost(),
 		Clock: withInterval[argsClock]{
-			Interval: 1 * time.Second,
+			Interval: duration(1 * time.Second),
 			Settings: argsClock{
 				// https://go.dev/src/time/format.go
 				Layout: "Monday, Jan 02 > 15:04",
 			},
 		},
 		Volume: withInterval[argsVolume]{
-			Interval: 1 * time.Second,
+			Interval: duration(200 * time.Millisecond),
 			Settings: argsVolume{
 				Backend: backendPipewire,
 			},
 		},
 		Fans: withInterval[argsFans]{
-			Interval: 1 * time.Second,
+			Interval: duration(1 * time.Second),
 			Settings: argsFans{
 				Cache: true,
 				Limit: 2,
 			},
 		},
 		Temperatures: withInterval[argsTemperatures]{
-			Interval: 1 * time.Second,
+			Interval: duration(5 * time.Second),
 			Settings: argsTemperatures{
 				Cache:    true,
 				Separate: false,
 			},
 		},
 		Battery: withInterval[argsBattery]{
-			Interval: 1 * time.Second,
+			Interval: duration(5 * time.Second),
 			Settings: argsBattery{
 				Cache: true,
 			},
 		},
 		Brightness: withInterval[argsBrightness]{
-			Interval: 1 * time.Second,
+			Interval: duration(500 * time.Millisecond),
 			Settings: argsBrightness{
 				Cache: true,
 			},
