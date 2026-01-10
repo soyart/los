@@ -95,6 +95,33 @@ in
               recursive = true;
             };
 
+            home.file.".config/dwmbar/config.json".text = builtins.toJSON {
+              clock = {
+                interval = "1s";
+                settings = { layout = "Monday, Jan 02 > 15:04"; };
+              };
+              volume = {
+                interval = "200ms";
+                settings = { backend = "pipewire"; };
+              };
+              fans = {
+                interval = "1s";
+                settings = { cache = true; limit = 2; };
+              };
+              temperatures = {
+                interval = "5s";
+                settings = { cache = true; separate = false; };
+              };
+              battery = {
+                interval = "5s";
+                settings = { cache = true; };
+              };
+              brightness = {
+                interval = "500ms";
+                settings = { cache = true; };
+              };
+            };
+
             programs.swaylock = swaylockCfg;
             programs.wofi = wofiCfg;
 

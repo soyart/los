@@ -104,6 +104,10 @@ func poll[T fmt.Stringer](
 }
 
 func newStatusBar(c config) statusBar {
+	title := c.Title
+	if title == "" {
+		title = usernameAtHost()
+	}
 	return statusBar{title: c.Title}
 }
 
