@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/godbus/dbus/v5"
 )
@@ -31,147 +30,126 @@ func (w wifi) String() string {
 	return fmt.Sprintf("wifi(%s): %s", w.iface, w.ssid)
 }
 
-// watchWifi watches for WiFi state changes via D-Bus signals.
-// It sends updates to the channel when the connection state changes.
-// Falls back to polling if signals aren't available.
-func watchWifi(ch chan<- statusField, args argsWifi, fallbackInterval time.Duration) {
+// watchWifi returns a watcher that listens for WiFi state changes via D-Bus signals.
+// This is a pure signal listener with no polling - polling is handled separately by poll().
+func watchWifi(args argsWifi) watcher[wifi] {
 	switch args.Backend {
 	case backendIwd:
-		watchWifiIwd(ch, fallbackInterval)
+		return watchWifiIwd
 	case backendNetworkManager:
-		watchWifiNetworkManager(ch, fallbackInterval)
+		return watchWifiNetworkManager
 	default:
-		// Fall back to NetworkManager
-		if err := watchWifiIwd(ch, fallbackInterval); err != nil {
-			watchWifiNetworkManager(ch, fallbackInterval)
-		}
+		return watchWifiAuto
 	}
 }
 
-// watchWifiIwd watches WiFi via iwd D-Bus with signal subscription
-func watchWifiIwd(ch chan<- statusField, fallbackInterval time.Duration) error {
+// watchWifiAuto tries iwd first, falls back to NetworkManager
+func watchWifiAuto(ch chan<- result[wifi]) {
 	conn, err := dbus.ConnectSystemBus()
 	if err != nil {
-		return fmt.Errorf("system bus: %w", err)
+		ch <- result[wifi]{err: fmt.Errorf("system bus: %w", err)}
+		return
 	}
-	// Note: connection kept open for the lifetime of the program
+	// Try iwd first
+	if err := subscribeIwd(conn); err == nil {
+		watchWifiIwdWithConn(conn, ch)
+		return
+	}
+	// Fall back to NetworkManager
+	if err := subscribeNetworkManager(conn); err == nil {
+		watchWifiNetworkManagerWithConn(conn, ch)
+		return
+	}
+	ch <- result[wifi]{err: fmt.Errorf("no wifi backend available")}
+}
 
-	// Subscribe to PropertiesChanged signals from iwd
-	if err := conn.AddMatchSignal(
+// watchWifiIwd is a pure D-Bus signal watcher for iwd (no polling)
+func watchWifiIwd(ch chan<- result[wifi]) {
+	conn, err := dbus.ConnectSystemBus()
+	if err != nil {
+		ch <- result[wifi]{err: fmt.Errorf("system bus: %w", err)}
+		return
+	}
+	if err := subscribeIwd(conn); err != nil {
+		conn.Close()
+		ch <- result[wifi]{err: err}
+		return
+	}
+	watchWifiIwdWithConn(conn, ch)
+}
+
+func subscribeIwd(conn *dbus.Conn) error {
+	return conn.AddMatchSignal(
 		dbus.WithMatchInterface("org.freedesktop.DBus.Properties"),
 		dbus.WithMatchMember("PropertiesChanged"),
 		dbus.WithMatchPathNamespace("/net/connman/iwd"),
-	); err != nil {
-		conn.Close()
-		return fmt.Errorf("add match signal: %w", err)
-	}
+	)
+}
 
+func watchWifiIwdWithConn(conn *dbus.Conn, ch chan<- result[wifi]) {
 	signals := make(chan *dbus.Signal, 10)
 	conn.Signal(signals)
 
-	// Get and send initial state
+	// Send initial state
 	w, err := getWifiIwdWithConn(conn)
-	sendWifiUpdate(ch, w, err)
-	lastState := w.String()
+	ch <- result[wifi]{value: w, err: err}
 
-	// Heartbeat ticker for fallback polling
-	ticker := time.NewTicker(fallbackInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case sig := <-signals:
-			// Check if this is a relevant signal (Station interface)
-			if len(sig.Body) >= 1 {
-				ifaceName, ok := sig.Body[0].(string)
-				if ok && (ifaceName == "net.connman.iwd.Station" ||
-					ifaceName == "net.connman.iwd.Network") {
-					// State changed, get fresh status
-					w, err = getWifiIwdWithConn(conn)
-					newState := w.String()
-					if newState != lastState {
-						sendWifiUpdate(ch, w, err)
-						lastState = newState
-					}
-				}
-			}
-		case <-ticker.C:
-			// Heartbeat: poll to catch any missed signals
-			w, err = getWifiIwdWithConn(conn)
-			newState := w.String()
-			if newState != lastState {
-				sendWifiUpdate(ch, w, err)
-				lastState = newState
+	// Pure signal handling - no ticker
+	for sig := range signals {
+		if len(sig.Body) >= 1 {
+			ifaceName, ok := sig.Body[0].(string)
+			if ok && (ifaceName == "net.connman.iwd.Station" ||
+				ifaceName == "net.connman.iwd.Network") {
+				w, err := getWifiIwdWithConn(conn)
+				ch <- result[wifi]{value: w, err: err}
 			}
 		}
 	}
 }
 
-// watchWifiNetworkManager watches WiFi via NetworkManager D-Bus with signal subscription
-func watchWifiNetworkManager(ch chan<- statusField, fallbackInterval time.Duration) error {
+// watchWifiNetworkManager is a pure D-Bus signal watcher for NetworkManager (no polling)
+func watchWifiNetworkManager(ch chan<- result[wifi]) {
 	conn, err := dbus.ConnectSystemBus()
 	if err != nil {
-		return fmt.Errorf("system bus: %w", err)
+		ch <- result[wifi]{err: fmt.Errorf("system bus: %w", err)}
+		return
 	}
-	// Note: connection kept open for the lifetime of the program
+	if err := subscribeNetworkManager(conn); err != nil {
+		conn.Close()
+		ch <- result[wifi]{err: err}
+		return
+	}
+	watchWifiNetworkManagerWithConn(conn, ch)
+}
 
-	// Subscribe to StateChanged and PropertiesChanged signals
-	if err := conn.AddMatchSignal(
+func subscribeNetworkManager(conn *dbus.Conn) error {
+	return conn.AddMatchSignal(
 		dbus.WithMatchInterface("org.freedesktop.DBus.Properties"),
 		dbus.WithMatchMember("PropertiesChanged"),
 		dbus.WithMatchPathNamespace("/org/freedesktop/NetworkManager"),
-	); err != nil {
-		conn.Close()
-		return fmt.Errorf("add match signal: %w", err)
-	}
+	)
+}
 
+func watchWifiNetworkManagerWithConn(conn *dbus.Conn, ch chan<- result[wifi]) {
 	signals := make(chan *dbus.Signal, 10)
 	conn.Signal(signals)
 
-	// Get and send initial state
+	// Send initial state
 	w, err := getWifiNetworkManagerWithConn(conn)
-	sendWifiUpdate(ch, w, err)
-	lastState := w.String()
+	ch <- result[wifi]{value: w, err: err}
 
-	// Heartbeat ticker for fallback polling
-	ticker := time.NewTicker(fallbackInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case sig := <-signals:
-			// Check if relevant (Device or AccessPoint changes)
-			if len(sig.Body) >= 1 {
-				ifaceName, ok := sig.Body[0].(string)
-				if ok && (strings.Contains(ifaceName, "Device") ||
-					strings.Contains(ifaceName, "AccessPoint") ||
-					strings.Contains(ifaceName, "Connection")) {
-					w, err = getWifiNetworkManagerWithConn(conn)
-					newState := w.String()
-					if newState != lastState {
-						sendWifiUpdate(ch, w, err)
-						lastState = newState
-					}
-				}
-			}
-		case <-ticker.C:
-			// Heartbeat: poll to catch any missed signals
-			w, err = getWifiNetworkManagerWithConn(conn)
-			newState := w.String()
-			if newState != lastState {
-				sendWifiUpdate(ch, w, err)
-				lastState = newState
+	// Pure signal handling - no ticker
+	for sig := range signals {
+		if len(sig.Body) >= 1 {
+			ifaceName, ok := sig.Body[0].(string)
+			if ok && (strings.Contains(ifaceName, "Device") ||
+				strings.Contains(ifaceName, "AccessPoint") ||
+				strings.Contains(ifaceName, "Connection")) {
+				w, err := getWifiNetworkManagerWithConn(conn)
+				ch <- result[wifi]{value: w, err: err}
 			}
 		}
 	}
-}
-
-func sendWifiUpdate(ch chan<- statusField, w wifi, err error) {
-	if err != nil {
-		ch <- statusField{kind: kindWifi, err: err}
-		return
-	}
-	ch <- statusField{kind: kindWifi, value: w}
 }
 
 // getWifiIwdWithConn gets WiFi status using an existing connection

@@ -29,6 +29,16 @@ type statusBar struct {
 // and the string is used as display value in our status bar.
 type poller[T fmt.Stringer] func() (T, error)
 
+// watcher is a function that sends live updates to a channel.
+// The watcher owns its lifecycle and sends result[T] updates.
+// Unlike pollers, watchers react to external events (e.g., D-Bus signals).
+type watcher[T fmt.Stringer] func(chan<- result[T])
+
+type result[T any] struct {
+	value T
+	err   error
+}
+
 func main() {
 	conf, err := newConfig()
 	if err != nil {
@@ -45,7 +55,8 @@ func main() {
 	go poll(updates, kindBattery, pollBattery(conf.Battery.Settings), conf.Battery.Interval.Duration())
 	go poll(updates, kindBrightness, pollBrightness(conf.Brightness.Settings), conf.Brightness.Interval.Duration())
 	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures.Settings), conf.Temperatures.Interval.Duration())
-	go watchWifi(updates, conf.Wifi.Settings, conf.Wifi.Interval.Duration())
+	go poll(updates, kindWifi, pollWifi(conf.Wifi.Settings), conf.Wifi.Interval.Duration())
+	go live(updates, kindWifi, watchWifi(conf.Wifi.Settings))
 
 	state := newStatusBar(conf)
 	lastOutput := ""
@@ -109,6 +120,29 @@ func poll[T fmt.Stringer](
 			last = s
 		}
 		time.Sleep(interval)
+	}
+}
+
+// live runs a watcher and forwards its results to the main status channel.
+// The watcher only knows about its own type T, not kind or statusField.
+// Deduplication is handled here, same as poll.
+func live[T fmt.Stringer](c chan<- statusField, k kind, w watcher[T]) {
+	updates := make(chan result[T], 1)
+	go w(updates)
+
+	var last string
+	for r := range updates {
+		if r.err != nil {
+			c <- statusField{kind: k, err: r.err}
+			last = r.err.Error()
+			continue
+		}
+
+		s := r.value.String()
+		if s != last {
+			c <- statusField{kind: k, value: r.value}
+			last = s
+		}
 	}
 }
 
