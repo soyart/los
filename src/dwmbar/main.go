@@ -95,6 +95,7 @@ func poll[T fmt.Stringer](
 				kind: k,
 				err:  err,
 			}
+			last = err.Error()
 			time.Sleep(interval)
 			continue
 		}
