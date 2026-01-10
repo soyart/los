@@ -96,10 +96,9 @@ func configDefault() config {
 			},
 		},
 		Wifi: withInterval[argsWifi]{
-			Interval: duration(5 * time.Second),
+			Interval: duration(30 * time.Second), // Heartbeat interval for signal fallback
 			Settings: argsWifi{
 				Backend: backendWifiAuto,
-				Cache:   true,
 			},
 		},
 	}

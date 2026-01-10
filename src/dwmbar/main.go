@@ -45,7 +45,7 @@ func main() {
 	go poll(updates, kindBattery, pollBattery(conf.Battery.Settings), conf.Battery.Interval.Duration())
 	go poll(updates, kindBrightness, pollBrightness(conf.Brightness.Settings), conf.Brightness.Interval.Duration())
 	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures.Settings), conf.Temperatures.Interval.Duration())
-	go poll(updates, kindWifi, pollWifi(conf.Wifi.Settings), conf.Wifi.Interval.Duration())
+	go watchWifi(updates, conf.Wifi.Settings, conf.Wifi.Interval.Duration())
 
 	state := newStatusBar(conf)
 	lastOutput := ""

@@ -121,8 +121,8 @@ in
                 settings = { cache = true; };
               };
               wifi = {
-                interval = "5s";
-                settings = { backend = "iwd"; cache = true; };
+                interval = "30s";  # Heartbeat fallback interval (event-driven)
+                settings = { backend = "iwd"; };
               };
             };
 

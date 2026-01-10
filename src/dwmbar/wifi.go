@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/godbus/dbus/v5"
 )
@@ -21,7 +22,6 @@ type wifi struct {
 
 type argsWifi struct {
 	Backend string `json:"backend"`
-	Cache   bool   `json:"cache"`
 }
 
 func (w wifi) String() string {
@@ -31,51 +31,165 @@ func (w wifi) String() string {
 	return fmt.Sprintf("wifi(%s): %s", w.iface, w.ssid)
 }
 
-func pollWifi(args argsWifi) poller[wifi] {
+// watchWifi watches for WiFi state changes via D-Bus signals.
+// It sends updates to the channel when the connection state changes.
+// Falls back to polling if signals aren't available.
+func watchWifi(ch chan<- statusField, args argsWifi, fallbackInterval time.Duration) {
 	switch args.Backend {
 	case backendIwd:
-		return getWifiIwd
+		watchWifiIwd(ch, fallbackInterval)
 	case backendNetworkManager:
-		return getWifiNetworkManager
+		watchWifiNetworkManager(ch, fallbackInterval)
+	default:
+		// Fall back to NetworkManager
+		if err := watchWifiIwd(ch, fallbackInterval); err != nil {
+			watchWifiNetworkManager(ch, fallbackInterval)
+		}
 	}
-	// auto: try iwd first, fall back to NetworkManager
-	return getWifiAuto
 }
 
-func getWifiAuto() (wifi, error) {
-	result, err := getWifiIwd()
-	if err == nil {
-		return result, nil
-	}
-	return getWifiNetworkManager()
-}
-
-// getWifiIwd gets WiFi status via iwd D-Bus (session bus)
-// Service: net.connman.iwd
-// Interface: net.connman.iwd.Station
-func getWifiIwd() (wifi, error) {
+// watchWifiIwd watches WiFi via iwd D-Bus with signal subscription
+func watchWifiIwd(ch chan<- statusField, fallbackInterval time.Duration) error {
 	conn, err := dbus.ConnectSystemBus()
 	if err != nil {
-		return wifi{}, fmt.Errorf("system bus: %w", err)
+		return fmt.Errorf("system bus: %w", err)
 	}
-	defer conn.Close()
+	// Note: connection kept open for the lifetime of the program
 
-	// Get managed objects to find station interface
+	// Subscribe to PropertiesChanged signals from iwd
+	if err := conn.AddMatchSignal(
+		dbus.WithMatchInterface("org.freedesktop.DBus.Properties"),
+		dbus.WithMatchMember("PropertiesChanged"),
+		dbus.WithMatchPathNamespace("/net/connman/iwd"),
+	); err != nil {
+		conn.Close()
+		return fmt.Errorf("add match signal: %w", err)
+	}
+
+	signals := make(chan *dbus.Signal, 10)
+	conn.Signal(signals)
+
+	// Get and send initial state
+	w, err := getWifiIwdWithConn(conn)
+	sendWifiUpdate(ch, w, err)
+	lastState := w.String()
+
+	// Heartbeat ticker for fallback polling
+	ticker := time.NewTicker(fallbackInterval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case sig := <-signals:
+			// Check if this is a relevant signal (Station interface)
+			if len(sig.Body) >= 1 {
+				ifaceName, ok := sig.Body[0].(string)
+				if ok && (ifaceName == "net.connman.iwd.Station" ||
+					ifaceName == "net.connman.iwd.Network") {
+					// State changed, get fresh status
+					w, err = getWifiIwdWithConn(conn)
+					newState := w.String()
+					if newState != lastState {
+						sendWifiUpdate(ch, w, err)
+						lastState = newState
+					}
+				}
+			}
+		case <-ticker.C:
+			// Heartbeat: poll to catch any missed signals
+			w, err = getWifiIwdWithConn(conn)
+			newState := w.String()
+			if newState != lastState {
+				sendWifiUpdate(ch, w, err)
+				lastState = newState
+			}
+		}
+	}
+}
+
+// watchWifiNetworkManager watches WiFi via NetworkManager D-Bus with signal subscription
+func watchWifiNetworkManager(ch chan<- statusField, fallbackInterval time.Duration) error {
+	conn, err := dbus.ConnectSystemBus()
+	if err != nil {
+		return fmt.Errorf("system bus: %w", err)
+	}
+	// Note: connection kept open for the lifetime of the program
+
+	// Subscribe to StateChanged and PropertiesChanged signals
+	if err := conn.AddMatchSignal(
+		dbus.WithMatchInterface("org.freedesktop.DBus.Properties"),
+		dbus.WithMatchMember("PropertiesChanged"),
+		dbus.WithMatchPathNamespace("/org/freedesktop/NetworkManager"),
+	); err != nil {
+		conn.Close()
+		return fmt.Errorf("add match signal: %w", err)
+	}
+
+	signals := make(chan *dbus.Signal, 10)
+	conn.Signal(signals)
+
+	// Get and send initial state
+	w, err := getWifiNetworkManagerWithConn(conn)
+	sendWifiUpdate(ch, w, err)
+	lastState := w.String()
+
+	// Heartbeat ticker for fallback polling
+	ticker := time.NewTicker(fallbackInterval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case sig := <-signals:
+			// Check if relevant (Device or AccessPoint changes)
+			if len(sig.Body) >= 1 {
+				ifaceName, ok := sig.Body[0].(string)
+				if ok && (strings.Contains(ifaceName, "Device") ||
+					strings.Contains(ifaceName, "AccessPoint") ||
+					strings.Contains(ifaceName, "Connection")) {
+					w, err = getWifiNetworkManagerWithConn(conn)
+					newState := w.String()
+					if newState != lastState {
+						sendWifiUpdate(ch, w, err)
+						lastState = newState
+					}
+				}
+			}
+		case <-ticker.C:
+			// Heartbeat: poll to catch any missed signals
+			w, err = getWifiNetworkManagerWithConn(conn)
+			newState := w.String()
+			if newState != lastState {
+				sendWifiUpdate(ch, w, err)
+				lastState = newState
+			}
+		}
+	}
+}
+
+func sendWifiUpdate(ch chan<- statusField, w wifi, err error) {
+	if err != nil {
+		ch <- statusField{kind: kindWifi, err: err}
+		return
+	}
+	ch <- statusField{kind: kindWifi, value: w}
+}
+
+// getWifiIwdWithConn gets WiFi status using an existing connection
+func getWifiIwdWithConn(conn *dbus.Conn) (wifi, error) {
 	iwd := conn.Object("net.connman.iwd", "/")
 	var objects map[dbus.ObjectPath]map[string]map[string]dbus.Variant
-	err = iwd.Call("org.freedesktop.DBus.ObjectManager.GetManagedObjects", 0).Store(&objects)
+	err := iwd.Call("org.freedesktop.DBus.ObjectManager.GetManagedObjects", 0).Store(&objects)
 	if err != nil {
 		return wifi{}, fmt.Errorf("get managed objects: %w", err)
 	}
 
-	// Find first Station object
 	for path, interfaces := range objects {
 		stationProps, hasStation := interfaces["net.connman.iwd.Station"]
 		if !hasStation {
 			continue
 		}
 
-		// Get device name from Device interface
+		// Get device name
 		deviceProps, hasDevice := interfaces["net.connman.iwd.Device"]
 		iface := ""
 		if hasDevice {
@@ -108,34 +222,21 @@ func getWifiIwd() (wifi, error) {
 		err = networkObj.Call("org.freedesktop.DBus.Properties.Get", 0,
 			"net.connman.iwd.Network", "Name").Store(&ssid)
 		if err != nil {
-			// Try to extract from path as fallback
 			ssid = extractSSIDFromPath(string(path))
 		}
 
-		return wifi{
-			iface:     iface,
-			ssid:      ssid,
-			connected: true,
-		}, nil
+		return wifi{iface: iface, ssid: ssid, connected: true}, nil
 	}
 
 	return wifi{}, fmt.Errorf("no iwd station found")
 }
 
-// getWifiNetworkManager gets WiFi status via NetworkManager D-Bus (system bus)
-// Service: org.freedesktop.NetworkManager
-func getWifiNetworkManager() (wifi, error) {
-	conn, err := dbus.ConnectSystemBus()
-	if err != nil {
-		return wifi{}, fmt.Errorf("system bus: %w", err)
-	}
-	defer conn.Close()
-
+// getWifiNetworkManagerWithConn gets WiFi status using an existing connection
+func getWifiNetworkManagerWithConn(conn *dbus.Conn) (wifi, error) {
 	nm := conn.Object("org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager")
 
-	// Get all devices
 	var devicePaths []dbus.ObjectPath
-	err = nm.Call("org.freedesktop.DBus.Properties.Get", 0,
+	err := nm.Call("org.freedesktop.DBus.Properties.Get", 0,
 		"org.freedesktop.NetworkManager", "Devices").Store(&devicePaths)
 	if err != nil {
 		return wifi{}, fmt.Errorf("get devices: %w", err)
@@ -185,21 +286,53 @@ func getWifiNetworkManager() (wifi, error) {
 			return wifi{iface: iface, connected: true, ssid: "unknown"}, nil
 		}
 
-		return wifi{
-			iface:     iface,
-			ssid:      string(ssidBytes),
-			connected: true,
-		}, nil
+		return wifi{iface: iface, ssid: string(ssidBytes), connected: true}, nil
 	}
 
 	return wifi{}, fmt.Errorf("no NetworkManager WiFi device found")
 }
 
 func extractSSIDFromPath(path string) string {
-	// Path format: /net/connman/iwd/0/4/SSID_hex
 	parts := strings.Split(path, "/")
 	if len(parts) > 0 {
 		return parts[len(parts)-1]
 	}
 	return "unknown"
+}
+
+// Legacy polling functions for compatibility
+func pollWifi(args argsWifi) poller[wifi] {
+	switch args.Backend {
+	case backendIwd:
+		return getWifiIwd
+	case backendNetworkManager:
+		return getWifiNetworkManager
+	}
+	return getWifiAuto
+}
+
+func getWifiAuto() (wifi, error) {
+	result, err := getWifiIwd()
+	if err == nil {
+		return result, nil
+	}
+	return getWifiNetworkManager()
+}
+
+func getWifiIwd() (wifi, error) {
+	conn, err := dbus.ConnectSystemBus()
+	if err != nil {
+		return wifi{}, fmt.Errorf("system bus: %w", err)
+	}
+	defer conn.Close()
+	return getWifiIwdWithConn(conn)
+}
+
+func getWifiNetworkManager() (wifi, error) {
+	conn, err := dbus.ConnectSystemBus()
+	if err != nil {
+		return wifi{}, fmt.Errorf("system bus: %w", err)
+	}
+	defer conn.Close()
+	return getWifiNetworkManagerWithConn(conn)
 }
