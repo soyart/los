@@ -88,7 +88,7 @@ func main() {
 		if !errors.Is(err, os.ErrNotExist) {
 			panic(err.Error())
 		}
-		fmt.Fprintf(os.Stderr, "error reading config file '%s': %s", configPath, err.Error())
+		fmt.Fprintf(os.Stderr, "error reading config file '%s': %s\n", configPath, err.Error())
 	}
 
 	var conf config
@@ -98,7 +98,7 @@ func main() {
 		if err != nil {
 			conf = configDefault()
 			fmt.Fprintf(os.Stderr, "error unmarshaling json file '%s': %s\n", configPath, err.Error())
-			fmt.Fprintf(os.Stderr, "using default config: %+v", conf)
+			fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
 		}
 	default:
 		conf = configDefault()
