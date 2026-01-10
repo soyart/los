@@ -14,7 +14,7 @@ type battery struct {
 }
 
 type argsBattery struct {
-	cache bool
+	Cache bool `json:"cache"`
 }
 
 func (b battery) String() string {
@@ -26,7 +26,7 @@ func (b battery) String() string {
 
 func getterBattery(args argsBattery) getter[battery] {
 	const pattern = "/sys/class/power_supply/BAT*"
-	if args.cache {
+	if args.Cache {
 		cachedPath := findFirstMatch(pattern)
 		return func() (battery, error) {
 			return getBattery(cachedPath)

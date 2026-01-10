@@ -12,8 +12,8 @@ type temperature struct {
 }
 
 type argsTemperatures struct {
-	cache    bool
-	separate bool
+	Cache    bool `json:"cache"`
+	Separate bool `json:"separate"`
 }
 
 func (f temperature) String() string {
@@ -41,15 +41,15 @@ func (f temperature) String() string {
 
 func getterTemperatures(args argsTemperatures) getter[temperature] {
 	const pattern = "/sys/class/hwmon/hwmon*/temp*_input"
-	if args.cache {
+	if args.Cache {
 		paths := findAllMatches(pattern)
 		return func() (temperature, error) {
-			return getTemperatures(paths, args.separate)
+			return getTemperatures(paths, args.Separate)
 		}
 	}
 	return func() (temperature, error) {
 		paths := findAllMatches(pattern)
-		return getTemperatures(paths, args.separate)
+		return getTemperatures(paths, args.Separate)
 	}
 }
 

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,13 +11,13 @@ import (
 )
 
 type statusBar struct {
-	title       string
-	now         statusField
-	fans        statusField
-	temperature statusField
-	volume      statusField
-	battery     statusField
-	brightness  statusField
+	title        string
+	clock        statusField
+	fans         statusField
+	temperatures statusField
+	volume       statusField
+	battery      statusField
+	brightness   statusField
 }
 
 type kind int
@@ -26,10 +28,21 @@ type statusField struct {
 	err   error
 }
 
+type config struct {
+	Title        string           `json:"title"`
+	Clock        argsClock        `json:"clock"`
+	Fans         argsFans         `json:"fans"`
+	Temperatures argsTemperatures `json:"temperatures"`
+	Battery      argsBattery      `json:"battery"`
+	Brightness   argsBrightness   `json:"brightness"`
+}
+
 type getter[T fmt.Stringer] func() (T, error)
 
 const (
-	kindNow kind = iota + 1
+	configLocation = ".config/dwmbar/config.json"
+
+	kindClock kind = iota + 1
 	kindVolume
 	kindFans
 	kindBattery
@@ -37,34 +50,76 @@ const (
 	kindTemperature
 )
 
+func configDefault() config {
+	return config{
+		Title: usernameAtHost(),
+		Clock: argsClock{
+			Layout: "Monday, Jan 02 > 15:04", // https://go.dev/src/time/format.go
+		},
+		Fans: argsFans{
+			Cache: true,
+			Limit: 2,
+		},
+		Temperatures: argsTemperatures{
+			Cache:    true,
+			Separate: false,
+		},
+		Battery: argsBattery{
+			Cache: true,
+		},
+		Brightness: argsBrightness{
+			Cache: true,
+		},
+	}
+}
+
+func newStatusBar(c config) statusBar {
+	return statusBar{title: c.Title}
+}
+
 func main() {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		panic(err.Error())
+	}
+	configPath := filepath.Join(home, configLocation)
+	j, err := os.ReadFile(configPath)
+	if err != nil {
+		if !errors.Is(err, os.ErrNotExist) {
+			panic(err.Error())
+		}
+		fmt.Fprintf(os.Stderr, "error reading config file '%s': %s", configPath, err.Error())
+	}
+
+	var conf config
+	switch {
+	case len(j) > 0:
+		err = json.Unmarshal(j, &conf)
+		if err != nil {
+			conf = configDefault()
+			fmt.Fprintf(os.Stderr, "error unmarshaling json file '%s': %s\n", configPath, err.Error())
+			fmt.Fprintf(os.Stderr, "using default config: %+v", conf)
+		}
+	default:
+		conf = configDefault()
+	}
+
 	updates := make(chan statusField, 8)
 
 	go watch(updates, kindVolume, getterVolume)
-	go watch(updates, kindNow, getterClock(argsClock{
-		layout: "Monday, Jan 02 > 15:04", // https://go.dev/src/time/format.go
-	}))
-	go watch(updates, kindFans, getterFans(argsFans{
-		cache: true,
-		limit: 2,
-	}))
-	go watch(updates, kindBattery, getterBattery(argsBattery{
-		cache: true,
-	}))
-	go watch(updates, kindBrightness, getterBrightness(argsBrightness{
-		cache: true,
-	}))
-	go watch(updates, kindTemperature, getterTemperatures(argsTemperatures{
-		cache:    true,
-		separate: false,
-	}))
+	go watch(updates, kindClock, getterClock(conf.Clock))
+	go watch(updates, kindFans, getterFans(conf.Fans))
+	go watch(updates, kindBattery, getterBattery(conf.Battery))
+	go watch(updates, kindBrightness, getterBrightness(conf.Brightness))
+	go watch(updates, kindTemperature, getterTemperatures(conf.Temperatures))
 
-	state := statusBar{title: getIdentity()}
+	state := newStatusBar(conf)
+
 	lastOutput := ""
 	for update := range updates {
 		switch update.kind {
-		case kindNow:
-			state.now = update
+		case kindClock:
+			state.clock = update
 		case kindVolume:
 			state.volume = update
 		case kindFans:
@@ -74,7 +129,7 @@ func main() {
 		case kindBrightness:
 			state.brightness = update
 		case kindTemperature:
-			state.temperature = update
+			state.temperatures = update
 		}
 
 		output := state.String()
@@ -87,6 +142,8 @@ func main() {
 
 func (u kind) String() string {
 	switch u {
+	case kindClock:
+		return "time"
 	case kindVolume:
 		return "volume"
 	case kindFans:
@@ -95,8 +152,6 @@ func (u kind) String() string {
 		return "battery"
 	case kindBrightness:
 		return "brightness"
-	case kindNow:
-		return "time"
 	case kindTemperature:
 		return "temperature"
 	}
@@ -105,6 +160,8 @@ func (u kind) String() string {
 
 func updateInterval(u kind) time.Duration {
 	switch u {
+	case kindClock:
+		return 1 * time.Second
 	case kindVolume:
 		return 1 * time.Second
 	case kindFans:
@@ -112,8 +169,6 @@ func updateInterval(u kind) time.Duration {
 	case kindBattery:
 		return 1 * time.Second
 	case kindBrightness:
-		return 1 * time.Second
-	case kindNow:
 		return 1 * time.Second
 	case kindTemperature:
 		return 1 * time.Second
@@ -138,7 +193,7 @@ func (s statusField) String() string {
 }
 
 func (s statusBar) String() string {
-	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s", s.title, s.fans, s.temperature, s.battery, s.brightness, s.volume, s.now)
+	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s", s.title, s.fans, s.temperatures, s.battery, s.brightness, s.volume, s.clock)
 }
 
 func watch[T fmt.Stringer](
@@ -177,14 +232,14 @@ func watchTime(ch chan<- statusField) {
 		now := time.Now()
 		s := now.Format("Monday, Jan 02 > 15:04")
 		if s != lastStr {
-			ch <- statusField{kind: kindNow, value: now}
+			ch <- statusField{kind: kindClock, value: now}
 			lastStr = s
 		}
 		time.Sleep(1 * time.Second)
 	}
 }
 
-func getIdentity() string {
+func usernameAtHost() string {
 	if len(os.Args) > 1 && os.Args[1] != "" {
 		return os.Args[1]
 	}

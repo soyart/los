@@ -8,7 +8,7 @@ type clock struct {
 }
 
 type argsClock struct {
-	layout string
+	Layout string `json:"layout"`
 }
 
 func (c clock) String() string {
@@ -18,7 +18,7 @@ func (c clock) String() string {
 func getterClock(args argsClock) getter[clock] {
 	return func() (clock, error) {
 		return clock{
-			layout: args.layout,
+			layout: args.Layout,
 			now:    time.Now(),
 		}, nil
 	}

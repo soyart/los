@@ -13,8 +13,8 @@ type fans struct {
 }
 
 type argsFans struct {
-	cache bool
-	limit int
+	Cache bool `json:"cache"`
+	Limit int  `json:"limit"`
 }
 
 func (f fans) String() string {
@@ -39,15 +39,15 @@ func (f fans) String() string {
 
 func getterFans(args argsFans) getter[fans] {
 	const pattern = "/sys/class/hwmon/hwmon*/fan*_input"
-	if args.cache {
+	if args.Cache {
 		cachedPaths := findAllMatches(pattern)
 		return func() (fans, error) {
-			return getFans(cachedPaths, args.limit)
+			return getFans(cachedPaths, args.Limit)
 		}
 	}
 	return func() (fans, error) {
 		cachedPaths := findAllMatches(pattern)
-		return getFans(cachedPaths, args.limit)
+		return getFans(cachedPaths, args.Limit)
 	}
 }
 

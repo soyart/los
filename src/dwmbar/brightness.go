@@ -12,7 +12,7 @@ type brightness struct {
 }
 
 type argsBrightness struct {
-	cache bool
+	Cache bool `json:"cache"`
 }
 
 func (b brightness) String() string {
@@ -21,7 +21,7 @@ func (b brightness) String() string {
 
 func getterBrightness(args argsBrightness) getter[brightness] {
 	const pattern = "/sys/class/backlight/*"
-	if args.cache {
+	if args.Cache {
 		path := findFirstMatch(pattern)
 		return func() (brightness, error) {
 			return getBrightness(path)
