@@ -29,32 +29,10 @@ type statusBar struct {
 type poller[T fmt.Stringer] func() (T, error)
 
 func main() {
-	home, err := os.UserHomeDir()
+	conf, err := newConfig()
 	if err != nil {
 		panic(err.Error())
 	}
-	configPath := filepath.Join(home, configLocation)
-	j, err := os.ReadFile(configPath)
-	if err != nil {
-		if !errors.Is(err, os.ErrNotExist) {
-			panic(err.Error())
-		}
-		fmt.Fprintf(os.Stderr, "error reading config file '%s': %s\n", configPath, err.Error())
-	}
-
-	var conf config
-	switch {
-	case len(j) > 0:
-		err = json.Unmarshal(j, &conf)
-		if err != nil {
-			conf = configDefault()
-			fmt.Fprintf(os.Stderr, "error unmarshaling json file '%s': %s\n", configPath, err.Error())
-			fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
-		}
-	default:
-		conf = configDefault()
-	}
-
 	updates := make(chan statusField, 8) // TODO: why 8 in the first place?
 	go poll(updates, kindClock, pollClock(conf.Clock.Settings), conf.Clock.Interval)
 	go poll(updates, kindVolume, pollVolume(conf.Volume.Settings), conf.Volume.Interval)
@@ -184,6 +162,35 @@ const (
 	kindBrightness
 	kindTemperatures
 )
+
+func newConfig() (config, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return config{}, err
+	}
+	configPath := filepath.Join(home, configLocation)
+	j, err := os.ReadFile(configPath)
+	if err != nil {
+		// Use default if no config is found
+		if errors.Is(err, os.ErrNotExist) {
+			return configDefault(), nil
+		}
+		// Other read errors are not tolerated
+		fmt.Fprintf(os.Stderr, "error reading config file '%s': %s\n", configPath, err.Error())
+		return config{}, err
+	}
+
+	var conf config
+	if len(j) != 0 {
+		err = json.Unmarshal(j, &conf)
+		if err != nil {
+			conf = configDefault()
+			fmt.Fprintf(os.Stderr, "error unmarshaling json file '%s': %s\n", configPath, err.Error())
+			fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
+		}
+	}
+	return conf, nil
+}
 
 func usernameAtHost() string {
 	if len(os.Args) > 1 && os.Args[1] != "" {
