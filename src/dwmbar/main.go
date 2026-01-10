@@ -10,7 +10,7 @@ import (
 
 type statusBar struct {
 	title       string
-	now         time.Time
+	now         statusField
 	fans        statusField
 	temperature statusField
 	volume      statusField
@@ -29,28 +29,41 @@ type statusField struct {
 type getter[T fmt.Stringer] func() (T, error)
 
 const (
-	kindVolume kind = iota + 1
+	kindNow kind = iota + 1
+	kindVolume
 	kindFans
 	kindBattery
 	kindBrightness
-	kindTimeNow
 	kindTemperature
 )
 
 func main() {
 	updates := make(chan statusField, 8)
 
-	go watchTime(updates)
-	go watch(updates, kindVolume, getVolumeV2)
-	go watch(updates, kindFans, getFansCached())
-	go watch(updates, kindBattery, getBatteryCached())
-	go watch(updates, kindBrightness, getBrightnessCached())
-	go watch(updates, kindTemperature, getTemperaturesCached())
+	go watch(updates, kindVolume, getterVolume)
+	go watch(updates, kindNow, getterClock(argsClock{
+		layout: "Monday, Jan 02 > 15:04", // https://go.dev/src/time/format.go
+	}))
+	go watch(updates, kindFans, getterFans(argsFans{
+		cache: true,
+	}))
+	go watch(updates, kindBattery, getterBattery(argsBattery{
+		cache: true,
+	}))
+	go watch(updates, kindBrightness, getterBrightness(argsBrightness{
+		cache: true,
+	}))
+	go watch(updates, kindTemperature, getterTemperatures(argsTemperatures{
+		cache:    true,
+		separate: false,
+	}))
 
 	state := statusBar{title: getIdentity()}
 	lastOutput := ""
 	for update := range updates {
 		switch update.kind {
+		case kindNow:
+			state.now = update
 		case kindVolume:
 			state.volume = update
 		case kindFans:
@@ -61,13 +74,11 @@ func main() {
 			state.brightness = update
 		case kindTemperature:
 			state.temperature = update
-		case kindTimeNow:
-			state.now = update.value.(time.Time)
 		}
 
 		output := state.String()
 		if output != lastOutput {
-			fmt.Println(output)
+			os.Stdout.Write([]byte(output))
 			lastOutput = output
 		}
 	}
@@ -83,7 +94,7 @@ func (u kind) String() string {
 		return "battery"
 	case kindBrightness:
 		return "brightness"
-	case kindTimeNow:
+	case kindNow:
 		return "time"
 	case kindTemperature:
 		return "temperature"
@@ -101,7 +112,7 @@ func updateInterval(u kind) time.Duration {
 		return 1 * time.Second
 	case kindBrightness:
 		return 1 * time.Second
-	case kindTimeNow:
+	case kindNow:
 		return 1 * time.Second
 	case kindTemperature:
 		return 1 * time.Second
@@ -126,22 +137,21 @@ func (s statusField) String() string {
 }
 
 func (s statusBar) String() string {
-	timeStr := strings.ToLower(s.now.Format("Monday, Jan 02 > 15:04"))
-	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s", s.title, s.fans, s.temperature, s.battery, s.brightness, s.volume, timeStr)
+	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s", s.title, s.fans, s.temperature, s.battery, s.brightness, s.volume, s.now)
 }
 
 func watch[T fmt.Stringer](
 	ch chan<- statusField,
-	kind kind,
+	k kind,
 	g getter[T],
 ) {
-	interval := updateInterval(kind)
+	interval := updateInterval(k)
 	var lastStr string
 	for {
 		val, err := g()
 		if err != nil {
 			ch <- statusField{
-				kind: kind,
+				kind: k,
 				err:  err,
 			}
 			time.Sleep(interval)
@@ -151,7 +161,7 @@ func watch[T fmt.Stringer](
 		s := val.String()
 		if s != lastStr {
 			ch <- statusField{
-				kind:  kind,
+				kind:  k,
 				value: val,
 			}
 			lastStr = s
@@ -166,7 +176,7 @@ func watchTime(ch chan<- statusField) {
 		now := time.Now()
 		s := now.Format("Monday, Jan 02 > 15:04")
 		if s != lastStr {
-			ch <- statusField{kind: kindTimeNow, value: now}
+			ch <- statusField{kind: kindNow, value: now}
 			lastStr = s
 		}
 		time.Sleep(1 * time.Second)

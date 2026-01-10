@@ -11,6 +11,10 @@ type fans struct {
 	temps []int // degrees Celsius
 }
 
+type argsFans struct {
+	cache bool
+}
+
 func (f fans) String() string {
 	parts := []string{}
 	if len(f.rpms) != 0 {
@@ -31,14 +35,21 @@ func (f fans) String() string {
 	return strings.Join(parts, " | ")
 }
 
-func getFansCached() getter[fans] {
-	return cache(
-		findAllMatches("/sys/class/hwmon/hwmon*/fan*_input"),
-		readFan,
-	)
+func getterFans(args argsFans) getter[fans] {
+	const pattern = "/sys/class/hwmon/hwmon*/fan*_input"
+	if args.cache {
+		cachedPaths := findAllMatches(pattern)
+		return func() (fans, error) {
+			return getFans(cachedPaths)
+		}
+	}
+	return func() (fans, error) {
+		cachedPaths := findAllMatches(pattern)
+		return getFans(cachedPaths)
+	}
 }
 
-func readFan(fanPaths []string) (fans, error) {
+func getFans(fanPaths []string) (fans, error) {
 	rpms := make([]uint64, 0, len(fanPaths))
 	for _, fanFile := range fanPaths {
 		state := readFile(fanFile)

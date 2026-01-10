@@ -11,19 +11,26 @@ type brightness struct {
 	max   uint
 }
 
+type argsBrightness struct {
+	cache bool
+}
+
 func (b brightness) String() string {
 	return fmt.Sprintf("bright: %.2f%%", float64(b.value)/float64(b.max)*100.0)
 }
 
-func getBrightnessCached() getter[brightness] {
-	return cache(
-		findFirstMatch("/sys/class/backlight/*"),
-		getBrightness,
-	)
-}
-
-func getBrightnessV2() (brightness, error) {
-	return getBrightness(findFirstMatch("/sys/class/backlight/*"))
+func getterBrightness(args argsBrightness) getter[brightness] {
+	const pattern = "/sys/class/backlight/*"
+	if args.cache {
+		path := findFirstMatch(pattern)
+		return func() (brightness, error) {
+			return getBrightness(path)
+		}
+	}
+	return func() (brightness, error) {
+		path := findFirstMatch(pattern)
+		return getBrightness(path)
+	}
 }
 
 func getBrightness(path string) (brightness, error) {

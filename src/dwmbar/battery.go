@@ -13,6 +13,10 @@ type battery struct {
 	status     string
 }
 
+type argsBattery struct {
+	cache bool
+}
+
 func (b battery) String() string {
 	if b.status == "" {
 		return fmt.Sprintf("battery(unknown): %d%%", b.percentage)
@@ -20,17 +24,18 @@ func (b battery) String() string {
 	return fmt.Sprintf("battery(%s): %d%%", b.status, b.percentage)
 }
 
-func getBatteryCached() getter[battery] {
-	return cache(
-		findFirstMatch("/sys/class/power_supply/BAT*"),
-		getBattery,
-	)
-}
-
-func getBatteryV2() (battery, error) {
-	return getBattery(
-		findFirstMatch("/sys/class/power_supply/BAT*"),
-	)
+func getterBattery(args argsBattery) getter[battery] {
+	const pattern = "/sys/class/power_supply/BAT*"
+	if args.cache {
+		cachedPath := findFirstMatch(pattern)
+		return func() (battery, error) {
+			return getBattery(cachedPath)
+		}
+	}
+	return func() (battery, error) {
+		path := findFirstMatch(pattern)
+		return getBattery(path)
+	}
 }
 
 func getBattery(path string) (battery, error) {
