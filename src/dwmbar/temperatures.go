@@ -39,7 +39,7 @@ func (f temperature) String() string {
 	return fmt.Sprintf("temperature(avg): %.2f°C", avg)
 }
 
-func getterTemperatures(args argsTemperatures) getter[temperature] {
+func pollTemperatures(args argsTemperatures) poller[temperature] {
 	const pattern = "/sys/class/hwmon/hwmon*/temp*_input"
 	if args.Cache {
 		paths := findAllMatches(pattern)

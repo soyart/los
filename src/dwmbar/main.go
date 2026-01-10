@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// statusBar defines the status bar current states
 type statusBar struct {
 	title        string
 	clock        statusField
@@ -20,61 +21,43 @@ type statusBar struct {
 	brightness   statusField
 }
 
-type kind int
+// poller is any simple function that returns a stringer.
+// The function is called at interval by [poll].
+//
+// The return value `r` is mapped to string via `r.String()`,
+// and the string is used as display value in our status bar.
+type poller[T fmt.Stringer] func() (T, error)
 
-type statusField struct {
-	kind  kind
-	value fmt.Stringer
-	err   error
-}
+// poll uses poller p to poll T at some interval, then wraps T
+// with statusField and sends the field through chanel c
+func poll[T fmt.Stringer](
+	c chan<- statusField,
+	k kind,
+	p poller[T],
+	interval time.Duration,
+) {
+	var last string
+	for {
+		val, err := p()
+		if err != nil {
+			c <- statusField{
+				kind: k,
+				err:  err,
+			}
+			time.Sleep(interval)
+			continue
+		}
 
-type config struct {
-	Title        string           `json:"title"`
-	Clock        argsClock        `json:"clock"`
-	Fans         argsFans         `json:"fans"`
-	Temperatures argsTemperatures `json:"temperatures"`
-	Battery      argsBattery      `json:"battery"`
-	Brightness   argsBrightness   `json:"brightness"`
-}
-
-type getter[T fmt.Stringer] func() (T, error)
-
-const (
-	configLocation = ".config/dwmbar/config.json"
-
-	kindClock kind = iota + 1
-	kindVolume
-	kindFans
-	kindBattery
-	kindBrightness
-	kindTemperature
-)
-
-func configDefault() config {
-	return config{
-		Title: usernameAtHost(),
-		Clock: argsClock{
-			Layout: "Monday, Jan 02 > 15:04", // https://go.dev/src/time/format.go
-		},
-		Fans: argsFans{
-			Cache: true,
-			Limit: 2,
-		},
-		Temperatures: argsTemperatures{
-			Cache:    true,
-			Separate: false,
-		},
-		Battery: argsBattery{
-			Cache: true,
-		},
-		Brightness: argsBrightness{
-			Cache: true,
-		},
+		s := val.String()
+		if s != last {
+			c <- statusField{
+				kind:  k,
+				value: val,
+			}
+			last = s
+		}
+		time.Sleep(interval)
 	}
-}
-
-func newStatusBar(c config) statusBar {
-	return statusBar{title: c.Title}
 }
 
 func main() {
@@ -104,14 +87,13 @@ func main() {
 		conf = configDefault()
 	}
 
-	updates := make(chan statusField, 8)
-
-	go watch(updates, kindVolume, getterVolume)
-	go watch(updates, kindClock, getterClock(conf.Clock))
-	go watch(updates, kindFans, getterFans(conf.Fans))
-	go watch(updates, kindBattery, getterBattery(conf.Battery))
-	go watch(updates, kindBrightness, getterBrightness(conf.Brightness))
-	go watch(updates, kindTemperature, getterTemperatures(conf.Temperatures))
+	updates := make(chan statusField, 8) // TODO: why 8 in the first place?
+	go poll(updates, kindClock, pollClock(conf.Clock), defaultInterval(kindClock))
+	go poll(updates, kindVolume, pollVolume, defaultInterval(kindVolume))
+	go poll(updates, kindFans, pollFans(conf.Fans), defaultInterval(kindFans))
+	go poll(updates, kindBattery, pollBattery(conf.Battery), defaultInterval(kindBattery))
+	go poll(updates, kindBrightness, pollBrightness(conf.Brightness), defaultInterval(kindBrightness))
+	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures), defaultInterval(kindTemperatures))
 
 	state := newStatusBar(conf)
 
@@ -128,7 +110,7 @@ func main() {
 			state.battery = update
 		case kindBrightness:
 			state.brightness = update
-		case kindTemperature:
+		case kindTemperatures:
 			state.temperatures = update
 		}
 
@@ -138,6 +120,10 @@ func main() {
 			lastOutput = output
 		}
 	}
+}
+
+func newStatusBar(c config) statusBar {
+	return statusBar{title: c.Title}
 }
 
 func (u kind) String() string {
@@ -152,14 +138,14 @@ func (u kind) String() string {
 		return "battery"
 	case kindBrightness:
 		return "brightness"
-	case kindTemperature:
+	case kindTemperatures:
 		return "temperature"
 	}
 	panic("uncaught kind=" + fmt.Sprintf("%d", u))
 }
 
-func updateInterval(u kind) time.Duration {
-	switch u {
+func defaultInterval(k kind) time.Duration {
+	switch k {
 	case kindClock:
 		return 1 * time.Second
 	case kindVolume:
@@ -170,11 +156,16 @@ func updateInterval(u kind) time.Duration {
 		return 1 * time.Second
 	case kindBrightness:
 		return 1 * time.Second
-	case kindTemperature:
+	case kindTemperatures:
 		return 1 * time.Second
 	}
-	panic("uncaught kind=" + fmt.Sprintf("%d", u))
+	panic("uncaught kind=" + fmt.Sprintf("%d", k))
 }
+
+func (s statusBar) String() string {
+	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s", s.title, s.fans, s.temperatures, s.battery, s.brightness, s.volume, s.clock)
+}
+
 func (s statusField) String() string {
 	empty := statusField{}
 	if s.kind == 0 {
@@ -192,52 +183,22 @@ func (s statusField) String() string {
 	return fmt.Sprintf("%s: null", s.kind.String())
 }
 
-func (s statusBar) String() string {
-	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s", s.title, s.fans, s.temperatures, s.battery, s.brightness, s.volume, s.clock)
+type statusField struct {
+	kind  kind
+	value fmt.Stringer
+	err   error
 }
 
-func watch[T fmt.Stringer](
-	ch chan<- statusField,
-	k kind,
-	g getter[T],
-) {
-	interval := updateInterval(k)
-	var lastStr string
-	for {
-		val, err := g()
-		if err != nil {
-			ch <- statusField{
-				kind: k,
-				err:  err,
-			}
-			time.Sleep(interval)
-			continue
-		}
+type kind int
 
-		s := val.String()
-		if s != lastStr {
-			ch <- statusField{
-				kind:  k,
-				value: val,
-			}
-			lastStr = s
-		}
-		time.Sleep(interval)
-	}
-}
-
-func watchTime(ch chan<- statusField) {
-	var lastStr string
-	for {
-		now := time.Now()
-		s := now.Format("Monday, Jan 02 > 15:04")
-		if s != lastStr {
-			ch <- statusField{kind: kindClock, value: now}
-			lastStr = s
-		}
-		time.Sleep(1 * time.Second)
-	}
-}
+const (
+	kindClock kind = iota + 1
+	kindVolume
+	kindFans
+	kindBattery
+	kindBrightness
+	kindTemperatures
+)
 
 func usernameAtHost() string {
 	if len(os.Args) > 1 && os.Args[1] != "" {

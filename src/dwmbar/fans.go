@@ -37,7 +37,7 @@ func (f fans) String() string {
 	return strings.Join(parts, " | ")
 }
 
-func getterFans(args argsFans) getter[fans] {
+func pollFans(args argsFans) poller[fans] {
 	const pattern = "/sys/class/hwmon/hwmon*/fan*_input"
 	if args.Cache {
 		cachedPaths := findAllMatches(pattern)

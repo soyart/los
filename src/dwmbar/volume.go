@@ -21,7 +21,7 @@ func (v volume) String() string {
 	return fmt.Sprintf("vol: %.2f", v.percent)
 }
 
-func getterVolume() (volume, error) {
+func pollVolume() (volume, error) {
 	result, err := getVolumeDBusV2()
 	if err == nil {
 		return result, nil

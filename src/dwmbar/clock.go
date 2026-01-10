@@ -15,7 +15,7 @@ func (c clock) String() string {
 	return c.now.Format(c.layout)
 }
 
-func getterClock(args argsClock) getter[clock] {
+func pollClock(args argsClock) poller[clock] {
 	return func() (clock, error) {
 		return clock{
 			layout: args.Layout,

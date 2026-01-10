@@ -19,7 +19,7 @@ func (b brightness) String() string {
 	return fmt.Sprintf("bright: %.2f%%", float64(b.value)/float64(b.max)*100.0)
 }
 
-func getterBrightness(args argsBrightness) getter[brightness] {
+func pollBrightness(args argsBrightness) poller[brightness] {
 	const pattern = "/sys/class/backlight/*"
 	if args.Cache {
 		path := findFirstMatch(pattern)

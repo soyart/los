@@ -24,7 +24,7 @@ func (b battery) String() string {
 	return fmt.Sprintf("battery(%s): %d%%", b.status, b.percentage)
 }
 
-func getterBattery(args argsBattery) getter[battery] {
+func pollBattery(args argsBattery) poller[battery] {
 	const pattern = "/sys/class/power_supply/BAT*"
 	if args.Cache {
 		cachedPath := findFirstMatch(pattern)
