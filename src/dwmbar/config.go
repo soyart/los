@@ -1,35 +1,65 @@
 package main
 
+import "time"
+
 const configLocation = ".config/dwmbar/config.json"
 
 type config struct {
-	Title        string           `json:"title"`
-	Clock        argsClock        `json:"clock"`
-	Fans         argsFans         `json:"fans"`
-	Temperatures argsTemperatures `json:"temperatures"`
-	Battery      argsBattery      `json:"battery"`
-	Brightness   argsBrightness   `json:"brightness"`
+	Title        string                         `json:"title"`
+	Clock        withInterval[argsClock]        `json:"clock"`
+	Volume       withInterval[argsVolume]       `json:"volume"`
+	Fans         withInterval[argsFans]         `json:"fans"`
+	Temperatures withInterval[argsTemperatures] `json:"temperatures"`
+	Battery      withInterval[argsBattery]      `json:"battery"`
+	Brightness   withInterval[argsBrightness]   `json:"brightness"`
+}
+
+type withInterval[T any] struct {
+	Interval time.Duration `json:"interval"`
+	Settings T             `json:"settings"`
 }
 
 func configDefault() config {
 	return config{
 		Title: usernameAtHost(),
-		Clock: argsClock{
-			Layout: "Monday, Jan 02 > 15:04", // https://go.dev/src/time/format.go
+		Clock: withInterval[argsClock]{
+			Interval: 1 * time.Second,
+			Settings: argsClock{
+				// https://go.dev/src/time/format.go
+				Layout: "Monday, Jan 02 > 15:04",
+			},
 		},
-		Fans: argsFans{
-			Cache: true,
-			Limit: 2,
+		Volume: withInterval[argsVolume]{
+			Interval: 1 * time.Second,
+			Settings: argsVolume{
+				Backend: backendPipewire,
+			},
 		},
-		Temperatures: argsTemperatures{
-			Cache:    true,
-			Separate: false,
+		Fans: withInterval[argsFans]{
+			Interval: 1 * time.Second,
+			Settings: argsFans{
+				Cache: true,
+				Limit: 2,
+			},
 		},
-		Battery: argsBattery{
-			Cache: true,
+		Temperatures: withInterval[argsTemperatures]{
+			Interval: 1 * time.Second,
+			Settings: argsTemperatures{
+				Cache:    true,
+				Separate: false,
+			},
 		},
-		Brightness: argsBrightness{
-			Cache: true,
+		Battery: withInterval[argsBattery]{
+			Interval: 1 * time.Second,
+			Settings: argsBattery{
+				Cache: true,
+			},
+		},
+		Brightness: withInterval[argsBrightness]{
+			Interval: 1 * time.Second,
+			Settings: argsBrightness{
+				Cache: true,
+			},
 		},
 	}
 }

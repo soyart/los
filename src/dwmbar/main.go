@@ -24,41 +24,9 @@ type statusBar struct {
 // poller is any simple function that returns a stringer.
 // The function is called at interval by [poll].
 //
-// The return value `r` is mapped to string via `r.String()`,
+// The return value is mapped to string via its method T.String,
 // and the string is used as display value in our status bar.
 type poller[T fmt.Stringer] func() (T, error)
-
-// poll uses poller p to poll T at some interval, then wraps T
-// with statusField and sends the field through chanel c
-func poll[T fmt.Stringer](
-	c chan<- statusField,
-	k kind,
-	p poller[T],
-	interval time.Duration,
-) {
-	var last string
-	for {
-		val, err := p()
-		if err != nil {
-			c <- statusField{
-				kind: k,
-				err:  err,
-			}
-			time.Sleep(interval)
-			continue
-		}
-
-		s := val.String()
-		if s != last {
-			c <- statusField{
-				kind:  k,
-				value: val,
-			}
-			last = s
-		}
-		time.Sleep(interval)
-	}
-}
 
 func main() {
 	home, err := os.UserHomeDir()
@@ -88,15 +56,14 @@ func main() {
 	}
 
 	updates := make(chan statusField, 8) // TODO: why 8 in the first place?
-	go poll(updates, kindClock, pollClock(conf.Clock), defaultInterval(kindClock))
-	go poll(updates, kindVolume, pollVolume, defaultInterval(kindVolume))
-	go poll(updates, kindFans, pollFans(conf.Fans), defaultInterval(kindFans))
-	go poll(updates, kindBattery, pollBattery(conf.Battery), defaultInterval(kindBattery))
-	go poll(updates, kindBrightness, pollBrightness(conf.Brightness), defaultInterval(kindBrightness))
-	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures), defaultInterval(kindTemperatures))
+	go poll(updates, kindClock, pollClock(conf.Clock.Settings), conf.Clock.Interval)
+	go poll(updates, kindVolume, pollVolume(conf.Volume.Settings), conf.Volume.Interval)
+	go poll(updates, kindFans, pollFans(conf.Fans.Settings), conf.Fans.Interval)
+	go poll(updates, kindBattery, pollBattery(conf.Battery.Settings), conf.Battery.Interval)
+	go poll(updates, kindBrightness, pollBrightness(conf.Brightness.Settings), conf.Brightness.Interval)
+	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures.Settings), conf.Temperatures.Interval)
 
 	state := newStatusBar(conf)
-
 	lastOutput := ""
 	for update := range updates {
 		switch update.kind {
@@ -122,6 +89,42 @@ func main() {
 	}
 }
 
+// poll uses poller p to poll T at some interval, then wraps T
+// with statusField and sends the field through chanel c
+func poll[T fmt.Stringer](
+	c chan<- statusField,
+	k kind,
+	p poller[T],
+	interval time.Duration,
+) {
+	if interval == 0 {
+		interval = 1 * time.Second
+	}
+
+	var last string
+	for {
+		val, err := p()
+		if err != nil {
+			c <- statusField{
+				kind: k,
+				err:  err,
+			}
+			time.Sleep(interval)
+			continue
+		}
+
+		s := val.String()
+		if s != last {
+			c <- statusField{
+				kind:  k,
+				value: val,
+			}
+			last = s
+		}
+		time.Sleep(interval)
+	}
+}
+
 func newStatusBar(c config) statusBar {
 	return statusBar{title: c.Title}
 }
@@ -142,24 +145,6 @@ func (u kind) String() string {
 		return "temperature"
 	}
 	panic("uncaught kind=" + fmt.Sprintf("%d", u))
-}
-
-func defaultInterval(k kind) time.Duration {
-	switch k {
-	case kindClock:
-		return 1 * time.Second
-	case kindVolume:
-		return 1 * time.Second
-	case kindFans:
-		return 1 * time.Second
-	case kindBattery:
-		return 1 * time.Second
-	case kindBrightness:
-		return 1 * time.Second
-	case kindTemperatures:
-		return 1 * time.Second
-	}
-	panic("uncaught kind=" + fmt.Sprintf("%d", k))
 }
 
 func (s statusBar) String() string {

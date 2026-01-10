@@ -9,9 +9,18 @@ import (
 	"github.com/godbus/dbus/v5"
 )
 
+const (
+	backendPulseAudio = "pulseaudio"
+	backendPipewire   = "pipewire"
+)
+
 type volume struct {
 	percent float64
 	muted   bool
+}
+
+type argsVolume struct {
+	Backend string
 }
 
 func (v volume) String() string {
@@ -21,15 +30,25 @@ func (v volume) String() string {
 	return fmt.Sprintf("vol: %.2f", v.percent)
 }
 
-func pollVolume() (volume, error) {
-	result, err := getVolumeDBusV2()
+func pollVolume(args argsVolume) poller[volume] {
+	switch args.Backend {
+	case backendPulseAudio:
+		return getVolumePulseDBusV2
+	case backendPipewire:
+		return getVolumeWpctlV2
+	}
+	return pollVolumeOpportunistic
+}
+
+func pollVolumeOpportunistic() (volume, error) {
+	result, err := getVolumePulseDBusV2()
 	if err == nil {
 		return result, nil
 	}
 	return getVolumeWpctlV2()
 }
 
-func getVolumeDBusV2() (volume, error) {
+func getVolumePulseDBusV2() (volume, error) {
 	conn, err := dbus.ConnectSessionBus()
 	if err != nil {
 		return volume{}, fmt.Errorf("session bus: %w", err)
