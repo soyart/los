@@ -33,6 +33,10 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
+	if conf.Title == "" {
+		conf.Title = usernameAtHost()
+	}
+
 	updates := make(chan statusField, 8) // TODO: why 8 in the first place?
 	go poll(updates, kindClock, pollClock(conf.Clock.Settings), conf.Clock.Interval.Duration())
 	go poll(updates, kindVolume, pollVolume(conf.Volume.Settings), conf.Volume.Interval.Duration())
