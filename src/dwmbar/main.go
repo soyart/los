@@ -80,7 +80,7 @@ func run(c config) {
 	// We test string for equality
 	lastOutput := ""
 	for update := range b.updates {
-		b.values.set(update.kind, update)
+		b.values.set(update)
 
 		output := b.String()
 		if output == lastOutput {

@@ -2,6 +2,8 @@ package main
 
 import "time"
 
+const defaultClockLayout = "Monday, Jan 02 > 15:04"
+
 type clock struct {
 	now    time.Time
 	layout string
@@ -16,9 +18,13 @@ func (c clock) String() string {
 }
 
 func pollClock(args argsClock) poller[clock] {
+	layout := args.Layout
+	if layout == "" {
+		layout = defaultClockLayout
+	}
 	return func() (clock, error) {
 		return clock{
-			layout: args.Layout,
+			layout: layout,
 			now:    time.Now(),
 		}, nil
 	}

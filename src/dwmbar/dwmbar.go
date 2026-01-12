@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// kind is our enum for field types
 type kind int
 
 const (
@@ -78,6 +79,7 @@ type field struct {
 	err   error
 }
 
+// String returns the display string representation of the f
 func (f field) String() string {
 	if f.kind == 0 {
 		empty := field{}
@@ -99,12 +101,11 @@ func (f field) String() string {
 // states stores field values indexed by kind
 type states []field
 
-func newStates() states { return make(states, len(kinds())) }
-
 // key returns 0-based index for array lookup
 func (s states) key(k kind) int { return int(k) - 1 }
 
-func (s states) set(k kind, f field) { s[s.key(k)] = f }
+// set sets the field value for the given kind
+func (s states) set(f field) { s[s.key(f.kind)] = f }
 
 func (s states) get(k kind) field {
 	idx := s.key(k)
@@ -113,6 +114,8 @@ func (s states) get(k kind) field {
 	}
 	return field{}
 }
+
+func newStates() states { return make(states, len(kinds())) }
 
 // bar defines the status bar current states
 type bar struct {

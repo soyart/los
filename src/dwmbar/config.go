@@ -69,7 +69,7 @@ func configDefault() config {
 			Interval: duration(1 * time.Second),
 			Settings: argsClock{
 				// https://go.dev/src/time/format.go
-				Layout: "Monday, Jan 02 > 15:04",
+				Layout: defaultClockLayout,
 			},
 		},
 		Volume: withInterval[argsVolume]{
