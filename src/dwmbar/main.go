@@ -17,7 +17,7 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	bar, err := newDefaultBar(conf)
+	bar, err := newDefaultBar(conf.Title, conf.Fields)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -49,8 +49,10 @@ func newDefaultConfig(home string) (config, error) {
 	return conf, nil
 }
 
-func newDefaultBar(c config) (bar, error) {
-	title := c.Title
+// newDefaultBar creates a new bar with the given title and field names.
+// If no title is provided, it defaults to the username at host.
+// If no field names are provided, it defaults to all fields.
+func newDefaultBar(title string, fieldNames []string) (bar, error) {
 	if title == "" {
 		title = usernameAtHost()
 	}
@@ -59,8 +61,7 @@ func newDefaultBar(c config) (bar, error) {
 		updates: make(chan field, 8),
 		values:  newStates(),
 	}
-	// Use all fields if none specified
-	fieldNames := c.Fields
+
 	if len(fieldNames) == 0 {
 		all := kinds()
 		fieldNames = make([]string, len(all))
