@@ -10,6 +10,7 @@ const configLocation = ".config/dwmbar/config.json"
 
 type config struct {
 	Title        string                         `json:"title"`
+	Fields       []string                       `json:"fields"`
 	Clock        withInterval[argsClock]        `json:"clock"`
 	Volume       withInterval[argsVolume]       `json:"volume"`
 	Fans         withInterval[argsFans]         `json:"fans"`
@@ -29,7 +30,7 @@ type withInterval[T any] struct {
 type duration time.Duration
 
 func (d *duration) UnmarshalJSON(b []byte) error {
-	var v interface{}
+	var v any
 	if err := json.Unmarshal(b, &v); err != nil {
 		return err
 	}
@@ -56,6 +57,14 @@ func (d duration) Duration() time.Duration {
 func configDefault() config {
 	return config{
 		Title: usernameAtHost(),
+		Fields: func() []string {
+			all := kinds()
+			s := make([]string, len(all))
+			for i, k := range all {
+				s[i] = k.String()
+			}
+			return s
+		}(),
 		Clock: withInterval[argsClock]{
 			Interval: duration(1 * time.Second),
 			Settings: argsClock{

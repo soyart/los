@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+type updates chan field
+
 // bar defines the status bar current states
 type bar struct {
 	title        string
@@ -20,6 +22,8 @@ type bar struct {
 	battery      field
 	brightness   field
 	wifi         field
+
+	updates
 }
 
 type field struct {
@@ -54,42 +58,113 @@ func main() {
 		conf.Title = usernameAtHost()
 	}
 
-	updates := make(chan field, 8) // TODO: why 8 in the first place?
-	go poll(updates, kindClock, pollClock(conf.Clock.Settings), conf.Clock.Interval.Duration())
-	go poll(updates, kindVolume, pollVolume(conf.Volume.Settings), conf.Volume.Interval.Duration())
-	go poll(updates, kindFans, pollFans(conf.Fans.Settings), conf.Fans.Interval.Duration())
-	go poll(updates, kindBattery, pollBattery(conf.Battery.Settings), conf.Battery.Interval.Duration())
-	go poll(updates, kindBrightness, pollBrightness(conf.Brightness.Settings), conf.Brightness.Interval.Duration())
-	go poll(updates, kindTemperatures, pollTemperatures(conf.Temperatures.Settings), conf.Temperatures.Interval.Duration())
-	go poll(updates, kindWifi, pollWifi(conf.Wifi.Settings), conf.Wifi.Interval.Duration())
-	go live(updates, kindWifi, watchWifi(conf.Wifi.Settings))
+	bar, err := registerFields(conf)
+	if err != nil {
+		panic(err.Error())
+	}
+	bar.run()
+}
 
-	state := newBar(conf)
+func (b bar) run() {
+	// Only print when new change arrives
+	// We test string for equality
 	lastOutput := ""
-	for update := range updates {
+	for update := range b.updates {
 		switch update.kind {
 		case kindClock:
-			state.clock = update
+			b.clock = update
 		case kindVolume:
-			state.volume = update
+			b.volume = update
 		case kindFans:
-			state.fans = update
+			b.fans = update
 		case kindBattery:
-			state.battery = update
+			b.battery = update
 		case kindBrightness:
-			state.brightness = update
+			b.brightness = update
 		case kindTemperatures:
-			state.temperatures = update
+			b.temperatures = update
 		case kindWifi:
-			state.wifi = update
+			b.wifi = update
 		}
 
-		output := state.String()
-		if output != lastOutput {
-			os.Stdout.Write([]byte(output))
-			lastOutput = output
+		output := b.String()
+		if output == lastOutput {
+			continue
+		}
+
+		os.Stdout.Write([]byte(output))
+		lastOutput = output
+	}
+}
+
+func registerFields(c config) (bar, error) {
+	title := c.Title
+	if title == "" {
+		title = usernameAtHost()
+	}
+
+	bar := bar{title: title}
+	bar.updates = make(chan field, 8) // TODO: why 8 in the first place?
+
+	// Use all fields if none
+	fields := c.Fields
+	if len(fields) == 0 {
+		all := kinds()
+		fields = make([]string, len(all))
+		for i := range all {
+			fields[i] = all[i].String()
 		}
 	}
+
+	for _, fieldName := range fields {
+		switch kindFromString(fieldName) {
+		case kindClock:
+			go poll(
+				bar.updates,
+				kindClock,
+				pollClock(c.Clock.Settings), c.Clock.Interval.Duration())
+
+		case kindVolume:
+			go poll(
+				bar.updates,
+				kindVolume,
+				pollVolume(c.Volume.Settings), c.Volume.Interval.Duration())
+
+		case kindFans:
+			go poll(
+				bar.updates,
+				kindFans,
+				pollFans(c.Fans.Settings), c.Fans.Interval.Duration())
+
+		case kindBattery:
+			go poll(
+				bar.updates, kindBattery,
+				pollBattery(c.Battery.Settings), c.Battery.Interval.Duration())
+
+		case kindBrightness:
+			go poll(
+				bar.updates,
+				kindBrightness,
+				pollBrightness(c.Brightness.Settings), c.Brightness.Interval.Duration())
+
+		case kindTemperatures:
+			go poll(
+				bar.updates,
+				kindTemperatures,
+				pollTemperatures(c.Temperatures.Settings), c.Temperatures.Interval.Duration())
+
+		case kindWifi:
+			go poll(
+				bar.updates,
+				kindWifi,
+				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
+			go live(
+				bar.updates,
+				kindWifi,
+				watchWifi(c.Wifi.Settings))
+		}
+	}
+	return bar, nil
 }
 
 // poll uses poller p to poll T at some interval, then wraps T
@@ -152,15 +227,17 @@ func live[T fmt.Stringer](c chan<- field, k kind, w watcher[T]) {
 	}
 }
 
-func newBar(c config) bar {
-	if c.Title == "" {
-		return bar{title: usernameAtHost()}
+func kindFromString(s string) kind {
+	for _, k := range kinds() {
+		if s == k.String() {
+			return k
+		}
 	}
-	return bar{title: c.Title}
+	panic("unknown kind string: " + s)
 }
 
-func (u kind) String() string {
-	switch u {
+func (k kind) String() string {
+	switch k {
 	case kindClock:
 		return "time"
 	case kindVolume:
@@ -176,29 +253,29 @@ func (u kind) String() string {
 	case kindWifi:
 		return "wifi"
 	}
-	panic("uncaught kind=" + fmt.Sprintf("%d", u))
+	panic("uncaught kind=" + fmt.Sprintf("%d", k))
 }
 
-func (s bar) String() string {
-	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s | %s\n", s.title, s.volume, s.brightness, s.fans, s.temperatures, s.wifi, s.battery, s.clock)
+func (b bar) String() string {
+	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s | %s\n", b.title, b.volume, b.brightness, b.fans, b.temperatures, b.wifi, b.battery, b.clock)
 }
 
-func (s field) String() string {
-	if s.kind == 0 {
+func (f field) String() string {
+	if f.kind == 0 {
 		empty := field{}
-		if s != empty {
-			err := fmt.Errorf("unexpected kind==0 from non-empty field: value=%v, err=%v", s.value, s.err)
+		if f != empty {
+			err := fmt.Errorf("unexpected kind==0 from non-empty field: value=%v, err=%v", f.value, f.err)
 			panic(err.Error())
 		}
 		return "initializing ..."
 	}
-	if s.err != nil {
-		return fmt.Sprintf("%s: %s", s.kind.String(), s.err.Error())
+	if f.err != nil {
+		return fmt.Sprintf("%s: %s", f.kind.String(), f.err.Error())
 	}
-	if s.value != nil {
-		return s.value.String()
+	if f.value != nil {
+		return f.value.String()
 	}
-	return fmt.Sprintf("%s: null", s.kind.String())
+	return fmt.Sprintf("%s: null", f.kind.String())
 }
 
 type kind int
@@ -212,6 +289,19 @@ const (
 	kindTemperatures
 	kindWifi
 )
+
+// kinds returns all supported kinds in display order (matching bar.String)
+func kinds() [7]kind {
+	return [7]kind{
+		kindVolume,
+		kindBrightness,
+		kindFans,
+		kindTemperatures,
+		kindWifi,
+		kindBattery,
+		kindClock,
+	}
+}
 
 func newConfig() (config, error) {
 	home, err := os.UserHomeDir()
