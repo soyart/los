@@ -109,12 +109,64 @@ func (s states) get(k kind) field {
 // bar defines the status bar current states
 type bar struct {
 	title   string
-	fields  []kind // fields specify display order
+	display []kind // fields specify display order, might differ from config.fields (empty config.fields leads to full bar.fields)
 	values  states
 	updates chan field
 }
 
-func (b bar) run() {
+// run starts the status bar with the given config.
+// Is launches multiple goroutines to poll and watch for updates,
+// and updates along with displays the bar's internal state.
+func (b bar) run(c config) {
+	for _, k := range b.display {
+		switch k {
+		case kindClock:
+			go poll(
+				b.updates,
+				kindClock,
+				pollClock(c.Clock.Settings), c.Clock.Interval.Duration())
+
+		case kindVolume:
+			go poll(
+				b.updates,
+				kindVolume,
+				pollVolume(c.Volume.Settings), c.Volume.Interval.Duration())
+
+		case kindFans:
+			go poll(
+				b.updates,
+				kindFans,
+				pollFans(c.Fans.Settings), c.Fans.Interval.Duration())
+
+		case kindBattery:
+			go poll(
+				b.updates, kindBattery,
+				pollBattery(c.Battery.Settings), c.Battery.Interval.Duration())
+
+		case kindBrightness:
+			go poll(
+				b.updates,
+				kindBrightness,
+				pollBrightness(c.Brightness.Settings), c.Brightness.Interval.Duration())
+
+		case kindTemperatures:
+			go poll(
+				b.updates,
+				kindTemperatures,
+				pollTemperatures(c.Temperatures.Settings), c.Temperatures.Interval.Duration())
+
+		case kindWifi:
+			go poll(
+				b.updates,
+				kindWifi,
+				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
+			go live(
+				b.updates,
+				kindWifi,
+				watchWifi(c.Wifi.Settings))
+		}
+	}
+
 	// Only print when new change arrives
 	// We test string for equality
 	lastOutput := ""
@@ -133,7 +185,7 @@ func (b bar) run() {
 func (b bar) String() string {
 	var sb strings.Builder
 	sb.WriteString(b.title)
-	for _, k := range b.fields {
+	for _, k := range b.display {
 		sb.WriteString(" | ")
 		sb.WriteString(b.values.get(k).String())
 	}

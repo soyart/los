@@ -13,18 +13,18 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	conf, err := newConfig(home)
+	conf, err := newDefaultConfig(home)
 	if err != nil {
 		panic(err.Error())
 	}
-	bar, err := newBar(conf)
+	bar, err := newDefaultBar(conf)
 	if err != nil {
 		panic(err.Error())
 	}
-	bar.run()
+	bar.run(conf)
 }
 
-func newConfig(home string) (config, error) {
+func newDefaultConfig(home string) (config, error) {
 	configPath := filepath.Join(home, configLocation)
 	j, err := os.ReadFile(configPath)
 	if err != nil {
@@ -49,16 +49,16 @@ func newConfig(home string) (config, error) {
 	return conf, nil
 }
 
-func newBar(c config) (bar, error) {
+func newDefaultBar(c config) (bar, error) {
 	title := c.Title
 	if title == "" {
 		title = usernameAtHost()
 	}
-
-	bar := bar{title: title}
-	bar.updates = make(chan field, 8) // TODO: why 8 in the first place?
-	bar.values = newStates()
-
+	bar := bar{
+		title:   title,
+		updates: make(chan field, 8),
+		values:  newStates(),
+	}
 	// Use all fields if none specified
 	fieldNames := c.Fields
 	if len(fieldNames) == 0 {
@@ -69,58 +69,9 @@ func newBar(c config) (bar, error) {
 		}
 	}
 	// Convert field names to kinds and store for display order
-	bar.fields = make([]kind, len(fieldNames))
+	bar.display = make([]kind, len(fieldNames))
 	for i, name := range fieldNames {
-		bar.fields[i] = kindFromString(name)
-	}
-
-	for _, k := range bar.fields {
-		switch k {
-		case kindClock:
-			go poll(
-				bar.updates,
-				kindClock,
-				pollClock(c.Clock.Settings), c.Clock.Interval.Duration())
-
-		case kindVolume:
-			go poll(
-				bar.updates,
-				kindVolume,
-				pollVolume(c.Volume.Settings), c.Volume.Interval.Duration())
-
-		case kindFans:
-			go poll(
-				bar.updates,
-				kindFans,
-				pollFans(c.Fans.Settings), c.Fans.Interval.Duration())
-
-		case kindBattery:
-			go poll(
-				bar.updates, kindBattery,
-				pollBattery(c.Battery.Settings), c.Battery.Interval.Duration())
-
-		case kindBrightness:
-			go poll(
-				bar.updates,
-				kindBrightness,
-				pollBrightness(c.Brightness.Settings), c.Brightness.Interval.Duration())
-
-		case kindTemperatures:
-			go poll(
-				bar.updates,
-				kindTemperatures,
-				pollTemperatures(c.Temperatures.Settings), c.Temperatures.Interval.Duration())
-
-		case kindWifi:
-			go poll(
-				bar.updates,
-				kindWifi,
-				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
-			go live(
-				bar.updates,
-				kindWifi,
-				watchWifi(c.Wifi.Settings))
-		}
+		bar.display[i] = kindFromString(name)
 	}
 	return bar, nil
 }
