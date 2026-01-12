@@ -38,9 +38,8 @@ func watchWifi(args argsWifi) watcher[wifi] {
 		return watchWifiIwd
 	case backendNetworkManager:
 		return watchWifiNetworkManager
-	default:
-		return watchWifiAuto
 	}
+	return watchWifiAuto
 }
 
 // watchWifiAuto tries iwd first, falls back to NetworkManager
@@ -96,13 +95,14 @@ func watchWifiIwdWithConn(conn *dbus.Conn, ch chan<- result[wifi]) {
 
 	// Pure signal handling - no ticker
 	for sig := range signals {
-		if len(sig.Body) >= 1 {
-			ifaceName, ok := sig.Body[0].(string)
-			if ok && (ifaceName == "net.connman.iwd.Station" ||
-				ifaceName == "net.connman.iwd.Network") {
-				w, err := getWifiIwdWithConn(conn)
-				ch <- result[wifi]{value: w, err: err}
-			}
+		if len(sig.Body) < 1 {
+			continue
+		}
+		ifaceName, ok := sig.Body[0].(string)
+		if ok && (ifaceName == "net.connman.iwd.Station" ||
+			ifaceName == "net.connman.iwd.Network") {
+			w, err := getWifiIwdWithConn(conn)
+			ch <- result[wifi]{value: w, err: err}
 		}
 	}
 }
@@ -140,14 +140,15 @@ func watchWifiNetworkManagerWithConn(conn *dbus.Conn, ch chan<- result[wifi]) {
 
 	// Pure signal handling - no ticker
 	for sig := range signals {
-		if len(sig.Body) >= 1 {
-			ifaceName, ok := sig.Body[0].(string)
-			if ok && (strings.Contains(ifaceName, "Device") ||
-				strings.Contains(ifaceName, "AccessPoint") ||
-				strings.Contains(ifaceName, "Connection")) {
-				w, err := getWifiNetworkManagerWithConn(conn)
-				ch <- result[wifi]{value: w, err: err}
-			}
+		if len(sig.Body) < 1 {
+			continue
+		}
+		ifaceName, ok := sig.Body[0].(string)
+		if ok && (strings.Contains(ifaceName, "Device") ||
+			strings.Contains(ifaceName, "AccessPoint") ||
+			strings.Contains(ifaceName, "Connection")) {
+			w, err := getWifiNetworkManagerWithConn(conn)
+			ch <- result[wifi]{value: w, err: err}
 		}
 	}
 }

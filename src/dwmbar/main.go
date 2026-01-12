@@ -147,9 +147,8 @@ func live[T fmt.Stringer](c chan<- statusField, k kind, w watcher[T]) {
 }
 
 func newStatusBar(c config) statusBar {
-	title := c.Title
-	if title == "" {
-		title = usernameAtHost()
+	if c.Title == "" {
+		return statusBar{title: usernameAtHost()}
 	}
 	return statusBar{title: c.Title}
 }
