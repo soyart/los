@@ -71,7 +71,7 @@ func kindsFromFields(names []string) []kind {
 	return result
 }
 
-// field represents a state, indentified by kind, and has a value and an error.
+// field represents a state, identified by kind, and has a value and an error.
 // field is displayed as value.String() or err.Error() if err is not nil.
 type field struct {
 	kind  kind
@@ -79,7 +79,7 @@ type field struct {
 	err   error
 }
 
-// String returns the display string representation of the f
+// String returns the display string representation of f
 func (f field) String() string {
 	if f.kind == 0 {
 		empty := field{}
@@ -154,7 +154,7 @@ type result[T any] struct {
 }
 
 // poll uses poller p to poll T at some interval, then wraps T
-// with [field] and sends the field through chanel c
+// with [field] and sends the field through channel c
 func poll[T fmt.Stringer](
 	c chan<- field,
 	k kind,

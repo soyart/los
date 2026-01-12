@@ -49,7 +49,8 @@ func run(c config) {
 
 		case kindBattery:
 			go poll(
-				b.updates, kindBattery,
+				b.updates,
+				kindBattery,
 				pollBattery(c.Battery.Settings), c.Battery.Interval.Duration())
 
 		case kindBrightness:
@@ -65,14 +66,15 @@ func run(c config) {
 				pollTemperatures(c.Temperatures.Settings), c.Temperatures.Interval.Duration())
 
 		case kindWifi:
-			go poll(
-				b.updates,
-				kindWifi,
-				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
 			go live(
 				b.updates,
 				kindWifi,
 				watchWifi(c.Wifi.Settings))
+			// Backup poller to fallback to
+			go poll(
+				b.updates,
+				kindWifi,
+				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
 		}
 	}
 
@@ -100,7 +102,7 @@ func newDefaultConfig(home string) (config, error) {
 			return configDefault(), nil
 		}
 		// Other read errors are not tolerated
-		fmt.Fprintf(os.Stderr, "error reading config file '%s': %s\n", configPath, err.Error())
+		fmt.Fprintf(os.Stderr, "reading config file '%s': %s\n", configPath, err.Error())
 		return config{}, err
 	}
 
@@ -109,7 +111,7 @@ func newDefaultConfig(home string) (config, error) {
 		err = json.Unmarshal(j, &conf)
 		if err != nil {
 			conf = configDefault()
-			fmt.Fprintf(os.Stderr, "error unmarshaling json file '%s': %s\n", configPath, err.Error())
+			fmt.Fprintf(os.Stderr, "unmarshaling json file '%s': %s\n", configPath, err.Error())
 			fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
 		}
 	}
