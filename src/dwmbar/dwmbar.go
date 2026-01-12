@@ -33,15 +33,6 @@ func kinds() [7]kind {
 	}
 }
 
-func kindFromString(s string) kind {
-	for _, k := range kinds() {
-		if s == k.String() {
-			return k
-		}
-	}
-	panic("unknown kind string: " + s)
-}
-
 func (k kind) String() string {
 	switch k {
 	case kindClock:
@@ -60,6 +51,23 @@ func (k kind) String() string {
 		return "wifi"
 	}
 	panic("uncaught kind=" + fmt.Sprintf("%d", k))
+}
+
+func kindFromString(s string) kind {
+	for _, k := range kinds() {
+		if s == k.String() {
+			return k
+		}
+	}
+	panic("unknown kind string: " + s)
+}
+
+func kindsFromFields(names []string) []kind {
+	result := make([]kind, len(names))
+	for i := range names {
+		result[i] = kindFromString(names[i])
+	}
+	return result
 }
 
 // field represents a state, indentified by kind, and has a value and an error.
@@ -112,74 +120,6 @@ type bar struct {
 	display []kind // fields specify display order, might differ from config.fields (empty config.fields leads to full bar.fields)
 	values  states
 	updates chan field
-}
-
-// run starts the status bar with the given config.
-// Is launches multiple goroutines to poll and watch for updates,
-// and updates along with displays the bar's internal state.
-func (b bar) run(c config) {
-	for _, k := range b.display {
-		switch k {
-		case kindClock:
-			go poll(
-				b.updates,
-				kindClock,
-				pollClock(c.Clock.Settings), c.Clock.Interval.Duration())
-
-		case kindVolume:
-			go poll(
-				b.updates,
-				kindVolume,
-				pollVolume(c.Volume.Settings), c.Volume.Interval.Duration())
-
-		case kindFans:
-			go poll(
-				b.updates,
-				kindFans,
-				pollFans(c.Fans.Settings), c.Fans.Interval.Duration())
-
-		case kindBattery:
-			go poll(
-				b.updates, kindBattery,
-				pollBattery(c.Battery.Settings), c.Battery.Interval.Duration())
-
-		case kindBrightness:
-			go poll(
-				b.updates,
-				kindBrightness,
-				pollBrightness(c.Brightness.Settings), c.Brightness.Interval.Duration())
-
-		case kindTemperatures:
-			go poll(
-				b.updates,
-				kindTemperatures,
-				pollTemperatures(c.Temperatures.Settings), c.Temperatures.Interval.Duration())
-
-		case kindWifi:
-			go poll(
-				b.updates,
-				kindWifi,
-				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
-			go live(
-				b.updates,
-				kindWifi,
-				watchWifi(c.Wifi.Settings))
-		}
-	}
-
-	// Only print when new change arrives
-	// We test string for equality
-	lastOutput := ""
-	for update := range b.updates {
-		b.values.set(update.kind, update)
-
-		output := b.String()
-		if output == lastOutput {
-			continue
-		}
-		os.Stdout.Write([]byte(output))
-		lastOutput = output
-	}
 }
 
 func (b bar) String() string {

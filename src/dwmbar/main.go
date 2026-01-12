@@ -17,11 +17,78 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	bar, err := newDefaultBar(conf.Title, conf.Fields)
-	if err != nil {
-		panic(err.Error())
+	run(overrideEmpty(conf))
+}
+
+func run(c config) {
+	b := bar{
+		title:   c.Title,
+		display: kindsFromFields(c.Fields),
+		values:  newStates(),
+		updates: make(chan field, 8),
 	}
-	bar.run(conf)
+	for _, k := range b.display {
+		switch k {
+		case kindClock:
+			go poll(
+				b.updates,
+				kindClock,
+				pollClock(c.Clock.Settings), c.Clock.Interval.Duration())
+
+		case kindVolume:
+			go poll(
+				b.updates,
+				kindVolume,
+				pollVolume(c.Volume.Settings), c.Volume.Interval.Duration())
+
+		case kindFans:
+			go poll(
+				b.updates,
+				kindFans,
+				pollFans(c.Fans.Settings), c.Fans.Interval.Duration())
+
+		case kindBattery:
+			go poll(
+				b.updates, kindBattery,
+				pollBattery(c.Battery.Settings), c.Battery.Interval.Duration())
+
+		case kindBrightness:
+			go poll(
+				b.updates,
+				kindBrightness,
+				pollBrightness(c.Brightness.Settings), c.Brightness.Interval.Duration())
+
+		case kindTemperatures:
+			go poll(
+				b.updates,
+				kindTemperatures,
+				pollTemperatures(c.Temperatures.Settings), c.Temperatures.Interval.Duration())
+
+		case kindWifi:
+			go poll(
+				b.updates,
+				kindWifi,
+				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
+			go live(
+				b.updates,
+				kindWifi,
+				watchWifi(c.Wifi.Settings))
+		}
+	}
+
+	// Only print when new change arrives
+	// We test string for equality
+	lastOutput := ""
+	for update := range b.updates {
+		b.values.set(update.kind, update)
+
+		output := b.String()
+		if output == lastOutput {
+			continue
+		}
+		os.Stdout.Write([]byte(output))
+		lastOutput = output
+	}
 }
 
 func newDefaultConfig(home string) (config, error) {
@@ -49,30 +116,16 @@ func newDefaultConfig(home string) (config, error) {
 	return conf, nil
 }
 
-// newDefaultBar creates a new bar with the given title and field names.
-// If no title is provided, it defaults to the username at host.
-// If no field names are provided, it defaults to all fields.
-func newDefaultBar(title string, fieldNames []string) (bar, error) {
-	if title == "" {
-		title = usernameAtHost()
+func overrideEmpty(conf config) config {
+	if conf.Title == "" {
+		conf.Title = usernameAtHost()
 	}
-	bar := bar{
-		title:   title,
-		updates: make(chan field, 8),
-		values:  newStates(),
-	}
-
-	if len(fieldNames) == 0 {
+	if len(conf.Fields) == 0 {
 		all := kinds()
-		fieldNames = make([]string, len(all))
+		conf.Fields = make([]string, len(all))
 		for i := range all {
-			fieldNames[i] = all[i].String()
+			conf.Fields[i] = all[i].String()
 		}
 	}
-	// Convert field names to kinds and store for display order
-	bar.display = make([]kind, len(fieldNames))
-	for i, name := range fieldNames {
-		bar.display[i] = kindFromString(name)
-	}
-	return bar, nil
+	return conf
 }
