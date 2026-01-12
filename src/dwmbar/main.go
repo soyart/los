@@ -10,16 +10,22 @@ import (
 	"time"
 )
 
-// statusBar defines the status bar current states
-type statusBar struct {
+// bar defines the status bar current states
+type bar struct {
 	title        string
-	clock        statusField
-	fans         statusField
-	temperatures statusField
-	volume       statusField
-	battery      statusField
-	brightness   statusField
-	wifi         statusField
+	clock        field
+	fans         field
+	temperatures field
+	volume       field
+	battery      field
+	brightness   field
+	wifi         field
+}
+
+type field struct {
+	kind  kind
+	value fmt.Stringer
+	err   error
 }
 
 // poller is any simple function that returns a stringer.
@@ -48,7 +54,7 @@ func main() {
 		conf.Title = usernameAtHost()
 	}
 
-	updates := make(chan statusField, 8) // TODO: why 8 in the first place?
+	updates := make(chan field, 8) // TODO: why 8 in the first place?
 	go poll(updates, kindClock, pollClock(conf.Clock.Settings), conf.Clock.Interval.Duration())
 	go poll(updates, kindVolume, pollVolume(conf.Volume.Settings), conf.Volume.Interval.Duration())
 	go poll(updates, kindFans, pollFans(conf.Fans.Settings), conf.Fans.Interval.Duration())
@@ -58,7 +64,7 @@ func main() {
 	go poll(updates, kindWifi, pollWifi(conf.Wifi.Settings), conf.Wifi.Interval.Duration())
 	go live(updates, kindWifi, watchWifi(conf.Wifi.Settings))
 
-	state := newStatusBar(conf)
+	state := newBar(conf)
 	lastOutput := ""
 	for update := range updates {
 		switch update.kind {
@@ -87,9 +93,9 @@ func main() {
 }
 
 // poll uses poller p to poll T at some interval, then wraps T
-// with statusField and sends the field through chanel c
+// with [field] and sends the field through chanel c
 func poll[T fmt.Stringer](
-	c chan<- statusField,
+	c chan<- field,
 	k kind,
 	p poller[T],
 	interval time.Duration,
@@ -102,7 +108,7 @@ func poll[T fmt.Stringer](
 	for {
 		val, err := p()
 		if err != nil {
-			c <- statusField{
+			c <- field{
 				kind: k,
 				err:  err,
 			}
@@ -113,7 +119,7 @@ func poll[T fmt.Stringer](
 
 		s := val.String()
 		if s != last {
-			c <- statusField{
+			c <- field{
 				kind:  k,
 				value: val,
 			}
@@ -124,33 +130,33 @@ func poll[T fmt.Stringer](
 }
 
 // live runs a watcher and forwards its results to the main status channel.
-// The watcher only knows about its own type T, not kind or statusField.
+// The watcher only knows about its own type T, not kind or [field].
 // Deduplication is handled here, same as poll.
-func live[T fmt.Stringer](c chan<- statusField, k kind, w watcher[T]) {
+func live[T fmt.Stringer](c chan<- field, k kind, w watcher[T]) {
 	updates := make(chan result[T], 1)
 	go w(updates)
 
 	var last string
 	for r := range updates {
 		if r.err != nil {
-			c <- statusField{kind: k, err: r.err}
+			c <- field{kind: k, err: r.err}
 			last = r.err.Error()
 			continue
 		}
 
 		s := r.value.String()
 		if s != last {
-			c <- statusField{kind: k, value: r.value}
+			c <- field{kind: k, value: r.value}
 			last = s
 		}
 	}
 }
 
-func newStatusBar(c config) statusBar {
+func newBar(c config) bar {
 	if c.Title == "" {
-		return statusBar{title: usernameAtHost()}
+		return bar{title: usernameAtHost()}
 	}
-	return statusBar{title: c.Title}
+	return bar{title: c.Title}
 }
 
 func (u kind) String() string {
@@ -173,15 +179,16 @@ func (u kind) String() string {
 	panic("uncaught kind=" + fmt.Sprintf("%d", u))
 }
 
-func (s statusBar) String() string {
+func (s bar) String() string {
 	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s | %s\n", s.title, s.volume, s.brightness, s.fans, s.temperatures, s.wifi, s.battery, s.clock)
 }
 
-func (s statusField) String() string {
-	empty := statusField{}
+func (s field) String() string {
 	if s.kind == 0 {
+		empty := field{}
 		if s != empty {
-			panic("unexpected kind=0 from non-empty statusField")
+			err := fmt.Errorf("unexpected kind==0 from non-empty field: value=%v, err=%v", s.value, s.err)
+			panic(err.Error())
 		}
 		return "initializing ..."
 	}
@@ -192,12 +199,6 @@ func (s statusField) String() string {
 		return s.value.String()
 	}
 	return fmt.Sprintf("%s: null", s.kind.String())
-}
-
-type statusField struct {
-	kind  kind
-	value fmt.Stringer
-	err   error
 }
 
 type kind int
