@@ -14,14 +14,9 @@ type updates chan field
 
 // bar defines the status bar current states
 type bar struct {
-	title        string
-	clock        field
-	fans         field
-	temperatures field
-	volume       field
-	battery      field
-	brightness   field
-	wifi         field
+	title  string
+	fields []kind         // ordered kinds for display
+	values map[kind]field // current field values
 
 	updates
 }
@@ -70,22 +65,7 @@ func (b bar) run() {
 	// We test string for equality
 	lastOutput := ""
 	for update := range b.updates {
-		switch update.kind {
-		case kindClock:
-			b.clock = update
-		case kindVolume:
-			b.volume = update
-		case kindFans:
-			b.fans = update
-		case kindBattery:
-			b.battery = update
-		case kindBrightness:
-			b.brightness = update
-		case kindTemperatures:
-			b.temperatures = update
-		case kindWifi:
-			b.wifi = update
-		}
+		b.values[update.kind] = update
 
 		output := b.String()
 		if output == lastOutput {
@@ -105,19 +85,26 @@ func registerFields(c config) (bar, error) {
 
 	bar := bar{title: title}
 	bar.updates = make(chan field, 8) // TODO: why 8 in the first place?
+	bar.values = make(map[kind]field)
 
-	// Use all fields if none
-	fields := c.Fields
-	if len(fields) == 0 {
+	// Use all fields if none specified
+	fieldNames := c.Fields
+	if len(fieldNames) == 0 {
 		all := kinds()
-		fields = make([]string, len(all))
+		fieldNames = make([]string, len(all))
 		for i := range all {
-			fields[i] = all[i].String()
+			fieldNames[i] = all[i].String()
 		}
 	}
 
-	for _, fieldName := range fields {
-		switch kindFromString(fieldName) {
+	// Convert field names to kinds and store for display order
+	bar.fields = make([]kind, len(fieldNames))
+	for i, name := range fieldNames {
+		bar.fields[i] = kindFromString(name)
+	}
+
+	for _, k := range bar.fields {
+		switch k {
 		case kindClock:
 			go poll(
 				bar.updates,
@@ -227,37 +214,22 @@ func live[T fmt.Stringer](c chan<- field, k kind, w watcher[T]) {
 	}
 }
 
-func kindFromString(s string) kind {
-	for _, k := range kinds() {
-		if s == k.String() {
-			return k
-		}
+func (b bar) getField(k kind) field {
+	if f, ok := b.values[k]; ok {
+		return f
 	}
-	panic("unknown kind string: " + s)
-}
-
-func (k kind) String() string {
-	switch k {
-	case kindClock:
-		return "time"
-	case kindVolume:
-		return "volume"
-	case kindFans:
-		return "fans"
-	case kindBattery:
-		return "battery"
-	case kindBrightness:
-		return "brightness"
-	case kindTemperatures:
-		return "temperature"
-	case kindWifi:
-		return "wifi"
-	}
-	panic("uncaught kind=" + fmt.Sprintf("%d", k))
+	return field{} // uninitialized field shows "initializing ..."
 }
 
 func (b bar) String() string {
-	return fmt.Sprintf("%s | %s | %s | %s | %s | %s | %s | %s\n", b.title, b.volume, b.brightness, b.fans, b.temperatures, b.wifi, b.battery, b.clock)
+	var sb strings.Builder
+	sb.WriteString(b.title)
+	for _, k := range b.fields {
+		sb.WriteString(" | ")
+		sb.WriteString(b.getField(k).String())
+	}
+	sb.WriteByte('\n')
+	return sb.String()
 }
 
 func (f field) String() string {
@@ -301,6 +273,35 @@ func kinds() [7]kind {
 		kindBattery,
 		kindClock,
 	}
+}
+
+func kindFromString(s string) kind {
+	for _, k := range kinds() {
+		if s == k.String() {
+			return k
+		}
+	}
+	panic("unknown kind string: " + s)
+}
+
+func (k kind) String() string {
+	switch k {
+	case kindClock:
+		return "time"
+	case kindVolume:
+		return "volume"
+	case kindFans:
+		return "fans"
+	case kindBattery:
+		return "battery"
+	case kindBrightness:
+		return "brightness"
+	case kindTemperatures:
+		return "temperature"
+	case kindWifi:
+		return "wifi"
+	}
+	panic("uncaught kind=" + fmt.Sprintf("%d", k))
 }
 
 func newConfig() (config, error) {
