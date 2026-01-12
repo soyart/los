@@ -49,11 +49,7 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	if conf.Title == "" {
-		conf.Title = usernameAtHost()
-	}
-
-	bar, err := registerFields(conf)
+	bar, err := newBar(conf)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -71,13 +67,12 @@ func (b bar) run() {
 		if output == lastOutput {
 			continue
 		}
-
 		os.Stdout.Write([]byte(output))
 		lastOutput = output
 	}
 }
 
-func registerFields(c config) (bar, error) {
+func newBar(c config) (bar, error) {
 	title := c.Title
 	if title == "" {
 		title = usernameAtHost()
@@ -96,7 +91,6 @@ func registerFields(c config) (bar, error) {
 			fieldNames[i] = all[i].String()
 		}
 	}
-
 	// Convert field names to kinds and store for display order
 	bar.fields = make([]kind, len(fieldNames))
 	for i, name := range fieldNames {
@@ -221,6 +215,7 @@ func (b bar) getField(k kind) field {
 	return field{} // uninitialized field shows "initializing ..."
 }
 
+// String returns the actual text status bar
 func (b bar) String() string {
 	var sb strings.Builder
 	sb.WriteString(b.title)
@@ -232,6 +227,7 @@ func (b bar) String() string {
 	return sb.String()
 }
 
+// String returns the string representation of [field] f
 func (f field) String() string {
 	if f.kind == 0 {
 		empty := field{}
