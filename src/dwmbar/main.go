@@ -10,21 +10,38 @@ import (
 	"time"
 )
 
-type updates chan field
-
 // bar defines the status bar current states
 type bar struct {
-	title  string
-	fields []kind         // ordered kinds for display
-	values map[kind]field // current field values
-
-	updates
+	title   string
+	fields  []kind // fields specify display order
+	values  states
+	updates chan field
 }
 
+// field represents a state, indentified by kind, and has a value and an error.
+// field is displayed as value.String() or err.Error() if err is not nil.
 type field struct {
 	kind  kind
 	value fmt.Stringer
 	err   error
+}
+
+// states stores field values indexed by kind
+type states []field
+
+func newStates() states { return make(states, len(kinds())) }
+
+// key returns 0-based index for array lookup
+func (s states) key(k kind) int { return int(k) - 1 }
+
+func (s states) set(k kind, f field) { s[s.key(k)] = f }
+
+func (s states) get(k kind) field {
+	idx := s.key(k)
+	if idx >= 0 && idx < len(s) {
+		return s[idx]
+	}
+	return field{}
 }
 
 // poller is any simple function that returns a stringer.
@@ -61,7 +78,7 @@ func (b bar) run() {
 	// We test string for equality
 	lastOutput := ""
 	for update := range b.updates {
-		b.values[update.kind] = update
+		b.values.set(update.kind, update)
 
 		output := b.String()
 		if output == lastOutput {
@@ -80,7 +97,7 @@ func newBar(c config) (bar, error) {
 
 	bar := bar{title: title}
 	bar.updates = make(chan field, 8) // TODO: why 8 in the first place?
-	bar.values = make(map[kind]field)
+	bar.values = newStates()
 
 	// Use all fields if none specified
 	fieldNames := c.Fields
@@ -208,20 +225,13 @@ func live[T fmt.Stringer](c chan<- field, k kind, w watcher[T]) {
 	}
 }
 
-func (b bar) getField(k kind) field {
-	if f, ok := b.values[k]; ok {
-		return f
-	}
-	return field{} // uninitialized field shows "initializing ..."
-}
-
 // String returns the actual text status bar
 func (b bar) String() string {
 	var sb strings.Builder
 	sb.WriteString(b.title)
 	for _, k := range b.fields {
 		sb.WriteString(" | ")
-		sb.WriteString(b.getField(k).String())
+		sb.WriteString(b.values.get(k).String())
 	}
 	sb.WriteByte('\n')
 	return sb.String()
