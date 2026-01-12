@@ -10,12 +10,58 @@ import (
 	"time"
 )
 
-// bar defines the status bar current states
-type bar struct {
-	title   string
-	fields  []kind // fields specify display order
-	values  states
-	updates chan field
+type kind int
+
+const (
+	kindClock kind = iota + 1
+	kindVolume
+	kindFans
+	kindBattery
+	kindBrightness
+	kindTemperatures
+	kindWifi
+)
+
+// kinds returns all supported kinds in display order (matching bar.String)
+func kinds() [7]kind {
+	return [7]kind{
+		kindVolume,
+		kindBrightness,
+		kindFans,
+		kindTemperatures,
+		kindWifi,
+		kindBattery,
+		kindClock,
+	}
+}
+
+func kindFromString(s string) kind {
+	for _, k := range kinds() {
+		if s == k.String() {
+			return k
+		}
+	}
+	panic("unknown kind string: " + s)
+}
+
+func (k kind) String() string {
+	switch k {
+	case kindClock:
+		return "time"
+	case kindVolume:
+		return "volume"
+	case kindFans:
+		return "fans"
+	case kindBattery:
+		return "battery"
+	case kindBrightness:
+		return "brightness"
+	case kindTemperatures:
+		return "temperature"
+	case kindWifi:
+		return "wifi"
+	}
+	panic("uncaught kind=" + fmt.Sprintf("%d", k))
 }
 
 // field represents a state, indentified by kind, and has a value and an error.
@@ -24,6 +70,24 @@ type field struct {
 	kind  kind
 	value fmt.Stringer
 	err   error
+}
+
+func (f field) String() string {
+	if f.kind == 0 {
+		empty := field{}
+		if f != empty {
+			err := fmt.Errorf("unexpected kind==0 from non-empty field: value=%v, err=%v", f.value, f.err)
+			panic(err.Error())
+		}
+		return "initializing ..."
+	}
+	if f.err != nil {
+		return fmt.Sprintf("%s: %s", f.kind.String(), f.err.Error())
+	}
+	if f.value != nil {
+		return f.value.String()
+	}
+	return fmt.Sprintf("%s: null", f.kind.String())
 }
 
 // states stores field values indexed by kind
@@ -44,33 +108,12 @@ func (s states) get(k kind) field {
 	return field{}
 }
 
-// poller is any simple function that returns a stringer.
-// The function is called at interval by [poll].
-//
-// The return value is mapped to string via its method T.String,
-// and the string is used as display value in our status bar.
-type poller[T fmt.Stringer] func() (T, error)
-
-// watcher is a function that sends live updates to a channel.
-// The watcher owns its lifecycle and sends result[T] updates.
-// Unlike pollers, watchers react to external events (e.g., D-Bus signals).
-type watcher[T fmt.Stringer] func(chan<- result[T])
-
-type result[T any] struct {
-	value T
-	err   error
-}
-
-func main() {
-	conf, err := newConfig()
-	if err != nil {
-		panic(err.Error())
-	}
-	bar, err := newBar(conf)
-	if err != nil {
-		panic(err.Error())
-	}
-	bar.run()
+// bar defines the status bar current states
+type bar struct {
+	title   string
+	fields  []kind // fields specify display order
+	values  states
+	updates chan field
 }
 
 func (b bar) run() {
@@ -87,6 +130,34 @@ func (b bar) run() {
 		os.Stdout.Write([]byte(output))
 		lastOutput = output
 	}
+}
+
+func (b bar) String() string {
+	var sb strings.Builder
+	sb.WriteString(b.title)
+	for _, k := range b.fields {
+		sb.WriteString(" | ")
+		sb.WriteString(b.values.get(k).String())
+	}
+	sb.WriteByte('\n')
+	return sb.String()
+}
+
+// poller is any simple function that returns a stringer.
+// The function is called at interval by [poll].
+//
+// The return value is mapped to string via its method T.String,
+// and the string is used as display value in our status bar.
+type poller[T fmt.Stringer] func() (T, error)
+
+// watcher is a function that sends live updates to a channel.
+// The watcher owns its lifecycle and sends result[T] updates.
+// Unlike pollers, watchers react to external events (e.g., D-Bus signals).
+type watcher[T fmt.Stringer] func(chan<- result[T])
+
+type result[T any] struct {
+	value T
+	err   error
 }
 
 func newBar(c config) (bar, error) {
@@ -165,6 +236,47 @@ func newBar(c config) (bar, error) {
 	return bar, nil
 }
 
+func newConfig() (config, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return config{}, err
+	}
+	configPath := filepath.Join(home, configLocation)
+	j, err := os.ReadFile(configPath)
+	if err != nil {
+		// Use default if no config is found
+		if errors.Is(err, os.ErrNotExist) {
+			return configDefault(), nil
+		}
+		// Other read errors are not tolerated
+		fmt.Fprintf(os.Stderr, "error reading config file '%s': %s\n", configPath, err.Error())
+		return config{}, err
+	}
+
+	var conf config
+	if len(j) != 0 {
+		err = json.Unmarshal(j, &conf)
+		if err != nil {
+			conf = configDefault()
+			fmt.Fprintf(os.Stderr, "error unmarshaling json file '%s': %s\n", configPath, err.Error())
+			fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
+		}
+	}
+	return conf, nil
+}
+
+func main() {
+	conf, err := newConfig()
+	if err != nil {
+		panic(err.Error())
+	}
+	bar, err := newBar(conf)
+	if err != nil {
+		panic(err.Error())
+	}
+	bar.run()
+}
+
 // poll uses poller p to poll T at some interval, then wraps T
 // with [field] and sends the field through chanel c
 func poll[T fmt.Stringer](
@@ -223,120 +335,6 @@ func live[T fmt.Stringer](c chan<- field, k kind, w watcher[T]) {
 			last = s
 		}
 	}
-}
-
-// String returns the actual text status bar
-func (b bar) String() string {
-	var sb strings.Builder
-	sb.WriteString(b.title)
-	for _, k := range b.fields {
-		sb.WriteString(" | ")
-		sb.WriteString(b.values.get(k).String())
-	}
-	sb.WriteByte('\n')
-	return sb.String()
-}
-
-// String returns the string representation of [field] f
-func (f field) String() string {
-	if f.kind == 0 {
-		empty := field{}
-		if f != empty {
-			err := fmt.Errorf("unexpected kind==0 from non-empty field: value=%v, err=%v", f.value, f.err)
-			panic(err.Error())
-		}
-		return "initializing ..."
-	}
-	if f.err != nil {
-		return fmt.Sprintf("%s: %s", f.kind.String(), f.err.Error())
-	}
-	if f.value != nil {
-		return f.value.String()
-	}
-	return fmt.Sprintf("%s: null", f.kind.String())
-}
-
-type kind int
-
-const (
-	kindClock kind = iota + 1
-	kindVolume
-	kindFans
-	kindBattery
-	kindBrightness
-	kindTemperatures
-	kindWifi
-)
-
-// kinds returns all supported kinds in display order (matching bar.String)
-func kinds() [7]kind {
-	return [7]kind{
-		kindVolume,
-		kindBrightness,
-		kindFans,
-		kindTemperatures,
-		kindWifi,
-		kindBattery,
-		kindClock,
-	}
-}
-
-func kindFromString(s string) kind {
-	for _, k := range kinds() {
-		if s == k.String() {
-			return k
-		}
-	}
-	panic("unknown kind string: " + s)
-}
-
-func (k kind) String() string {
-	switch k {
-	case kindClock:
-		return "time"
-	case kindVolume:
-		return "volume"
-	case kindFans:
-		return "fans"
-	case kindBattery:
-		return "battery"
-	case kindBrightness:
-		return "brightness"
-	case kindTemperatures:
-		return "temperature"
-	case kindWifi:
-		return "wifi"
-	}
-	panic("uncaught kind=" + fmt.Sprintf("%d", k))
-}
-
-func newConfig() (config, error) {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return config{}, err
-	}
-	configPath := filepath.Join(home, configLocation)
-	j, err := os.ReadFile(configPath)
-	if err != nil {
-		// Use default if no config is found
-		if errors.Is(err, os.ErrNotExist) {
-			return configDefault(), nil
-		}
-		// Other read errors are not tolerated
-		fmt.Fprintf(os.Stderr, "error reading config file '%s': %s\n", configPath, err.Error())
-		return config{}, err
-	}
-
-	var conf config
-	if len(j) != 0 {
-		err = json.Unmarshal(j, &conf)
-		if err != nil {
-			conf = configDefault()
-			fmt.Fprintf(os.Stderr, "error unmarshaling json file '%s': %s\n", configPath, err.Error())
-			fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
-		}
-	}
-	return conf, nil
 }
 
 func usernameAtHost() string {
