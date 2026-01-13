@@ -21,58 +21,54 @@ func main() {
 }
 
 func run(c config) {
-	b := bar{
-		title:   c.Title,
-		display: kindsFromFields(c.Fields),
-		values:  newStates(),
-		updates: make(chan field, 8),
-	}
-	for _, k := range b.display {
+	display := kindsFromStrings(c.Fields)
+	updates := make(chan field, len(display)+1)
+	for _, k := range display {
 		switch k {
 		case kindClock:
 			go poll(
-				b.updates,
+				updates,
 				kindClock,
 				pollClock(c.Clock.Settings), c.Clock.Interval.Duration())
 
 		case kindVolume:
 			go poll(
-				b.updates,
+				updates,
 				kindVolume,
 				pollVolume(c.Volume.Settings), c.Volume.Interval.Duration())
 
 		case kindFans:
 			go poll(
-				b.updates,
+				updates,
 				kindFans,
 				pollFans(c.Fans.Settings), c.Fans.Interval.Duration())
 
 		case kindBattery:
 			go poll(
-				b.updates,
+				updates,
 				kindBattery,
 				pollBattery(c.Battery.Settings), c.Battery.Interval.Duration())
 
 		case kindBrightness:
 			go poll(
-				b.updates,
+				updates,
 				kindBrightness,
 				pollBrightness(c.Brightness.Settings), c.Brightness.Interval.Duration())
 
 		case kindTemperatures:
 			go poll(
-				b.updates,
+				updates,
 				kindTemperatures,
 				pollTemperatures(c.Temperatures.Settings), c.Temperatures.Interval.Duration())
 
 		case kindWifi:
 			go live(
-				b.updates,
+				updates,
 				kindWifi,
 				watchWifi(c.Wifi.Settings))
 			// Backup poller to fallback to
 			go poll(
-				b.updates,
+				updates,
 				kindWifi,
 				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
 		}
@@ -80,10 +76,14 @@ func run(c config) {
 
 	// Only print when new change arrives
 	// We test string for equality
+	b := bar{
+		title:   c.Title,
+		display: display,
+		values:  newStates(),
+	}
 	lastOutput := ""
-	for update := range b.updates {
+	for update := range updates {
 		b.values.set(update)
-
 		output := b.String()
 		if output == lastOutput {
 			continue

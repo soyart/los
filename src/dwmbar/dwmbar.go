@@ -63,7 +63,7 @@ func kindFromString(s string) kind {
 	panic("unknown kind string: " + s)
 }
 
-func kindsFromFields(names []string) []kind {
+func kindsFromStrings(names []string) []kind {
 	result := make([]kind, len(names))
 	for i := range names {
 		result[i] = kindFromString(names[i])
@@ -122,7 +122,6 @@ type bar struct {
 	title   string
 	display []kind // fields specify display order, might differ from config.fields (empty config.fields leads to full bar.fields)
 	values  states
-	updates chan field
 }
 
 func (b bar) String() string {
