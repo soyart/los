@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 func main() {
@@ -21,7 +22,7 @@ func main() {
 }
 
 func run(c config) {
-	display := kindsFromStrings(c.Fields)
+	display := c.displayOrder()
 	updates := make(chan field, len(display)+1)
 	for _, k := range display {
 		switch k {
@@ -130,4 +131,59 @@ func overrideEmpty(conf config) config {
 		}
 	}
 	return conf
+}
+
+func configDefault() config {
+	return config{
+		Title: usernameAtHost(),
+		Fields: func() []string {
+			all := kinds()
+			return kindStrings(all[:])
+		}(),
+		Clock: withInterval[argsClock]{
+			Interval: duration(1 * time.Second),
+			Settings: argsClock{
+				// https://go.dev/src/time/format.go
+				Layout: defaultClockLayout,
+			},
+		},
+		Volume: withInterval[argsVolume]{
+			Interval: duration(200 * time.Millisecond),
+			Settings: argsVolume{
+				Backend: backendPipewire,
+			},
+		},
+		Fans: withInterval[argsFans]{
+			Interval: duration(1 * time.Second),
+			Settings: argsFans{
+				Cache: true,
+				Limit: 2,
+			},
+		},
+		Temperatures: withInterval[argsTemperatures]{
+			Interval: duration(5 * time.Second),
+			Settings: argsTemperatures{
+				Cache:    true,
+				Separate: false,
+			},
+		},
+		Battery: withInterval[argsBattery]{
+			Interval: duration(5 * time.Second),
+			Settings: argsBattery{
+				Cache: true,
+			},
+		},
+		Brightness: withInterval[argsBrightness]{
+			Interval: duration(500 * time.Millisecond),
+			Settings: argsBrightness{
+				Cache: true,
+			},
+		},
+		Wifi: withInterval[argsWifi]{
+			Interval: duration(30 * time.Second), // Heartbeat interval for signal fallback
+			Settings: argsWifi{
+				Backend: backendWifiAuto,
+			},
+		},
+	}
 }

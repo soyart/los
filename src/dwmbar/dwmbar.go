@@ -54,23 +54,6 @@ func (k kind) String() string {
 	panic("uncaught kind=" + fmt.Sprintf("%d", k))
 }
 
-func kindFromString(s string) kind {
-	for _, k := range kinds() {
-		if s == k.String() {
-			return k
-		}
-	}
-	panic("unknown kind string: " + s)
-}
-
-func kindsFromStrings(names []string) []kind {
-	result := make([]kind, len(names))
-	for i := range names {
-		result[i] = kindFromString(names[i])
-	}
-	return result
-}
-
 // field represents a state, identified by kind, and has a value and an error.
 // field is displayed as value.String() or err.Error() if err is not nil.
 type field struct {
@@ -98,14 +81,18 @@ func (f field) String() string {
 	return fmt.Sprintf("%s: null", f.kind.String())
 }
 
-// states stores field values indexed by kind
+// states stores field values indexed by kind-1
 type states []field
 
 // key returns 0-based index for array lookup
-func (s states) key(k kind) int { return int(k) - 1 }
+func (s states) key(k kind) int {
+	return int(k) - 1
+}
 
 // set sets the field value for the given kind
-func (s states) set(f field) { s[s.key(f.kind)] = f }
+func (s states) set(f field) {
+	s[s.key(f.kind)] = f
+}
 
 func (s states) get(k kind) field {
 	idx := s.key(k)
@@ -115,7 +102,7 @@ func (s states) get(k kind) field {
 	return field{}
 }
 
-func newStates() states { return make(states, len(kinds())) }
+func newStates() states { return make(states, len(kinds())) } //nolint
 
 // bar defines the status bar current states
 type bar struct {
@@ -125,14 +112,14 @@ type bar struct {
 }
 
 func (b bar) String() string {
-	var sb strings.Builder
-	sb.WriteString(b.title)
+	var s strings.Builder
+	s.WriteString(b.title)
 	for _, k := range b.display {
-		sb.WriteString(" | ")
-		sb.WriteString(b.values.get(k).String())
+		s.WriteString(" | ")
+		s.WriteString(b.values.get(k).String())
 	}
-	sb.WriteByte('\n')
-	return sb.String()
+	s.WriteByte('\n')
+	return s.String()
 }
 
 // poller is any simple function that returns a stringer.
@@ -176,7 +163,6 @@ func poll[T fmt.Stringer](
 			time.Sleep(interval)
 			continue
 		}
-
 		s := val.String()
 		if s != last {
 			c <- field{
@@ -192,21 +178,30 @@ func poll[T fmt.Stringer](
 // live runs a watcher and forwards its results to the main status channel.
 // The watcher only knows about its own type T, not kind or [field].
 // Deduplication is handled here, same as poll.
-func live[T fmt.Stringer](c chan<- field, k kind, w watcher[T]) {
+func live[T fmt.Stringer](
+	c chan<- field,
+	k kind,
+	w watcher[T],
+) {
 	updates := make(chan result[T], 1)
 	go w(updates)
 
 	var last string
 	for r := range updates {
 		if r.err != nil {
-			c <- field{kind: k, err: r.err}
+			c <- field{
+				kind: k,
+				err:  r.err,
+			}
 			last = r.err.Error()
 			continue
 		}
-
 		s := r.value.String()
 		if s != last {
-			c <- field{kind: k, value: r.value}
+			c <- field{
+				kind:  k,
+				value: r.value,
+			}
 			last = s
 		}
 	}
@@ -249,4 +244,29 @@ func findAllMatches(pattern string) []string {
 		return nil
 	}
 	return matches
+}
+
+func kindFromString(s string) kind {
+	for _, k := range kinds() {
+		if s == k.String() {
+			return k
+		}
+	}
+	panic("unknown kind string: " + s)
+}
+
+func kindsFromStrings(names []string) []kind {
+	result := make([]kind, len(names))
+	for i := range names {
+		result[i] = kindFromString(names[i])
+	}
+	return result
+}
+
+func kindStrings(kinds []kind) []string {
+	results := make([]string, len(kinds))
+	for i := range kinds {
+		results[i] = kinds[i].String()
+	}
+	return results
 }
