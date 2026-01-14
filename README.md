@@ -11,9 +11,9 @@ The L in los was picked randomly, and could stand for last, light, or even loser
 Modules are organized under [`./modules`](./modules/):
 
 - [`modules/system/`](./modules/system/) — System-wide NixOS modules
-- [`modules/home/`](./modules/home/) — Per-user modules (with `username:` closure)
+- [`modules/homev2/`](./modules/homev2/) — Per-user modules (merged), V2
 
-There's only 1 rule for modules: **a system module must never touch user modules**.
+There's only 1 rule for modules: **a system module must never touch home modules**.
 
 > We allow user modules to read or even set values of system modules,
 > or even `nixosConfigurations` itself, *if* that's the natural way to implement the module.
@@ -25,43 +25,13 @@ There's only 1 rule for modules: **a system module must never touch user modules
   The modules here provide los system options like networking, mountpoints,
   users, and doas.
 
-- [User modules in `modules/home/`](./modules/home/)
+- [User modules in `modules/homev2/`](./modules/homev2/)
 
   The modules here provide `los.home` user options like program configurations,
   user-specific packages, etc.
 
-  #### Directory structure
-
-  - `dm/` — Display manager related configs (sway, pipewire, fonts)
-  - `languages/` — Programming language support
-  - `firefox/` — Firefox browser configuration
-  - `git/` — Git version control configuration
-  - `helix/` — Helix editor configuration
-  - `lf/` — lf file manager configuration
-  - `vscodium/` — VSCodium editor configuration
-
-  And it goes on.
-
-  #### User-specific options
-
-  Options under `los.home` are user-specific. The per-user configuration
-  is implemented by simple, stupid functional module factories that takes
-  in a username and returns a user-specific los modules under `los.home.${username}`.
-
-  The options `los.home.${username}` will then be mapped to `home-manager.users.${username}`.
-
-  Note that `home-manager.sharedModules` is not used because some modules here might need to set
-  system configurations too, usually low-level or security-related NixOS options.
-
-  #### DM abstraction
-
-  The `dm/` module provides shared display manager settings:
-  - `los.home.${username}.dm.pipewire.enable` — Audio/screen sharing support
-  - `los.home.${username}.dm.fonts` — Font configuration
-  - `los.home.${username}.dm.sway` — Sway window manager
-
-  Other modules (like Firefox) can reference `dm.pipewire.enable` to determine
-  whether to enable Pipewire support, avoiding configuration races.
+  We can define homev2 as a attrset with attr (key) being the target username.
+  See [modules/homev2/defaults.nix](./modules/homev2/default.nix) for usage.
 
 - [Standalone Home Manager entry](./home/default.nix)
 
@@ -82,17 +52,26 @@ to the internet.
 The way I like it is to use host configuration as the base, and build up from
 there with modules and [presets](./presets/).
 
-### Misc.
+### Defaults and presets
 
-- [Library](./liblos/) (very opinionated)
+Defaults and presets in los are pre-configured, opinionated NixOS modules.
+They provide default configuration for los Nix module options. They are
+usually mapped to a los module.
 
-  Simple (sometimes useless) non-module Nix code, usually functions.
+For example, [./defaults/system/net](./defaults/system/net) provides default
+values for los networking module [./modules/system/net].
 
-- [Package lists](./packages/)
+Presets are set of defaults plus a few tweaks if needed. They're supposed to
+provide one big opinionated templates for importers.
 
-  List of package names to be imported by [syspkgs module](./modules/system/syspkgs.nix).
+For example, [./presets/homev2/sway-dev.nix](./presets/homev2/sway-dev.nix)
+defines the user configuration that contains sway defaults + development workflow defaults.
 
-  Each text line is treated as pname of a Nix package.
+For another example, [./presets/homev2/minimal.nix](./presets/homev2/minimal.nix)
+defines "minimal" setup that only contains a few required terminal programs,
+while [./presets/homev2/devel.nix](./presets/homev2/devel.nix) defines the base developer's setup.
+If we combine the two presets, we get a system that have both stuff from sway-dev and minimal setup,
+but without Sway or GUI configuration.
 
 - [Default settings](./defaults/)
 
@@ -109,3 +88,19 @@ there with modules and [presets](./presets/).
   and kernel settings should be defined in `hosts/<host>/default.nix`.
 
   Like with defaults, they provide no options.
+
+### Misc.
+
+- [Library](./liblos/) (very opinionated)
+
+  Simple (sometimes useless) non-module Nix code, usually functions.
+
+- [Package lists](./packages/)
+
+  List of package names to be imported by [syspkgs module](./modules/system/syspkgs.nix).
+
+  Each text line is treated as pname of a Nix package.
+
+- [Original source code](./src)
+
+  los also has its own programs, packaged into Nix Flake and used within los modules.
