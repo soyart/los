@@ -1,6 +1,6 @@
 # Sway keybindings for homev2
 
-{ mod, shtools }:
+{ mod, dmenutrackpad }:
 
 {
   keybindings = {
@@ -58,7 +58,7 @@
     "${mod}+Shift+minus" = "move scratchpad";
 
     "${mod}+0" = "exec wofipower";
-    "${mod}+t" = "exec ${shtools}/dmenutouchpad";
+    "${mod}+t" = "exec ${dmenutrackpad}/bin/dmenutrackpad";
     "${mod}+d" = "exec wofi --show run";
 
     "--locked XF86AudioRaiseVolume" = "exec sndctl up";

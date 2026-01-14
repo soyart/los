@@ -6,22 +6,24 @@
 { lib, config, pkgs, inputs, ... }:
 
 let
+  wallpaper = "${inputs.self}/assets/wall/scene2.jpg";
   colors = import ./colors.nix;
   scripts = import ./scripts.nix { inherit pkgs; };
   unix = inputs.unix;
-  dwmbar = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}".dwmbar;
-  barCommand = "${dwmbar}/bin/dwmbar";
-  wallpaper = "${inputs.self}/assets/wall/scene2.jpg";
+  
+  # Flake self packages
+  losPkgs = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}";
+  dwmbar = losPkgs.dwmbar;
+  dmenutrackpad = losPkgs.dmenutrackpad;
 
   # Get usernames who have sway enabled
   swayUsers = lib.filterAttrs (username: userCfg: userCfg.sway.enable) config.los.homev2;
   anySwayEnabled = swayUsers != { };
 
   mod = "Mod1";
-  shtools = "${inputs.unix}/sh-tools/bin";
 
   # Import split config files
-  keys = import ./keybindings.nix { inherit mod shtools; };
+  keys = import ./keybindings.nix { inherit mod dmenutrackpad; };
   swaylockCfg = import ./swaylock.nix { inherit colors wallpaper; };
   wofiCfg = import ./wofi.nix;
 
@@ -161,7 +163,7 @@ in
                   workspaceButtons = true;
                   workspaceNumbers = true;
                   fonts = { names = [ "Hack" ]; size = 14.0; };
-                  statusCommand = barCommand;
+                  statusCommand = "${dwmbar}/bin/dwmbar";
                   colors = {
                     background = colors.black;
                     statusline = colors.blue;
