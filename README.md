@@ -58,8 +58,8 @@ Defaults and presets in los are pre-configured, opinionated NixOS modules.
 They provide default configuration for los Nix module options. They are
 usually mapped to a los module.
 
-For example, [./defaults/system/net](./defaults/system/net) provides default
-values for los networking module [./modules/system/net].
+For example, [./defaults/system/net](./defaults/system/net/) provides default
+values for los networking module [./modules/system/net](./modules/system/net/).
 
 Presets are set of defaults plus a few tweaks if needed. They're supposed to
 provide one big opinionated templates for importers.
