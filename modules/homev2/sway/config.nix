@@ -76,13 +76,10 @@ in
               pkgs.brightnessctl
               pkgs.dash
               pkgs.lm_sensors
+              scripts.dmenu
               scripts.sndctl
               scripts.wofipower
             ];
-
-            home.shellAliases = {
-              "dmenu" = "wofi -d";
-            };
 
             home.sessionVariables = {
               WAYLAND = "1";

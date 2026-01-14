@@ -1,6 +1,12 @@
 { pkgs }:
 
 {
+  # Wrapper to make wofi act as dmenu
+  # Allows programs to call "dmenu" directly without going through a shell
+  dmenu = pkgs.writeShellScriptBin "dmenu" ''
+    exec ${pkgs.wofi}/bin/wofi --dmenu "$@"
+  '';
+
   sndctl = pkgs.writeShellApplication {
     name = "sndctl";
     runtimeInputs = [
