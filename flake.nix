@@ -25,10 +25,16 @@
               src = ./src/dwmbar;
               vendorHash = "sha256-WUTGAYigUjuZLHO1YpVhFSWpvULDZfGMfOXZQqVYAfs=";
             };
+            dmenutrackpad = pkgs.buildGoModule {
+              pname = "dmenutrackpad";
+              version = "0.1.0";
+              src = ./src/dmenutrackpad;
+              vendorHash = null;
+            };
           in
           {
             name = system;
-            value = { inherit dwmbar; default = dwmbar; };
+            value = { inherit dwmbar dmenutrackpad; };
           }
         ) [ "x86_64-linux" "aarch64-linux" ]);
 
