@@ -27,11 +27,11 @@ There's only 1 rule for modules: **a system module must never touch home modules
 
 - [User modules in `modules/homev2/`](./modules/homev2/)
 
-  The modules here provide `los.home` user options like program configurations,
+  The modules here provide `los.homev2` user options like program configurations,
   user-specific packages, etc.
 
   We can define homev2 as a attrset with attr (key) being the target username.
-  See [modules/homev2/defaults.nix](./modules/homev2/default.nix) for usage.
+  See [the los.homev2 entrypoint](./modules/homev2/default.nix) for usage.
 
 - [Standalone Home Manager entry](./home/default.nix)
 
