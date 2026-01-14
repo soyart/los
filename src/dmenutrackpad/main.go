@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	choiceOff = "Off"
-	choiceOn  = "On"
+	choiceOff = "off"
+	choiceOn  = "on"
 )
 
 func main() {
@@ -19,16 +19,16 @@ func main() {
 		// Direct CLI usage: dmenutrackpad Off
 		choice = os.Args[1]
 	} else {
-		// Interactive: spawn wofi
+		// Interactive: spawn dmenu
 		var err error
-		choice, err = wofiSelect()
+		choice, err = dmenuSelect()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "wofi: %s\n", err)
+			fmt.Fprintf(os.Stderr, "dmenu: %s\n", err)
 			os.Exit(1)
 		}
 	}
 
-	switch choice {
+	switch strings.ToLower(choice) {
 	case choiceOff:
 		if err := setTrackpad(false); err != nil {
 			fmt.Fprintf(os.Stderr, "trackpad off: %s\n", err)
@@ -40,16 +40,16 @@ func main() {
 			os.Exit(1)
 		}
 	case "":
-		// User cancelled wofi selection
-		os.Exit(0)
+		return
+
 	default:
 		fmt.Fprintf(os.Stderr, "expected '%s' or '%s', got '%s'\n", choiceOff, choiceOn, choice)
 		os.Exit(1)
 	}
 }
 
-func wofiSelect() (string, error) {
-	cmd := exec.Command("wofi", "-d", "-i", "-p", "Trackpad:")
+func dmenuSelect() (string, error) {
+	cmd := exec.Command("dmenu", "-i", "-p", "Trackpad:")
 	cmd.Stdin = strings.NewReader(choiceOff + "\n" + choiceOn + "\n")
 	out, err := cmd.Output()
 	if err != nil {
