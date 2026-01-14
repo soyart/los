@@ -78,9 +78,8 @@ func run(c config) {
 	// Only print when new change arrives
 	// We test string for equality
 	b := bar{
-		title:   c.Title,
-		display: display,
-		values:  newStates(),
+		title:  c.Title,
+		values: newStates(display),
 	}
 	lastOutput := ""
 	for update := range updates {
