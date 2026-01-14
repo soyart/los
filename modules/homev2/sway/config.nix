@@ -6,26 +6,27 @@
 { lib, config, pkgs, inputs, ... }:
 
 let
+  # Import split config files
+  keys = import ./keybindings.nix { inherit mod dmenutrackpad; };
+  swaylockCfg = import ./swaylock.nix { inherit colors wallpaper; };
+  wofiCfg = import ./wofi.nix;
   wallpaper = "${inputs.self}/assets/wall/scene2.jpg";
   colors = import ./colors.nix;
   scripts = import ./scripts.nix { inherit pkgs; };
-  unix = inputs.unix;
-  
+
   # Flake self packages
   losPkgs = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}";
   dwmbar = losPkgs.dwmbar;
   dmenutrackpad = losPkgs.dmenutrackpad;
+
+  # Legacy dotfiles
+  unix = inputs.unix;
 
   # Get usernames who have sway enabled
   swayUsers = lib.filterAttrs (username: userCfg: userCfg.sway.enable) config.los.homev2;
   anySwayEnabled = swayUsers != { };
 
   mod = "Mod1";
-
-  # Import split config files
-  keys = import ./keybindings.nix { inherit mod dmenutrackpad; };
-  swaylockCfg = import ./swaylock.nix { inherit colors wallpaper; };
-  wofiCfg = import ./wofi.nix;
 
 in
 {
@@ -120,7 +121,7 @@ in
                 settings = { cache = true; };
               };
               wifi = {
-                interval = "30s";  # Heartbeat fallback interval (event-driven)
+                interval = "30s"; # Heartbeat fallback interval (event-driven)
                 settings = { backend = "iwd"; };
               };
             };
