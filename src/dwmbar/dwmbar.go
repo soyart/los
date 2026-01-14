@@ -81,41 +81,33 @@ func (f field) String() string {
 	return fmt.Sprintf("%s: null", f.kind.String())
 }
 
-// states stores field values indexed by kind-1
-type states struct {
-	display []kind  // display order
-	fields  []field // actual values of each display
-}
+type states []field // actual values display
 
-// key returns 0-based index based on display for array lookup
-func (s states) key(k kind) int {
-	for i := range s.display {
-		if s.display[i] == k {
-			return i
+func (s states) set(data field) {
+	for i := range s {
+		f := &s[i]
+		if data.kind == f.kind {
+			s[i] = data
 		}
 	}
-	err := fmt.Errorf("uncaught kind %d", k)
-	panic(err.Error())
-}
-
-// set sets the field value for the given kind
-func (s states) set(f field) {
-	s.fields[s.key(f.kind)] = f
 }
 
 func (s states) get(k kind) field {
-	idx := s.key(k)
-	if idx >= 0 && idx < len(s.fields) {
-		return s.fields[idx]
+	for i := range s {
+		f := &s[i]
+		if k == f.kind {
+			return s[i]
+		}
 	}
 	return field{}
 }
 
 func newStates(display []kind) states {
-	return states{
-		display: display,
-		fields:  make([]field, len(display)),
+	s := make([]field, len(display))
+	for i := range s {
+		s[i].kind = display[i]
 	}
+	return s
 }
 
 // bar defines the status bar current states
@@ -127,9 +119,9 @@ type bar struct {
 func (b bar) String() string {
 	var s strings.Builder
 	s.WriteString(b.title)
-	for _, k := range b.values.display {
+	for _, f := range b.values {
 		s.WriteString(" | ")
-		s.WriteString(b.values.get(k).String())
+		s.WriteString(f.String())
 	}
 	s.WriteByte('\n')
 	return s.String()
