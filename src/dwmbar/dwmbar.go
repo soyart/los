@@ -85,21 +85,11 @@ type states []field // actual values display
 
 func (s states) set(data field) {
 	for i := range s {
-		f := &s[i]
-		if data.kind == f.kind {
+		if data.kind == s[i].kind {
 			s[i] = data
+			return
 		}
 	}
-}
-
-func (s states) get(k kind) field {
-	for i := range s {
-		f := &s[i]
-		if k == f.kind {
-			return s[i]
-		}
-	}
-	return field{}
 }
 
 func newStates(display []kind) states {
