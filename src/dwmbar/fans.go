@@ -18,7 +18,7 @@ type argsFans struct {
 
 func (f fans) String() string {
 	if len(f.rpms) == 0 {
-		return ""
+		return "rpm: no data"
 	}
 	result := bytes.NewBufferString("rpm: ")
 	for _, r := range f.rpms {
