@@ -1,15 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"strconv"
-	"strings"
 )
 
 type fans struct {
 	rpms  []uint64
-	temps []int // degrees Celsius
-	limit int   // limit defines max number of fans to show on the status bar
+	limit int // limit defines max number of fans to show on the status bar
 }
 
 type argsFans struct {
@@ -18,23 +17,14 @@ type argsFans struct {
 }
 
 func (f fans) String() string {
-	parts := []string{}
-	if len(f.rpms) != 0 {
-		rpms := make([]string, len(f.rpms))
-		for i := range f.rpms {
-			rpms[i] = fmt.Sprintf("%d", f.rpms[i])
-		}
-		parts = append(parts, "rpm: "+strings.Join(rpms, " "))
+	if len(f.rpms) == 0 {
+		return ""
 	}
-	if len(f.temps) != 0 {
-		avg := float64(0)
-		for i := range f.temps {
-			avg += float64(f.temps[i])
-		}
-		avg /= float64(len(f.temps))
-		parts = append(parts, fmt.Sprintf("temp (avg): %.2f°C", avg))
+	result := bytes.NewBufferString("rpm: ")
+	for _, r := range f.rpms {
+		fmt.Fprintf(result, " %d", r)
 	}
-	return strings.Join(parts, " | ")
+	return result.String()
 }
 
 func pollFans(args argsFans) poller[fans] {
@@ -70,5 +60,5 @@ func getFans(fanPaths []string, limit int) (fans, error) {
 		}
 		rpms = append(rpms, rpm)
 	}
-	return fans{rpms: rpms, temps: nil}, nil
+	return fans{rpms: rpms}, nil
 }
