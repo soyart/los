@@ -164,8 +164,8 @@ func configDefault() config {
 		Temperatures: withInterval[argsTemperatures]{
 			Interval: duration(5 * time.Second),
 			Settings: argsTemperatures{
-				Cache:    true,
-				Separate: false,
+				Cache: true,
+				Merge: true,
 			},
 		},
 		Battery: withInterval[argsBattery]{
