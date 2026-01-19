@@ -105,15 +105,17 @@ func newDefaultConfig(home string) (config, error) {
 		fmt.Fprintf(os.Stderr, "reading config file '%s': %s\n", configPath, err.Error())
 		return config{}, err
 	}
+	// Use default if file is empty
+	if len(j) == 0 {
+		return configDefault(), nil
+	}
 
 	var conf config
-	if len(j) != 0 {
-		err = json.Unmarshal(j, &conf)
-		if err != nil {
-			conf = configDefault()
-			fmt.Fprintf(os.Stderr, "unmarshaling json file '%s': %s\n", configPath, err.Error())
-			fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
-		}
+	err = json.Unmarshal(j, &conf)
+	if err != nil {
+		conf = configDefault()
+		fmt.Fprintf(os.Stderr, "unmarshaling json file '%s': %s\n", configPath, err.Error())
+		fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
 	}
 	return conf, nil
 }
