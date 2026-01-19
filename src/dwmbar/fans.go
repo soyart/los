@@ -7,13 +7,13 @@ import (
 )
 
 type fans struct {
-	rpms  []uint64
-	limit int // limit defines max number of fans to show on the status bar
+	rpms  []uint32 // rpms stores RPMs of <limit> fans
+	limit uint16   // limit defines max number of fans to show on the status bar
 }
 
 type argsFans struct {
-	Cache bool `json:"cache"`
-	Limit int  `json:"limit"`
+	Cache bool   `json:"cache"`
+	Limit uint16 `json:"limit"`
 }
 
 func (f fans) String() string {
@@ -41,11 +41,12 @@ func pollFans(args argsFans) poller[fans] {
 	}
 }
 
-func getFans(fanPaths []string, limit int) (fans, error) {
+func getFans(fanPaths []string, limitConfig uint16) (fans, error) {
+	limit := int(limitConfig)
 	if limit <= 0 {
 		limit = len(fanPaths)
 	}
-	rpms := make([]uint64, 0, limit)
+	rpms := make([]uint32, limitConfig)
 	for i, fanFile := range fanPaths {
 		if i >= limit {
 			break
@@ -54,11 +55,11 @@ func getFans(fanPaths []string, limit int) (fans, error) {
 		if state == "" {
 			continue
 		}
-		rpm, err := strconv.ParseUint(state, 10, 64)
+		rpm, err := strconv.ParseUint(state, 10, 32)
 		if err != nil {
 			return fans{}, fmt.Errorf("failed to parse rpm '%s': %w", state, err)
 		}
-		rpms = append(rpms, rpm)
+		rpms[i] = uint32(rpm)
 	}
 	return fans{rpms: rpms}, nil
 }
