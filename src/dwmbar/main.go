@@ -79,8 +79,8 @@ func run(c config) {
 			go live(
 				k,
 				updates,
-				watchWifi(c.Wifi.Settings))
-
+				watchWifi(c.Wifi.Settings),
+			)
 			// Backup interval poller to fallback to
 			go poll(
 				k,

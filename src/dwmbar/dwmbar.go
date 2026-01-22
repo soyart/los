@@ -75,10 +75,10 @@ func (f field) String() string {
 	if f.err != nil {
 		return fmt.Sprintf("%s: %s", f.kind.String(), f.err.Error())
 	}
-	if f.value != nil {
-		return f.value.String()
+	if f.value == nil {
+		return fmt.Sprintf("%s: null", f.kind.String())
 	}
-	return fmt.Sprintf("%s: null", f.kind.String())
+	return f.value.String()
 }
 
 type states []field // actual values display
@@ -148,7 +148,7 @@ func poll[T fmt.Stringer](
 
 	var last string
 	for {
-		val, err := p()
+		result, err := p()
 		if err != nil {
 			c <- field{
 				kind: k,
@@ -158,11 +158,11 @@ func poll[T fmt.Stringer](
 			time.Sleep(interval)
 			continue
 		}
-		s := val.String()
+		s := result.String()
 		if s != last {
 			c <- field{
 				kind:  k,
-				value: val,
+				value: result,
 			}
 			last = s
 		}
