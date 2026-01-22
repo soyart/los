@@ -28,50 +28,66 @@ func run(c config) {
 		switch k {
 		case kindClock:
 			go poll(
+				k,
 				updates,
-				kindClock,
-				pollClock(c.Clock.Settings), c.Clock.Interval.Duration())
+				pollClock(c.Clock.Settings),
+				c.Clock.Interval.Duration(),
+			)
 
 		case kindVolume:
 			go poll(
+				k,
 				updates,
-				kindVolume,
-				pollVolume(c.Volume.Settings), c.Volume.Interval.Duration())
+				pollVolume(c.Volume.Settings),
+				c.Volume.Interval.Duration(),
+			)
 
 		case kindFans:
 			go poll(
+				k,
 				updates,
-				kindFans,
-				pollFans(c.Fans.Settings), c.Fans.Interval.Duration())
+				pollFans(c.Fans.Settings),
+				c.Fans.Interval.Duration(),
+			)
 
 		case kindBattery:
 			go poll(
+				k,
 				updates,
-				kindBattery,
-				pollBattery(c.Battery.Settings), c.Battery.Interval.Duration())
+				pollBattery(c.Battery.Settings),
+				c.Battery.Interval.Duration(),
+			)
 
 		case kindBrightness:
 			go poll(
+				k,
 				updates,
-				kindBrightness,
-				pollBrightness(c.Brightness.Settings), c.Brightness.Interval.Duration())
+				pollBrightness(c.Brightness.Settings),
+				c.Brightness.Interval.Duration(),
+			)
 
 		case kindTemperatures:
 			go poll(
+				k,
 				updates,
-				kindTemperatures,
-				pollTemperatures(c.Temperatures.Settings), c.Temperatures.Interval.Duration())
+				pollTemperatures(c.Temperatures.Settings),
+				c.Temperatures.Interval.Duration(),
+			)
 
 		case kindWifi:
+			// Real-time wifi status
 			go live(
+				k,
 				updates,
-				kindWifi,
 				watchWifi(c.Wifi.Settings))
-			// Backup poller to fallback to
+
+			// Backup interval poller to fallback to
 			go poll(
+				k,
 				updates,
-				kindWifi,
-				pollWifi(c.Wifi.Settings), c.Wifi.Interval.Duration())
+				pollWifi(c.Wifi.Settings),
+				c.Wifi.Interval.Duration(),
+			)
 		}
 	}
 
@@ -105,15 +121,17 @@ func newDefaultConfig(home string) (config, error) {
 		fmt.Fprintf(os.Stderr, "reading config file '%s': %s\n", configPath, err.Error())
 		return config{}, err
 	}
+	// Use default if file is empty
+	if len(j) == 0 {
+		return configDefault(), nil
+	}
 
 	var conf config
-	if len(j) != 0 {
-		err = json.Unmarshal(j, &conf)
-		if err != nil {
-			conf = configDefault()
-			fmt.Fprintf(os.Stderr, "unmarshaling json file '%s': %s\n", configPath, err.Error())
-			fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
-		}
+	err = json.Unmarshal(j, &conf)
+	if err != nil {
+		conf = configDefault()
+		fmt.Fprintf(os.Stderr, "unmarshaling json file '%s': %s\n", configPath, err.Error())
+		fmt.Fprintf(os.Stderr, "using default config: %+v\n", conf)
 	}
 	return conf, nil
 }
@@ -162,8 +180,8 @@ func configDefault() config {
 		Temperatures: withInterval[argsTemperatures]{
 			Interval: duration(5 * time.Second),
 			Settings: argsTemperatures{
-				Cache:    true,
-				Separate: false,
+				Cache: true,
+				Merge: true,
 			},
 		},
 		Battery: withInterval[argsBattery]{

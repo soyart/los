@@ -137,8 +137,8 @@ type result[T any] struct {
 // poll uses poller p to poll T at some interval, then wraps T
 // with [field] and sends the field through channel c
 func poll[T fmt.Stringer](
-	c chan<- field,
 	k kind,
+	c chan<- field,
 	p poller[T],
 	interval time.Duration,
 ) {
@@ -174,8 +174,8 @@ func poll[T fmt.Stringer](
 // The watcher only knows about its own type T, not kind or [field].
 // Deduplication is handled here, same as poll.
 func live[T fmt.Stringer](
-	c chan<- field,
 	k kind,
+	c chan<- field,
 	w watcher[T],
 ) {
 	updates := make(chan result[T], 1)
