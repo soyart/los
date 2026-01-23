@@ -7,36 +7,35 @@ import (
 )
 
 type temperature struct {
-	temps    []int
-	separate bool
+	temps []int
+	merge bool
 }
 
 type argsTemperatures struct {
-	Cache    bool `json:"cache"`
-	Separate bool `json:"separate"`
+	Cache bool `json:"cache"`
+	Merge bool `json:"merge"` // Merge multiple CPU temps into an average
 }
 
 func (f temperature) String() string {
 	if len(f.temps) == 0 {
 		return "null"
 	}
-
-	if f.separate {
-		s := new(bytes.Buffer)
-		s.WriteString("temperatures:")
-		// Try to make it compact for multi-core machines
-		for i, temp := range f.temps {
-			fmt.Fprintf(s, " cpus[%d]:%d", i, temp)
+	if f.merge {
+		avg := float64(0)
+		for i := range f.temps {
+			avg += float64(f.temps[i])
 		}
-		return s.String()
+		avg /= float64(len(f.temps))
+		return fmt.Sprintf("temperature(avg): %.2f°C", avg)
 	}
 
-	avg := float64(0)
-	for i := range f.temps {
-		avg += float64(f.temps[i])
+	s := new(bytes.Buffer)
+	s.WriteString("temperatures:")
+	// Try to make it compact for multi-core machines
+	for i, temp := range f.temps {
+		fmt.Fprintf(s, " cpus[%d]:%d", i, temp)
 	}
-	avg /= float64(len(f.temps))
-	return fmt.Sprintf("temperature(avg): %.2f°C", avg)
+	return s.String()
 }
 
 func pollTemperatures(args argsTemperatures) poller[temperature] {
@@ -44,12 +43,12 @@ func pollTemperatures(args argsTemperatures) poller[temperature] {
 	if args.Cache {
 		paths := findAllMatches(pattern)
 		return func() (temperature, error) {
-			return getTemperatures(paths, args.Separate)
+			return getTemperatures(paths, args.Merge)
 		}
 	}
 	return func() (temperature, error) {
 		paths := findAllMatches(pattern)
-		return getTemperatures(paths, args.Separate)
+		return getTemperatures(paths, args.Merge)
 	}
 }
 
@@ -68,5 +67,5 @@ func getTemperatures(paths []string, merge bool) (temperature, error) {
 			temps = append(temps, millidegrees/1000)
 		}
 	}
-	return temperature{temps: temps, separate: merge}, nil
+	return temperature{temps: temps, merge: merge}, nil
 }

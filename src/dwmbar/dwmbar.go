@@ -75,10 +75,10 @@ func (f field) String() string {
 	if f.err != nil {
 		return fmt.Sprintf("%s: %s", f.kind.String(), f.err.Error())
 	}
-	if f.value != nil {
-		return f.value.String()
+	if f.value == nil {
+		return fmt.Sprintf("%s: null", f.kind.String())
 	}
-	return fmt.Sprintf("%s: null", f.kind.String())
+	return f.value.String()
 }
 
 type states []field // actual values display
@@ -137,8 +137,8 @@ type result[T any] struct {
 // poll uses poller p to poll T at some interval, then wraps T
 // with [field] and sends the field through channel c
 func poll[T fmt.Stringer](
-	c chan<- field,
 	k kind,
+	c chan<- field,
 	p poller[T],
 	interval time.Duration,
 ) {
@@ -148,7 +148,7 @@ func poll[T fmt.Stringer](
 
 	var last string
 	for {
-		val, err := p()
+		result, err := p()
 		if err != nil {
 			c <- field{
 				kind: k,
@@ -158,11 +158,11 @@ func poll[T fmt.Stringer](
 			time.Sleep(interval)
 			continue
 		}
-		s := val.String()
+		s := result.String()
 		if s != last {
 			c <- field{
 				kind:  k,
-				value: val,
+				value: result,
 			}
 			last = s
 		}
@@ -174,8 +174,8 @@ func poll[T fmt.Stringer](
 // The watcher only knows about its own type T, not kind or [field].
 // Deduplication is handled here, same as poll.
 func live[T fmt.Stringer](
-	c chan<- field,
 	k kind,
+	c chan<- field,
 	w watcher[T],
 ) {
 	updates := make(chan result[T], 1)

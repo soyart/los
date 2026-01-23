@@ -110,7 +110,7 @@ in
               };
               temperatures = {
                 interval = "5s";
-                settings = { cache = true; separate = false; };
+                settings = { cache = true; merge = true; };
               };
               battery = {
                 interval = "5s";

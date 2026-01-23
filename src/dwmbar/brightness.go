@@ -35,7 +35,7 @@ func pollBrightness(args argsBrightness) poller[brightness] {
 
 func getBrightness(path string) (brightness, error) {
 	if path == "" {
-		return brightness{}, fmt.Errorf("")
+		return brightness{}, fmt.Errorf("empty brightness path")
 	}
 	valueState := readFile(filepath.Join(path, "brightness"))
 	if valueState == "" {
