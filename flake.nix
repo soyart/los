@@ -25,8 +25,8 @@
               src = pkgs.fetchFromGitHub {
                 owner = "soyart";
                 repo = "dwmbar";
-                rev = "0049f47989ca37a7d7038a64d53b16f92cac3e31";
-                sha256 = "sha256-WOYIFlyv1Aovj40rtzXCNAzQbgpGtiwlSi7KvQ4cuPs=";
+                rev = "4961f9f171663b58cfe71f73a7e9c11300cb7608";
+                sha256 = "sha256-BM3+OSJDD7uuNFz1uqZHVYGkQ3aHuwHozpRuB2/7o1Q=";
               };
               vendorHash = "sha256-WUTGAYigUjuZLHO1YpVhFSWpvULDZfGMfOXZQqVYAfs=";
             };
