@@ -22,7 +22,12 @@
             dwmbar = pkgs.buildGoModule {
               pname = "dwmbar";
               version = "0.1.0";
-              src = ./src/dwmbar;
+              src = pkgs.fetchFromGitHub {
+                owner = "soyart";
+                repo = "dwmbar";
+                rev = "4961f9f171663b58cfe71f73a7e9c11300cb7608";
+                sha256 = "sha256-BM3+OSJDD7uuNFz1uqZHVYGkQ3aHuwHozpRuB2/7o1Q=";
+              };
               vendorHash = "sha256-WUTGAYigUjuZLHO1YpVhFSWpvULDZfGMfOXZQqVYAfs=";
             };
             dmenutrackpad = pkgs.buildGoModule {
