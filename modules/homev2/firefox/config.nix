@@ -1,5 +1,3 @@
-# Firefox config module
-
 { lib, config, pkgs, ... }:
 
 let
@@ -11,34 +9,36 @@ in
   config = lib.mkMerge [
     # Per-user home-manager config
     {
-      home-manager.users = lib.mapAttrs (username: userCfg:
-        let
-          usePipewire =
-            if userCfg.firefox.pipewireOverride != null
-            then userCfg.firefox.pipewireOverride
-            else pipewireEnabled;
-        in
-        lib.mkIf userCfg.firefox.enable {
-          home.sessionVariables = {
-            BROWSER = "firefox";
-            MOZ_ENABLE_WAYLAND = "1";
-          };
+      home-manager.users = lib.mapAttrs
+        (username: userCfg:
+          let
+            usePipewire =
+              if userCfg.firefox.pipewireOverride != null
+              then userCfg.firefox.pipewireOverride
+              else pipewireEnabled;
+          in
+          lib.mkIf userCfg.firefox.enable {
+            home.sessionVariables = {
+              BROWSER = "firefox";
+              MOZ_ENABLE_WAYLAND = "1";
+            };
 
-          programs.firefox = {
-            enable = true;
-            package =
-              if usePipewire
-              then pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
-              else pkgs.firefox;
-          };
+            programs.firefox = {
+              enable = true;
+              package =
+                if usePipewire
+                then pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
+                else pkgs.firefox;
+            };
 
-          xdg.portal = {
-            enable = true;
-            extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
-            config.common.default = "*";
-          };
-        }
-      ) config.los.homev2;
+            xdg.portal = {
+              enable = true;
+              extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+              config.common.default = "*";
+            };
+          }
+        )
+        config.los.homev2;
     }
 
     # System-level config (if ANY user has firefox enabled)

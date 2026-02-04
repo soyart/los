@@ -15,7 +15,7 @@
 , withLfs ? false
 }:
 
-lib.foldl lib.recursiveUpdate {} [
+lib.foldl lib.recursiveUpdate { } [
   (import ../../defaults/homev2/bash.nix)
   (import ../../defaults/homev2/alacritty.nix)
   (import ../../defaults/homev2/sway.nix)

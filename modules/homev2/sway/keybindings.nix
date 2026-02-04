@@ -1,5 +1,3 @@
-# Sway keybindings for homev2
-
 { mod, dmenutrackpad }:
 
 {

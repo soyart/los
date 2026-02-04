@@ -54,7 +54,7 @@ let
         type = types.package;
         description = "Shell for this user";
         default = pkgs.bash;
-        example = pkgs.bash;
+        example = pkgs.zsh;
       };
 
       homeStateVersion = lib.mkOption {

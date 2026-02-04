@@ -1,8 +1,3 @@
-# Languages config module
-#
-# This file is imported by modules/homev2/default.nix.
-# It reads los.homev2 and sets home-manager.users accordingly.
-
 { lib, config, pkgs, ... }:
 
 let

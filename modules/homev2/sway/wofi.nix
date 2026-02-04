@@ -1,5 +1,3 @@
-# Wofi config for homev2
-
 {
   enable = true;
   style = ''
