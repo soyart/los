@@ -5,7 +5,7 @@ let
   constants = import ../../liblos/constants.nix;
   types = lib.types;
   cfg = config.los;
-  
+
   inherit (constants.groups) defaultUserGroup;
 
   allUsernames = map (u: u.username) cfg.users;
@@ -40,12 +40,6 @@ let
         description = "Hashed password (required, cannot be empty)";
       };
 
-      homeStateVersion = lib.mkOption {
-        type = types.str;
-        description = "Home Manager stateVersion for this user";
-        example = "24.05";
-      };
-
       extraGroups = lib.mkOption {
         type = liblos.extend {
           base = types.nullOr (types.listOf types.str);
@@ -55,6 +49,12 @@ let
         description = "Extra groups (cannot contain 'root' or 'wheel')";
         example = [ "video" "docker" ];
       };
+
+      homeStateVersion = lib.mkOption {
+        type = types.str;
+        description = "Home Manager stateVersion for this user";
+        example = "24.05";
+      };
     };
   };
 
@@ -62,46 +62,52 @@ in
 {
   options.los.users = lib.mkOption {
     type = types.listOf userSubmodule;
-    default = [];
+    default = [ ];
     description = "System users (set superuser = true for wheel + doas access)";
   };
 
-  config = lib.mkIf (cfg.users != []) {
+  config = lib.mkIf (cfg.users != [ ]) {
     # Groups: shared defaultUserGroup + personal group per user
     users.groups = {
       ${defaultUserGroup}.members = allUsernames;
-    } // lib.listToAttrs (map (u: {
-      name = u.username;
-      value.members = [ u.username ];
-    }) cfg.users);
+    } // lib.listToAttrs (map
+      (u: {
+        name = u.username;
+        value.members = [ u.username ];
+      })
+      cfg.users);
 
     # Create all users
-    users.users = lib.listToAttrs (map (u: {
-      name = u.username;
-      value = {
-        isNormalUser = true;
-        home = "/home/${u.username}";
-        createHome = true;
-        hashedPassword = u.hashedPassword;
-        extraGroups = (if u.extraGroups == null then [] else u.extraGroups)
-          ++ [ defaultUserGroup ]
-          ++ lib.optional u.superuser "wheel";
-      };
-    }) cfg.users);
+    users.users = lib.listToAttrs (map
+      (u: {
+        name = u.username;
+        value = {
+          isNormalUser = true;
+          home = "/home/${u.username}";
+          createHome = true;
+          hashedPassword = u.hashedPassword;
+          extraGroups = (if u.extraGroups == null then [ ] else u.extraGroups)
+            ++ [ defaultUserGroup ]
+            ++ lib.optional u.superuser "wheel";
+        };
+      })
+      cfg.users);
 
     # Doas for superusers (with mkDefault so hosts can override)
-    los.doas = lib.mkIf (superusers != []) {
+    los.doas = lib.mkIf (superusers != [ ]) {
       enable = lib.mkDefault true;
       settings.users = lib.mkDefault superuserNames;
     };
 
     # Home Manager skeleton for each user
-    home-manager.users = lib.listToAttrs (map (u: {
-      name = u.username;
-      value = {
-        home.stateVersion = u.homeStateVersion;
-      };
-    }) cfg.users);
+    home-manager.users = lib.listToAttrs (map
+      (u: {
+        name = u.username;
+        value = {
+          home.stateVersion = u.homeStateVersion;
+        };
+      })
+      cfg.users);
   };
 }
 

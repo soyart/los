@@ -1,5 +1,3 @@
-# Bash config module
-
 { lib, config, inputs, ... }:
 
 let
@@ -7,33 +5,35 @@ let
 
 in
 {
-  config.home-manager.users = lib.mapAttrs (username: userCfg:
-    lib.mkIf userCfg.bash.enable {
-      programs.bash = {
-        enable = true;
-        enableCompletion = true;
+  config.home-manager.users = lib.mapAttrs
+    (username: userCfg:
+      lib.mkIf userCfg.bash.enable {
+        programs.bash = {
+          enable = true;
+          enableCompletion = true;
 
-        historyControl = [ "ignoreboth" ];
-        historyFile = null;
-        historySize = 256;
+          historyControl = [ "ignoreboth" ];
+          historyFile = null;
+          historySize = 256;
 
-        shellAliases = {
-          ".." = "cd ..";
-          "c" = "clear";
-          "e" = "exit";
-          "g" = "git";
-          "ga" = "git add";
-          "gc" = "git commit";
-          "gs" = "git status";
-          "gp" = "git push";
-          "h" = "hx";
+          shellAliases = {
+            ".." = "cd ..";
+            "c" = "clear";
+            "e" = "exit";
+            "g" = "git";
+            "ga" = "git add";
+            "gc" = "git commit";
+            "gs" = "git status";
+            "gp" = "git push";
+            "h" = "hx";
+          };
+
+          initExtra = ''
+            . ${prompt};
+          '';
         };
-
-        initExtra = ''
-          . ${prompt};
-        '';
-      };
-    }
-  ) config.los.homev2;
+      }
+    )
+    config.los.homev2;
 }
 

@@ -1,5 +1,3 @@
-# Swaylock config for homev2
-
 { colors, wallpaper }:
 
 {

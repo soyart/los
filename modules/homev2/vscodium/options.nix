@@ -1,5 +1,3 @@
-# VSCodium submodule options for los.homev2.<user>
-
 { lib, pkgs, ... }:
 
 {

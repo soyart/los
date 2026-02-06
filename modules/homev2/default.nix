@@ -10,7 +10,7 @@
 # Usage in host config:
 #   imports = [ ../../modules/homev2 ];
 #   los.homev2 = {
-#     artnoi = {
+#     alice = {
 #       languages.go.enable = true;
 #       sway.enable = true;
 #       firefox.enable = true;
@@ -43,7 +43,7 @@ in
       specialArgs = { inherit pkgs; };
       modules = optionsModules;
     });
-    default = {};
+    default = { };
     description = "Per-user configuration (attrsOf-based modules)";
   };
 

@@ -2,7 +2,7 @@
 # A complete development environment with Sway, Firefox, VSCodium, and dev tools
 #
 # Usage:
-#   los.homev2.artnoi = import ./presets/homev2/sway-dev.nix {
+#   los.homev2.username_1 = import ./presets/homev2/sway-dev.nix {
 #     inherit lib pkgs;
 #     withRust = true;
 #     withGo = true;
@@ -15,7 +15,7 @@
 , withLfs ? false
 }:
 
-lib.foldl lib.recursiveUpdate {} [
+lib.foldl lib.recursiveUpdate { } [
   (import ../../defaults/homev2/bash.nix)
   (import ../../defaults/homev2/alacritty.nix)
   (import ../../defaults/homev2/sway.nix)
