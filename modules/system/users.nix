@@ -50,13 +50,6 @@ let
         example = [ "video" "docker" ];
       };
 
-      shell = lib.mkOption {
-        type = types.package;
-        description = "Shell for this user";
-        default = pkgs.bash;
-        example = pkgs.zsh;
-      };
-
       homeStateVersion = lib.mkOption {
         type = types.str;
         description = "Home Manager stateVersion for this user";
@@ -93,7 +86,6 @@ in
           home = "/home/${u.username}";
           createHome = true;
           hashedPassword = u.hashedPassword;
-          shell = u.shell;
           extraGroups = (if u.extraGroups == null then [ ] else u.extraGroups)
             ++ [ defaultUserGroup ]
             ++ lib.optional u.superuser "wheel";
