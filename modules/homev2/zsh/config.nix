@@ -1,6 +1,7 @@
 { lib, pkgs, config, inputs, ... }:
 
 let
+  promptGit = "${inputs.unix}/dotfiles/pkg/shell/.config/shell/prompt/prompt-git.sh";
   prompt = "${inputs.unix}/dotfiles/pkg/shell/.config/shell/prompt/prompt.zsh";
   anyZshEnabled = lib.any (cfg: (cfg.zsh or { }).enable or false) (lib.attrValues config.los.homev2);
 
@@ -43,6 +44,7 @@ in
           };
 
           initContent = ''
+            . ${promptGit}
             . ${prompt};
           '';
         };
