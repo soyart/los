@@ -23,10 +23,13 @@ in
   ];
 
   # Per-user configuration using homev2
-  los.homev2.${artnoi} = import ../../presets/homev2/sway-dev.nix {
-    inherit lib pkgs;
-    withRust = true;
-    withGo = true;
+  los.homev2.${artnoi} = import ../../presets/homev2/sway-dev.nix
+    {
+      inherit lib pkgs;
+      withRust = true;
+      withGo = true;
+    } // {
+    zsh.enable = true;
   };
 
   networking.hostName = hostname;
