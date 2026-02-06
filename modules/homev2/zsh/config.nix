@@ -1,55 +1,53 @@
 { lib, pkgs, config, inputs, ... }:
 
 let
-  promptGit = "${inputs.unix}/dotfiles/pkg/shell/.config/shell/prompt/prompt-git.sh";
+  homev2 = import ../lib.nix { inherit lib; };
   prompt = "${inputs.unix}/dotfiles/pkg/shell/.config/shell/prompt/prompt.zsh";
-  anyZshEnabled = lib.any (cfg: (cfg.zsh or { }).enable or false) (lib.attrValues config.los.homev2);
-
 in
 {
   # NixOS system config for availability
   config = {
-    programs.zsh.enable = lib.mkIf anyZshEnabled true;
-    users.users = lib.mapAttrs
-      (username: cfg:
-        lib.mkIf cfg.zsh.enable {
-          shell = pkgs.zsh;
-        }
-      )
-      config.los.homev2;
+    programs.zsh.enable = lib.mkIf (homev2.anyEnabled config "zsh") true;
+    
+    users.users = homev2.mkConfigSystem {
+      inherit config;
+      module = "zsh";
+      mkConfig = cfg: {
+        shell = pkgs.zsh;
+      };
+    };
   };
 
   # HomeManager defines actual Zsh config
-  config.home-manager.users = lib.mapAttrs
-    (username: cfg:
-      lib.mkIf cfg.zsh.enable {
-        programs.zsh = {
-          enable = true;
-          enableCompletion = true;
-          autosuggestion.enable = true;
-          syntaxHighlighting.enable = true;
+  config.home-manager.users = homev2.mkConfigHome {
+    inherit config;
+    module = "zsh";
+    mkConfig = userCfg: {
+      programs.zsh = {
+        enable = true;
+        enableCompletion = true;
+        autosuggestion.enable = true;
+        syntaxHighlighting.enable = true;
 
-          history.size = 256;
+        history.size = 256;
 
-          shellAliases = {
-            ".." = "cd ..";
-            "c" = "clear";
-            "e" = "exit";
-            "g" = "git";
-            "ga" = "git add";
-            "gc" = "git commit";
-            "gs" = "git status";
-            "gp" = "git push";
-            "h" = "hx";
-          };
-
-          initContent = ''
-            . ${promptGit}
-            . ${prompt};
-          '';
+        shellAliases = {
+          ".." = "cd ..";
+          "c" = "clear";
+          "e" = "exit";
+          "g" = "git";
+          "ga" = "git add";
+          "gc" = "git commit";
+          "gs" = "git status";
+          "gp" = "git push";
+          "h" = "hx";
         };
-      }
-    )
-    config.los.homev2;
+
+        initContent = ''
+          . ${prompt};
+        '';
+      };
+    };
+  };
 }
 
