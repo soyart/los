@@ -45,25 +45,19 @@ in
       hardware.graphics.enable = true;
     })
 
-    # Per-user doas config
+    # Per-user configs
     {
       los.doas.noPasswords = homev2.mapEnabledUsers config "sway" (username: _: {
         inherit username;
         cmd = "${scripts.wofipower}";
       });
-    }
 
-    # Per-user groups
-    {
       users.users = homev2.mkConfigPerUser config (username: userCfg:
         lib.mkIf userCfg.sway.enable {
           extraGroups = [ "audio" "video" ];
         }
       );
-    }
 
-    # Per-user home-manager config
-    {
       home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
         lib.mkIf userCfg.sway.enable {
           home.packages = [
