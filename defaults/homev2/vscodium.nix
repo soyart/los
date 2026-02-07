@@ -1,4 +1,0 @@
-{
-  vscodium.enable = true;
-}
-

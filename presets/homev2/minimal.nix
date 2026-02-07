@@ -9,10 +9,10 @@
 }:
 
 lib.foldl lib.recursiveUpdate { } [
-  (import ../../defaults/homev2/bash.nix)
-  (import ../../defaults/homev2/git.nix)
-  (import ../../defaults/homev2/helix.nix)
-  (import ../../defaults/homev2/lf.nix)
+  (import ../../modules/homev2/bash/defaults.nix)
+  (import ../../modules/homev2/git/defaults.nix)
+  (import ../../modules/homev2/helix/defaults.nix)
+  (import ../../modules/homev2/lf/defaults.nix)
 
   # Override for parameter
   {

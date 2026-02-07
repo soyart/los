@@ -1,4 +1,0 @@
-{
-  alacritty.enable = true;
-}
-

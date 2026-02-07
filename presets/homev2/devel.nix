@@ -14,7 +14,7 @@
 }:
 
 lib.recursiveUpdate
-  (import ../../defaults/homev2/languages.nix)
+  (import ../../modules/homev2/languages/defaults.nix)
 {
   languages.go.enable = withGo;
   languages.rust.enable = withRust;

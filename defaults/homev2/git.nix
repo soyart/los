@@ -1,4 +1,0 @@
-{
-  git.enable = true;
-}
-

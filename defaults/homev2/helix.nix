@@ -1,4 +1,0 @@
-{
-  helix.enable = true;
-}
-

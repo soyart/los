@@ -1,4 +1,0 @@
-{
-  lf.enable = true;
-}
-

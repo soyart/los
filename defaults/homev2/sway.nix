@@ -1,4 +1,0 @@
-{
-  sway.enable = true;
-}
-

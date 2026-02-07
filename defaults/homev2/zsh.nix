@@ -1,4 +1,0 @@
-{
-  zsh.enable = true;
-}
-

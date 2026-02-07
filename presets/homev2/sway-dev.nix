@@ -16,16 +16,16 @@
 }:
 
 lib.foldl lib.recursiveUpdate { } [
-  (import ../../defaults/homev2/bash.nix)
-  (import ../../defaults/homev2/alacritty.nix)
-  (import ../../defaults/homev2/sway.nix)
-  (import ../../defaults/homev2/fonts.nix { inherit pkgs; })
-  (import ../../defaults/homev2/firefox.nix)
-  (import ../../defaults/homev2/helix.nix)
-  (import ../../defaults/homev2/vscodium.nix)
-  (import ../../defaults/homev2/lf.nix)
-  (import ../../defaults/homev2/git.nix)
-  (import ../../defaults/homev2/languages.nix)
+  (import ../../modules/homev2/bash/defaults.nix)
+  (import ../../modules/homev2/alacritty/defaults.nix)
+  (import ../../modules/homev2/sway/defaults.nix)
+  (import ../../modules/homev2/fonts/defaults.nix { inherit pkgs; })
+  (import ../../modules/homev2/firefox/defaults.nix)
+  (import ../../modules/homev2/helix/defaults.nix)
+  (import ../../modules/homev2/vscodium/defaults.nix)
+  (import ../../modules/homev2/lf/defaults.nix)
+  (import ../../modules/homev2/git/defaults.nix)
+  (import ../../modules/homev2/languages/defaults.nix)
 
   # Overrides for parameters
   {
