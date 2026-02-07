@@ -1,6 +1,8 @@
 { lib, config, pkgs, ... }:
 
 let
+  homev2 = import ../lib.nix { inherit lib; };
+
   mappings = {
     go = with pkgs; [
       go
@@ -14,19 +16,16 @@ let
       rust-analyzer
     ];
   };
-
 in
 {
-  config.home-manager.users = lib.mapAttrs
-    (username: userCfg:
-      let
-        enabledLangs = lib.filterAttrs (name: lang: lang.enable) userCfg.languages;
-        packages = lib.flatten (lib.mapAttrsToList (name: _: mappings.${name} or [ ]) enabledLangs);
-      in
-      {
-        home.packages = packages;
-      }
-    )
-    config.los.homev2;
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
+    let
+      enabledLangs = lib.filterAttrs (name: lang: lang.enable) userCfg.languages;
+      packages = lib.flatten (lib.mapAttrsToList (name: _: mappings.${name} or [ ]) enabledLangs);
+    in
+    {
+      home.packages = packages;
+    }
+  );
 }
 

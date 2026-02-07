@@ -1,17 +1,15 @@
 { lib, config, pkgs, ... }:
 
 let
+  homev2 = import ../lib.nix { inherit lib; };
   nixd = "${pkgs.nixd}/bin/nixd";
   nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
-
 in
 {
-  config.home-manager.users = lib.mapAttrs
-    (username: userCfg:
-      let
-        cfg = userCfg.vscodium;
-      in
-      lib.mkIf cfg.enable {
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
+    lib.mkIf userCfg.vscodium.enable (
+      let cfg = userCfg.vscodium; in
+      {
         programs.vscode = {
           enable = true;
           package =
@@ -33,6 +31,6 @@ in
         };
       }
     )
-    config.los.homev2;
+  );
 }
 

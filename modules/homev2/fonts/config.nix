@@ -1,18 +1,21 @@
 { lib, config, ... }:
 
+let
+  homev2 = import ../lib.nix { inherit lib; };
+in
 {
-  config.home-manager.users = lib.mapAttrs
-    (username: userCfg:
-      lib.mkIf userCfg.fonts.enable {
-        home.packages = userCfg.fonts.packages;
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
+    lib.mkIf userCfg.fonts.enable (
+      let fontsCfg = userCfg.fonts; in
+      {
+        home.packages = fontsCfg.packages;
         fonts = {
-          fontconfig = lib.mkIf (userCfg.fonts.defaults != null)
-            {
-              enable = true;
-              defaultFonts = userCfg.fonts.defaults;
-            };
+          fontconfig = lib.mkIf (fontsCfg.defaults != null) {
+            enable = true;
+            defaultFonts = fontsCfg.defaults;
+          };
         };
       }
     )
-    config.los.homev2;
+  );
 }

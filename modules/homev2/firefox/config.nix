@@ -1,23 +1,24 @@
 { lib, config, pkgs, ... }:
 
 let
+  homev2 = import ../lib.nix { inherit lib; };
   # Read pipewire status from NixOS config directly
   pipewireEnabled = config.services.pipewire.enable;
-
 in
 {
   config = lib.mkMerge [
     # Per-user home-manager config
     {
-      home-manager.users = lib.mapAttrs
-        (username: userCfg:
+      home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
+        lib.mkIf userCfg.firefox.enable (
           let
+            firefoxCfg = userCfg.firefox;
             usePipewire =
-              if userCfg.firefox.pipewireOverride != null
-              then userCfg.firefox.pipewireOverride
+              if firefoxCfg.pipewireOverride != null
+              then firefoxCfg.pipewireOverride
               else pipewireEnabled;
           in
-          lib.mkIf userCfg.firefox.enable {
+          {
             home.sessionVariables = {
               BROWSER = "firefox";
               MOZ_ENABLE_WAYLAND = "1";
@@ -38,11 +39,11 @@ in
             };
           }
         )
-        config.los.homev2;
+      );
     }
 
     # System-level config (if ANY user has firefox enabled)
-    (lib.mkIf (lib.any (u: u.firefox.enable) (lib.attrValues config.los.homev2)) {
+    (lib.mkIf (homev2.anyEnabled config "firefox") {
       environment.pathsToLink = [
         "/share/applications"
         "/share/xdg-desktop-portal"

@@ -1,12 +1,13 @@
 { lib, config, pkgs, ... }:
 
+let
+  homev2 = import ../lib.nix { inherit lib; };
+in
 {
-  config.home-manager.users = lib.mapAttrs
-    (username: userCfg:
-      let
-        cfg = userCfg.helix;
-      in
-      lib.mkIf cfg.enable {
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
+    lib.mkIf userCfg.helix.enable (
+      let cfg = userCfg.helix; in
+      {
         programs.helix = {
           enable = true;
 
@@ -23,6 +24,6 @@
         };
       }
     )
-    config.los.homev2;
+  );
 }
 

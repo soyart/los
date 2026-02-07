@@ -1,8 +1,11 @@
 { lib, config, ... }:
 
+let
+  homev2 = import ../lib.nix { inherit lib; };
+in
 {
-  config.home-manager.users = lib.mapAttrs
-    (username: userCfg:
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
+    lib.mkIf userCfg.git.enable (
       let
         cfg = userCfg.git;
         editor = cfg.editor;
@@ -10,7 +13,7 @@
         gitUsername = if cfg.username != null then cfg.username else username;
         gitEmail = if cfg.email != null then cfg.email else "${username}@${config.networking.hostName}";
       in
-      lib.mkIf cfg.enable {
+      {
         home.sessionVariables = {
           EDITOR = "${editor.package.outPath}/${editor.binPath}";
         };
@@ -32,6 +35,6 @@
         };
       }
     )
-    config.los.homev2;
+  );
 }
 
