@@ -55,11 +55,11 @@ in
 
     # Per-user groups
     {
-      users.users = lib.mapAttrs
-        (username: _: {
+      users.users = homev2.mkConfigPerUser config (username: userCfg:
+        lib.mkIf userCfg.sway.enable {
           extraGroups = [ "audio" "video" ];
-        })
-        (homev2.getEnabledUsers config "sway");
+        }
+      );
     }
 
     # Per-user home-manager config
