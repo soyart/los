@@ -4,10 +4,8 @@ let
   homev2 = import ../lib.nix { inherit lib; };
 in
 {
-  config.home-manager.users = homev2.mkConfigHome {
-    inherit config;
-    module = "lf";
-    mkConfig = userCfg: {
+  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+    lib.mkIf userCfg.lf.enable {
       programs.lf = {
         enable = true;
 
@@ -60,7 +58,7 @@ in
           "sn" = ":{{ set sortby natural; set info size; }}";
         };
       };
-    };
-  };
+    }
+  );
 }
 

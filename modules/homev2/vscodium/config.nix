@@ -6,26 +6,31 @@ let
   nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
 in
 {
-  config.home-manager.users = homev2.forEachEnabled config "vscodium" (username: cfg: {
-    programs.vscode = {
-      enable = true;
-      package =
-        if cfg.fhs
-        then pkgs.vscodium.fhs
-        else pkgs.vscodium;
+  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+    lib.mkIf userCfg.vscodium.enable (
+      let cfg = userCfg.vscodium; in
+      {
+        programs.vscode = {
+          enable = true;
+          package =
+            if cfg.fhs
+            then pkgs.vscodium.fhs
+            else pkgs.vscodium;
 
-      profiles.default = {
-        extensions = cfg.extensions;
-        userSettings = {
-          nix = {
-            enableLanguageServer = true;
-            serverPath = nixd;
-            formatterPath = nixfmt;
-            formatOnSave = true;
+          profiles.default = {
+            extensions = cfg.extensions;
+            userSettings = {
+              nix = {
+                enableLanguageServer = true;
+                serverPath = nixd;
+                formatterPath = nixfmt;
+                formatOnSave = true;
+              };
+            };
           };
         };
-      };
-    };
-  });
+      }
+    )
+  );
 }
 

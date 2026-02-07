@@ -9,33 +9,36 @@ in
   config = lib.mkMerge [
     # Per-user home-manager config
     {
-      home-manager.users = homev2.forEachEnabled config "firefox" (username: firefoxCfg:
-        let
-          usePipewire =
-            if firefoxCfg.pipewireOverride != null
-            then firefoxCfg.pipewireOverride
-            else pipewireEnabled;
-        in
-        {
-          home.sessionVariables = {
-            BROWSER = "firefox";
-            MOZ_ENABLE_WAYLAND = "1";
-          };
+      home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+        lib.mkIf userCfg.firefox.enable (
+          let
+            firefoxCfg = userCfg.firefox;
+            usePipewire =
+              if firefoxCfg.pipewireOverride != null
+              then firefoxCfg.pipewireOverride
+              else pipewireEnabled;
+          in
+          {
+            home.sessionVariables = {
+              BROWSER = "firefox";
+              MOZ_ENABLE_WAYLAND = "1";
+            };
 
-          programs.firefox = {
-            enable = true;
-            package =
-              if usePipewire
-              then pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
-              else pkgs.firefox;
-          };
+            programs.firefox = {
+              enable = true;
+              package =
+                if usePipewire
+                then pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
+                else pkgs.firefox;
+            };
 
-          xdg.portal = {
-            enable = true;
-            extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
-            config.common.default = "*";
-          };
-        }
+            xdg.portal = {
+              enable = true;
+              extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+              config.common.default = "*";
+            };
+          }
+        )
       );
     }
 

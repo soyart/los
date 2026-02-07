@@ -8,21 +8,17 @@ in
   # NixOS system config for availability
   config = {
     programs.zsh.enable = lib.mkIf (homev2.anyEnabled config "zsh") true;
-    
-    users.users = homev2.mkConfigSystem {
-      inherit config;
-      module = "zsh";
-      mkConfig = cfg: {
+
+    users.users = homev2.mkPerUserConfig config (username: userCfg:
+      lib.mkIf userCfg.zsh.enable {
         shell = pkgs.zsh;
-      };
-    };
+      }
+    );
   };
 
   # HomeManager defines actual Zsh config
-  config.home-manager.users = homev2.mkConfigHome {
-    inherit config;
-    module = "zsh";
-    mkConfig = userCfg: {
+  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+    lib.mkIf userCfg.zsh.enable {
       programs.zsh = {
         enable = true;
         enableCompletion = true;
@@ -47,7 +43,7 @@ in
           . ${prompt};
         '';
       };
-    };
-  };
+    }
+  );
 }
 

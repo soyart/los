@@ -7,7 +7,7 @@
 
 let
   homev2 = import ../lib.nix { inherit lib; };
-  
+
   # Import split config files
   keys = import ./keybindings.nix { inherit mod dmenutrackpad; };
   swaylockCfg = import ./swaylock.nix { inherit colors wallpaper; };
@@ -64,10 +64,8 @@ in
 
     # Per-user home-manager config
     {
-      home-manager.users = homev2.mkConfigHome {
-        inherit config;
-        module = "sway";
-        mkConfig = userCfg: {
+      home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+        lib.mkIf userCfg.sway.enable {
           home.packages = [
             pkgs.swayidle
             pkgs.alacritty
@@ -178,8 +176,8 @@ in
               }];
             };
           };
-        };
-      };
+        }
+      );
     }
   ];
 }

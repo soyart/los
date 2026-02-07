@@ -2,7 +2,7 @@
 
 let
   homev2 = import ../lib.nix { inherit lib; };
-  
+
   mappings = {
     go = with pkgs; [
       go
@@ -18,7 +18,7 @@ let
   };
 in
 {
-  config.home-manager.users = homev2.forAll config (username: userCfg:
+  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
     let
       enabledLangs = lib.filterAttrs (name: lang: lang.enable) userCfg.languages;
       packages = lib.flatten (lib.mapAttrsToList (name: _: mappings.${name} or [ ]) enabledLangs);

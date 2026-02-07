@@ -4,10 +4,8 @@ let
   homev2 = import ../lib.nix { inherit lib; };
 in
 {
-  config.home-manager.users = homev2.mkConfigHome {
-    inherit config;
-    module = "alacritty";
-    mkConfig = userCfg: {
+  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+    lib.mkIf userCfg.alacritty.enable {
       programs.alacritty = {
         enable = true;
 
@@ -60,7 +58,7 @@ in
           };
         };
       };
-    };
-  };
+    }
+  );
 }
 
