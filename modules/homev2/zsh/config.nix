@@ -3,6 +3,7 @@
 let
   homev2 = import ../lib.nix { inherit lib; };
   prompt = "${inputs.unix}/dotfiles/pkg/shell/.config/shell/prompt/prompt.zsh";
+  promptGit = "${inputs.unix}/dotfiles/pkg/shell/.config/shell/prompt/prompt-git.sh";
 in
 {
   # NixOS system config for availability
@@ -40,6 +41,7 @@ in
         };
 
         initContent = ''
+          . ${promptGit};
           . ${prompt};
         '';
       };
