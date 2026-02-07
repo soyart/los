@@ -7,7 +7,7 @@
 #   { lib, config, ... }:
 #   let homev2 = import ./lib.nix { inherit lib; };
 #   in {
-#     users.users = homev2.mkPerUserConfig config (username: userCfg:
+#     users.users = homev2.mkConfigPerUser config (username: userCfg:
 #       lib.mkIf userCfg.zsh.enable {
 #         shell = pkgs.zsh;
 #       }
@@ -26,8 +26,8 @@ rec {
   # Returns: attrset mapping usernames to their configs
   #
   # Example:
-  #   mkPerUserConfig config (username: userCfg: { home.stateVersion = "24.05"; })
-  mkPerUserConfig = config: mkConfig:
+  #   mkConfigPerUser config (username: userCfg: { home.stateVersion = "24.05"; })
+  mkConfigPerUser = config: mkConfig:
     lib.mapAttrs mkConfig config.los.homev2;
 
   # Check if ANY user has a specific module enabled

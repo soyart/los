@@ -9,7 +9,7 @@ in
   config = lib.mkMerge [
     # Per-user home-manager config
     {
-      home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+      home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
         lib.mkIf userCfg.firefox.enable (
           let
             firefoxCfg = userCfg.firefox;

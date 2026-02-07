@@ -4,7 +4,7 @@ let
   homev2 = import ../lib.nix { inherit lib; };
 in
 {
-  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
     lib.mkIf userCfg.git.enable (
       let
         cfg = userCfg.git;

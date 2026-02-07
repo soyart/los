@@ -6,7 +6,7 @@ let
   nixfmt = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
 in
 {
-  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
     lib.mkIf userCfg.vscodium.enable (
       let cfg = userCfg.vscodium; in
       {

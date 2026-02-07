@@ -5,7 +5,7 @@ let
   prompt = "${inputs.unix}/dotfiles/pkg/shell/.config/shell/prompt/prompt-standalone.bash";
 in
 {
-  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
     lib.mkIf userCfg.bash.enable {
       programs.bash = {
         enable = true;

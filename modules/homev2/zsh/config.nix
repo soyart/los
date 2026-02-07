@@ -9,7 +9,7 @@ in
   config = {
     programs.zsh.enable = lib.mkIf (homev2.anyEnabled config "zsh") true;
 
-    users.users = homev2.mkPerUserConfig config (username: userCfg:
+    users.users = homev2.mkConfigPerUser config (username: userCfg:
       lib.mkIf userCfg.zsh.enable {
         shell = pkgs.zsh;
       }
@@ -17,7 +17,7 @@ in
   };
 
   # HomeManager defines actual Zsh config
-  config.home-manager.users = homev2.mkPerUserConfig config (username: userCfg:
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
     lib.mkIf userCfg.zsh.enable {
       programs.zsh = {
         enable = true;
