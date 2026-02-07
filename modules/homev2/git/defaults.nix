@@ -1,0 +1,4 @@
+{
+  git.enable = true;
+}
+

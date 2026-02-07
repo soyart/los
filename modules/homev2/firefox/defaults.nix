@@ -1,0 +1,4 @@
+{
+  firefox.enable = true;
+}
+
