@@ -10,11 +10,9 @@ let
 
   # Import split config files
   keys = import ./keybindings.nix { inherit mod dmenutrackpad; };
-  swaylockCfg = import ./swaylock.nix { inherit colors wallpaper; };
-  wofiCfg = import ./wofi.nix;
-  wallpaper = "${inputs.self}/assets/wall/scene2.jpg";
-  colors = import ./colors.nix;
   scripts = import ./scripts.nix { inherit pkgs; };
+  wofiCfg = import ./wofi.nix;
+  colors = import ./colors.nix;
 
   # Flake self packages
   losPkgs = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}";
@@ -127,8 +125,12 @@ in
             };
           };
 
-          programs.swaylock = swaylockCfg;
           programs.wofi = wofiCfg;
+          programs.swaylock = import ./swaylock.nix {
+            inherit colors;
+            wallpaper = userCfg.sway.wallpaperLock;
+          };
+
 
           wayland.windowManager.sway = {
             enable = true;
@@ -144,7 +146,7 @@ in
                 }
               ];
 
-              output."*".bg = "${wallpaper} fill";
+              output."*".bg = "${userCfg.sway.wallpaper} fill";
               terminal = "alacritty";
               gaps = { inner = 6; outer = 6; };
               fonts = { names = [ "Hack" ]; size = 14.0; };
