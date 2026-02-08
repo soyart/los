@@ -56,11 +56,11 @@ in
       # Allow wofipower to be called without passwords by sudo
       security.sudo.extraRules = lib.mkIf (!config.los.doas.enable)
         (homev2.mapEnabledUsers config "sway" (username: _: {
-          users = [ username ];
           commands = [
             {
+              users = [ username ];
               command = scripts.wofipower;
-              options = "NOPASSWD";
+              options = [ "NOPASSWD" ];
             }
           ];
         }));
