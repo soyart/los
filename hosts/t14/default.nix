@@ -37,11 +37,25 @@ in
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-
+    initrd.systemd.tpm2.enable = false;
     blacklistedKernelModules = [
-      "btusb"
-      "bluetooth"
       "uvcvideo"
+
+      "tpm"
+      "tpm_crb"
+      "tpm_tis"
+
+      "btusb"
+      "btrtl"
+      "bluetooth"
+
+      "firewire-core"
+      "firewire-sbp2"
+      "thunderbolt"
+      "joydev"
+      "floppy"
+      "parport"
+      "parport-pc"
     ];
 
     # Use the systemd-boot EFI boot loader.
