@@ -6,6 +6,7 @@ let
 in
 {
   imports = [
+    ./no_tpm.nix
     ./hardware.nix
     ./impermanence.nix
     ./configuration.nix
@@ -37,16 +38,9 @@ in
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    initrd.systemd.tpm2.enable = false;
     blacklistedKernelModules = [
       "uvcvideo"
 
-      # If TPM is blacklisted, make sure that you disable TPM either in
-      # (1) BIOS
-      # (2) systemd.tpm2.enable, including initrd.systemd.tpm2.enable
-      #
-      # Otherwise your boot will get stuck initializing /dev/tpm0.
-      # If you disable TPM at BIOS, then blacklisting these mods cause 0 problems.
       "tpm"
       "tpm_crb"
       "tpm_tis"
