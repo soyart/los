@@ -76,7 +76,6 @@ in
             pkgs.alacritty
             pkgs.wl-clipboard
             pkgs.brightnessctl
-            pkgs.dash
             pkgs.lm_sensors
             scripts.dmenu
             scripts.sndctl
