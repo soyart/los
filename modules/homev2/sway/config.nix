@@ -9,7 +9,7 @@ let
   homev2 = import ../lib.nix { inherit lib; };
 
   # Import split config files
-  keys = import ./keybindings.nix { inherit mod dmenutrackpad; };
+  keys = import ./keybindings.nix { inherit dmenutrackpad; mod = modifier; };
   scripts = import ./scripts.nix { inherit pkgs; };
   wofiCfg = import ./wofi.nix;
   colors = import ./colors.nix;
@@ -22,7 +22,7 @@ let
   # Legacy dotfiles
   unix = inputs.unix;
 
-  mod = "Mod1";
+  modifier = "Mod1";
 in
 {
   config = lib.mkMerge [
@@ -134,7 +134,8 @@ in
           wayland.windowManager.sway = {
             enable = true;
             config = {
-              modifier = mod;
+              inherit modifier;
+              inherit (keys) modes keybindings;
 
               startup = [
                 {
@@ -157,9 +158,6 @@ in
                 text = colors.black;
                 indicator = colors.white;
               };
-
-              keybindings = keys.keybindings;
-              modes = keys.modes;
 
               bars = [{
                 position = "top";
