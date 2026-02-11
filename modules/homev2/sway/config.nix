@@ -8,16 +8,15 @@
 let
   homev2 = import ../lib.nix { inherit lib; };
 
-  # Import split config files
-  keys = import ./keybindings.nix { inherit dmenutrackpad; mod = modifier; };
-  scripts = import ./scripts.nix { inherit pkgs; };
-  wofiCfg = import ./wofi.nix;
-  colors = import ./colors.nix;
-
   # Flake self packages
   losPkgs = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}";
-  dwmbar = losPkgs.dwmbar;
-  dmenutrackpad = losPkgs.dmenutrackpad;
+
+  # Import split config files
+  wofiCfg = import ./wofi.nix;
+  colors = import ./colors.nix;
+  scripts = import ./scripts.nix { inherit pkgs; };
+  keys = import ./keybindings.nix { inherit (losPkgs) dmenutrackpad; mod = modifier; };
+  dwmbar = import ./dwmbar.nix { inherit colors; inherit (losPkgs) dwmbar; };
 
   # Legacy dotfiles
   unix = inputs.unix;
@@ -88,48 +87,11 @@ in
             XDG_CURRENT_DESKTOP = "sway";
           };
 
-          home.file.".config/sway-bak" = {
-            source = "${unix}/dotfiles/linux/.config/sway";
-            recursive = true;
-          };
-
-          home.file.".config/dwmbar/config.json".text = builtins.toJSON {
-            clock = {
-              interval = "1s";
-              settings = { layout = "Monday, Jan 02 > 15:04"; };
-            };
-            volume = {
-              interval = "200ms";
-              settings = { backend = "pipewire"; };
-            };
-            fans = {
-              interval = "1s";
-              settings = { cache = true; limit = 2; };
-            };
-            temperatures = {
-              interval = "5s";
-              settings = { cache = true; merge = true; };
-            };
-            battery = {
-              interval = "5s";
-              settings = { cache = true; };
-            };
-            brightness = {
-              interval = "500ms";
-              settings = { cache = true; };
-            };
-            wifi = {
-              interval = "30s"; # Heartbeat fallback interval (event-driven)
-              settings = { backend = "iwd"; };
-            };
-          };
-
           programs.wofi = wofiCfg;
           programs.swaylock = import ./swaylock.nix {
             inherit colors;
             wallpaper = userCfg.sway.wallpaperLock;
           };
-
 
           wayland.windowManager.sway = {
             enable = true;
@@ -159,27 +121,18 @@ in
                 indicator = colors.white;
               };
 
-              bars = [{
-                position = "top";
-                workspaceButtons = true;
-                workspaceNumbers = true;
-                fonts = { names = [ "Hack" ]; size = 14.0; };
-                statusCommand = "${dwmbar}/bin/dwmbar";
-                colors = {
-                  background = colors.black;
-                  statusline = colors.blue;
-                  focusedWorkspace = {
-                    border = colors.dark0;
-                    background = colors.blue;
-                    text = colors.dark0;
-                  };
-                  inactiveWorkspace = {
-                    border = colors.dark0;
-                    background = colors.dark0;
-                    text = colors.blue;
-                  };
-                };
-              }];
+              bars = [
+                dwmbar.bar
+              ];
+            };
+          };
+
+          home.file = {
+            ".config/dwmbar/config.json".text = builtins.toJSON dwmbar.dwmbarConfig;
+            ".config/sway-bak" = {
+              # Backup sway config files from Arch
+              source = "${unix}/dotfiles/linux/.config/sway";
+              recursive = true;
             };
           };
         }
