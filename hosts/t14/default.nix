@@ -6,6 +6,7 @@ let
 in
 {
   imports = [
+    ./no_tpm.nix
     ./hardware.nix
     ./impermanence.nix
     ./configuration.nix
@@ -39,11 +40,24 @@ in
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-
     blacklistedKernelModules = [
-      "btusb"
-      "bluetooth"
       "uvcvideo"
+
+      "tpm"
+      "tpm_crb"
+      "tpm_tis"
+
+      "btusb"
+      "btrtl"
+      "bluetooth"
+
+      "firewire-core"
+      "firewire-sbp2"
+      "thunderbolt"
+      "joydev"
+      "floppy"
+      "parport"
+      "parport-pc"
     ];
 
     # Use the systemd-boot EFI boot loader.
