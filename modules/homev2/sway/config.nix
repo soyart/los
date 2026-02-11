@@ -8,27 +8,24 @@
 let
   homev2 = import ../lib.nix { inherit lib; };
 
-  # Import split config files
-  keys = import ./keybindings.nix { inherit mod dmenutrackpad; };
-  swaylockCfg = import ./swaylock.nix { inherit colors wallpaper; };
-  wofiCfg = import ./wofi.nix;
-  wallpaper = "${inputs.self}/assets/wall/scene2.jpg";
-  colors = import ./colors.nix;
-  scripts = import ./scripts.nix { inherit pkgs; };
-
   # Flake self packages
   losPkgs = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}";
-  dwmbar = losPkgs.dwmbar;
-  dmenutrackpad = losPkgs.dmenutrackpad;
+
+  # Import split config files
+  wofiCfg = import ./wofi.nix;
+  colors = import ./colors.nix;
+  scripts = import ./scripts.nix { inherit pkgs; };
+  keys = import ./keybindings.nix { inherit (losPkgs) dmenutrackpad; mod = modifier; };
+  dwmbar = import ./dwmbar.nix { inherit colors; inherit (losPkgs) dwmbar; };
 
   # Legacy dotfiles
   unix = inputs.unix;
 
-  mod = "Mod1";
+  modifier = "Mod1";
 in
 {
   config = lib.mkMerge [
-    # System-level config (only if ANY user has sway enabled)
+    # Global system-wide config (only if ANY user has sway enabled)
     (lib.mkIf (homev2.anyEnabled config "sway") {
       services.pipewire = {
         enable = true;
@@ -47,10 +44,23 @@ in
 
     # Per-user configs
     {
-      los.doas.noPasswords = homev2.mapEnabledUsers config "sway" (username: _: {
+      # Allow wofipower to be called without passwords by doas
+      los.doas.noPasswords = lib.mkIf config.los.doas.enable (homev2.mapEnabledUsers config "sway" (username: _: {
         inherit username;
         cmd = "${scripts.wofipower}";
-      });
+      }));
+
+      # Allow wofipower to be called without passwords by sudo
+      security.sudo.extraRules = lib.mkIf (!config.los.doas.enable)
+        (homev2.mapEnabledUsers config "sway" (username: _: {
+          commands = [
+            {
+              users = [ username ];
+              command = scripts.wofipower;
+              options = [ "NOPASSWD" ];
+            }
+          ];
+        }));
 
       users.users = homev2.mkConfigPerUser config (username: userCfg:
         lib.mkIf userCfg.sway.enable {
@@ -65,7 +75,6 @@ in
             pkgs.alacritty
             pkgs.wl-clipboard
             pkgs.brightnessctl
-            pkgs.dash
             pkgs.lm_sensors
             scripts.dmenu
             scripts.sndctl
@@ -78,49 +87,17 @@ in
             XDG_CURRENT_DESKTOP = "sway";
           };
 
-          home.file.".config/sway-bak" = {
-            source = "${unix}/dotfiles/linux/.config/sway";
-            recursive = true;
-          };
-
-          home.file.".config/dwmbar/config.json".text = builtins.toJSON {
-            clock = {
-              interval = "1s";
-              settings = { layout = "Monday, Jan 02 > 15:04"; };
-            };
-            volume = {
-              interval = "200ms";
-              settings = { backend = "pipewire"; };
-            };
-            fans = {
-              interval = "1s";
-              settings = { cache = true; limit = 2; };
-            };
-            temperatures = {
-              interval = "5s";
-              settings = { cache = true; merge = true; };
-            };
-            battery = {
-              interval = "5s";
-              settings = { cache = true; };
-            };
-            brightness = {
-              interval = "500ms";
-              settings = { cache = true; };
-            };
-            wifi = {
-              interval = "30s"; # Heartbeat fallback interval (event-driven)
-              settings = { backend = "iwd"; };
-            };
-          };
-
-          programs.swaylock = swaylockCfg;
           programs.wofi = wofiCfg;
+          programs.swaylock = import ./swaylock.nix {
+            inherit colors;
+            wallpaper = userCfg.sway.wallpaperLock;
+          };
 
           wayland.windowManager.sway = {
             enable = true;
             config = {
-              modifier = mod;
+              inherit modifier;
+              inherit (keys) modes keybindings;
 
               startup = [
                 {
@@ -131,7 +108,7 @@ in
                 }
               ];
 
-              output."*".bg = "${wallpaper} fill";
+              output."*".bg = "${userCfg.sway.wallpaper} fill";
               terminal = "alacritty";
               gaps = { inner = 6; outer = 6; };
               fonts = { names = [ "Hack" ]; size = 14.0; };
@@ -144,30 +121,18 @@ in
                 indicator = colors.white;
               };
 
-              keybindings = keys.keybindings;
-              modes = keys.modes;
+              bars = [
+                dwmbar.bar
+              ];
+            };
+          };
 
-              bars = [{
-                position = "top";
-                workspaceButtons = true;
-                workspaceNumbers = true;
-                fonts = { names = [ "Hack" ]; size = 14.0; };
-                statusCommand = "${dwmbar}/bin/dwmbar";
-                colors = {
-                  background = colors.black;
-                  statusline = colors.blue;
-                  focusedWorkspace = {
-                    border = colors.dark0;
-                    background = colors.blue;
-                    text = colors.dark0;
-                  };
-                  inactiveWorkspace = {
-                    border = colors.dark0;
-                    background = colors.dark0;
-                    text = colors.blue;
-                  };
-                };
-              }];
+          home.file = {
+            ".config/dwmbar/config.json".text = builtins.toJSON dwmbar.dwmbarConfig;
+            ".config/sway-bak" = {
+              # Backup sway config files from Arch
+              source = "${unix}/dotfiles/linux/.config/sway";
+              recursive = true;
             };
           };
         }

@@ -9,6 +9,7 @@
 #   };
 
 { lib
+, inputs
 , pkgs
 , withRust ? true
 , withGo ? true
@@ -18,7 +19,7 @@
 lib.foldl lib.recursiveUpdate { } [
   (import ../../defaults/homev2/bash.nix)
   (import ../../defaults/homev2/alacritty.nix)
-  (import ../../defaults/homev2/sway.nix)
+  (import ../../defaults/homev2/sway.nix { inherit inputs; })
   (import ../../defaults/homev2/fonts.nix { inherit pkgs; })
   (import ../../defaults/homev2/firefox.nix)
   (import ../../defaults/homev2/helix.nix)

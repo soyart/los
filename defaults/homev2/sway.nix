@@ -1,4 +1,13 @@
+{ inputs }:
+
+let wallpaper = "${inputs.self}/assets/wall/scene2.jpg";
+
+in
 {
-  sway.enable = true;
+  sway = {
+    inherit wallpaper;
+    enable = true;
+    wallpaperLock = wallpaper;
+  };
 }
 

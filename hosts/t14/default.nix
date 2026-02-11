@@ -1,7 +1,7 @@
-{ lib, pkgs, hostname, ... }:
+{ lib, pkgs, hostname, inputs, ... }:
 
 let
-  artnoi = "artnoi";
+  username = "artnoi";
 
 in
 {
@@ -12,7 +12,7 @@ in
 
     ../../modules/system/syspkgs.nix
     ../../modules/system/users.nix
-    ../../modules/system/doas.nix # doas is considered a system setting
+    ../../modules/system/doas.nix # doas is considered a system setting and is accessed/set by other modules including homev2 modules
     ../../modules/system/ramdisk.nix
 
     ../../defaults/system/nix
@@ -23,13 +23,15 @@ in
   ];
 
   # Per-user configuration using homev2
-  los.homev2.${artnoi} = import ../../presets/homev2/sway-dev.nix
-    {
-      inherit lib pkgs;
-      withRust = true;
-      withGo = true;
-    } // {
-    zsh.enable = true;
+  los.homev2 = {
+    "${username}" = import ../../presets/homev2/sway-dev.nix
+      {
+        inherit lib pkgs inputs;
+        withRust = true;
+        withGo = true;
+      } // {
+      zsh.enable = true;
+    };
   };
 
   networking.hostName = hostname;
@@ -63,7 +65,7 @@ in
   los = {
     users = [
       {
-        username = artnoi;
+        username = username;
         superuser = true;
         hashedPassword = "$y$j9T$QZuckOzqsP51oy3Zcy80a0$pKmSSkRU4.0DIbhsGv1ZwQ277iqdkBOHRSQ8WkCMcG1";
         homeStateVersion = "24.05";
@@ -91,8 +93,8 @@ in
       };
       "/rd" = {
         size = "2G";
-        group = artnoi;
-        owner = artnoi;
+        group = username;
+        owner = username;
       };
     };
 
