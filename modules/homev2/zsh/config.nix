@@ -8,8 +8,7 @@ in
 {
   # NixOS system config for availability
   config = {
-    programs.zsh.enable = lib.mkIf (homev2.anyEnabled config "zsh") true;
-
+    programs.zsh.enable = homev2.anyEnabled config "zsh";
     users.users = homev2.mkConfigPerUser config (username: userCfg:
       lib.mkIf userCfg.zsh.enable {
         shell = pkgs.zsh;
