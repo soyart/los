@@ -73,27 +73,4 @@ rec {
   #   mapEnabledUsers config "sway" (username: _: { inherit username; cmd = "..."; })
   mapEnabledUsers = config: module: fn:
     lib.mapAttrsToList fn (getEnabledUsers config module);
-
-  # Declare per-user options for los.homev2
-  #
-  # Wraps a submodule option module in the mkOption/attrsOf/submoduleWith
-  # boilerplate. Multiple modules can each call this independently --
-  # NixOS merges submoduleWith types by concatenating their module lists.
-  #
-  # Args:
-  #   pkgs: The nixpkgs package set (passed as specialArgs to submodules)
-  #   module: NixOS module defining per-user options
-  #
-  # Returns: mkOption value suitable for options.los.homev2
-  #
-  # Example:
-  #   options.los.homev2 = homev2.mkPerUserOptions pkgs
-  #     ({ lib, ... }: { options.git.enable = lib.mkEnableOption "Enable Git"; });
-  mkPerUserOptions = pkgs: module: lib.mkOption {
-    type = lib.types.attrsOf (lib.types.submoduleWith {
-      specialArgs = { inherit pkgs; };
-      modules = [ module ];
-    });
-    default = { };
-  };
 }

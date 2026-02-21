@@ -10,7 +10,8 @@
 #     options.nix is fed into the central submoduleWith, config.nix imported
 #
 #   Unified: directory has default.nix (no options.nix)
-#     Imported directly -- uses mkPerUserOptions to declare its own options
+#     default.nix is an attrset { options, config } -- both NixOS modules
+#     Central module extracts .options into submoduleWith, .config into imports
 #
 # Usage in host config:
 #   imports = [ ../../modules/homev2 ];
@@ -41,20 +42,22 @@ let
   optionsModules = lib.mapAttrsToList (name: _: ./${name}/options.nix) splitDirs;
   configModules = lib.mapAttrsToList (name: _: ./${name}/config.nix) splitDirs;
 
-  # Unified modules: imported directly (they declare their own options via mkPerUserOptions)
+  # Unified modules: attrsets with { options, config } extracted separately
   unifiedDirs = lib.filterAttrs (name: _: !(hasSplitFiles name)) moduleDirs;
-  unifiedModules = lib.mapAttrsToList (name: _: ./${name}) unifiedDirs;
+  unifiedModules = lib.mapAttrsToList (name: _: import ./${name}) unifiedDirs;
+  unifiedOptions = map (m: m.options) unifiedModules;
+  unifiedConfigs = map (m: m.config) unifiedModules;
 
 in
 {
   options.los.homev2 = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submoduleWith {
       specialArgs = { inherit pkgs; };
-      modules = optionsModules;
+      modules = optionsModules ++ unifiedOptions;
     });
     default = { };
     description = "Per-user configuration (attrsOf-based modules)";
   };
 
-  imports = configModules ++ unifiedModules;
+  imports = configModules ++ unifiedConfigs;
 }
