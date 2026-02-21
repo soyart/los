@@ -76,24 +76,23 @@ rec {
 
   # Declare per-user options for los.homev2
   #
-  # Wraps submodule option modules in the mkOption/attrsOf/submoduleWith
+  # Wraps a submodule option module in the mkOption/attrsOf/submoduleWith
   # boilerplate. Multiple modules can each call this independently --
   # NixOS merges submoduleWith types by concatenating their module lists.
   #
   # Args:
   #   pkgs: The nixpkgs package set (passed as specialArgs to submodules)
-  #   modules: List of NixOS modules defining per-user options
+  #   module: NixOS module defining per-user options
   #
   # Returns: mkOption value suitable for options.los.homev2
   #
   # Example:
-  #   options.los.homev2 = homev2.mkPerUserOptions pkgs [
-  #     ({ lib, ... }: { options.git.enable = lib.mkEnableOption "Enable Git"; })
-  #   ];
-  mkPerUserOptions = pkgs: modules: lib.mkOption {
+  #   options.los.homev2 = homev2.mkPerUserOptions pkgs
+  #     ({ lib, ... }: { options.git.enable = lib.mkEnableOption "Enable Git"; });
+  mkPerUserOptions = pkgs: module: lib.mkOption {
     type = lib.types.attrsOf (lib.types.submoduleWith {
       specialArgs = { inherit pkgs; };
-      inherit modules;
+      modules = [ module ];
     });
     default = { };
   };
