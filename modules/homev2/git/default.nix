@@ -1,7 +1,12 @@
+{ lib, config, pkgs, ... }:
+
+let
+  homev2 = import ../lib.nix { inherit lib; };
+  types = lib.types;
+in
 {
-  options = { lib, pkgs, ... }:
-    let types = lib.types;
-    in {
+  config.los.homev2Modules = [
+    ({ lib, pkgs, ... }: {
       options.git = {
         enable = lib.mkEnableOption "Enable los Git";
 
@@ -37,42 +42,38 @@
           };
         };
       };
-    };
+    })
+  ];
 
-  config = { lib, config, pkgs, ... }:
-    let
-      homev2 = import ../lib.nix { inherit lib; };
-    in {
-      config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
-        lib.mkIf userCfg.git.enable (
-          let
-            cfg = userCfg.git;
-            editor = cfg.editor;
-            gitUsername = if cfg.username != null then cfg.username else username;
-            gitEmail = if cfg.email != null then cfg.email else "${username}@${config.networking.hostName}";
-          in
-          {
-            home.sessionVariables = {
-              EDITOR = "${editor.package.outPath}/${editor.binPath}";
-            };
+  config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
+    lib.mkIf userCfg.git.enable (
+      let
+        cfg = userCfg.git;
+        editor = cfg.editor;
+        gitUsername = if cfg.username != null then cfg.username else username;
+        gitEmail = if cfg.email != null then cfg.email else "${username}@${config.networking.hostName}";
+      in
+      {
+        home.sessionVariables = {
+          EDITOR = "${editor.package.outPath}/${editor.binPath}";
+        };
 
-            programs = {
-              ${editor.package.pname}.enable = true;
+        programs = {
+          ${editor.package.pname}.enable = true;
 
-              git = {
-                enable = true;
-                lfs.enable = cfg.withLfs;
-                settings.user = {
-                  name = gitUsername;
-                  email = gitEmail;
-                  push = {
-                    autoSetupRemote = true;
-                  };
-                };
+          git = {
+            enable = true;
+            lfs.enable = cfg.withLfs;
+            settings.user = {
+              name = gitUsername;
+              email = gitEmail;
+              push = {
+                autoSetupRemote = true;
               };
             };
-          }
-        )
-      );
-    };
+          };
+        };
+      }
+    )
+  );
 }

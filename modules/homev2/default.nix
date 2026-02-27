@@ -9,9 +9,9 @@
 #   Split (legacy): directory has options.nix + config.nix
 #     options.nix is fed into the central submoduleWith, config.nix imported
 #
-#   Unified: directory has default.nix (no options.nix)
-#     default.nix is an attrset { options, config } -- both NixOS modules
-#     Central module extracts .options into submoduleWith, .config into imports
+#   Unified: directory is a NixOS module (default.nix, no options.nix)
+#     Imported directly. Contributes per-user options via
+#     config.los.homev2Modules (deferredModule pattern)
 #
 # Usage in host config:
 #   imports = [ ../../modules/homev2 ];
@@ -27,7 +27,7 @@
 #     };
 #   };
 
-{ lib, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
 let
   entries = builtins.readDir ./.;
@@ -42,22 +42,27 @@ let
   optionsModules = lib.mapAttrsToList (name: _: ./${name}/options.nix) splitDirs;
   configModules = lib.mapAttrsToList (name: _: ./${name}/config.nix) splitDirs;
 
-  # Unified modules: attrsets with { options, config } extracted separately
+  # Unified modules: regular NixOS modules imported directly
   unifiedDirs = lib.filterAttrs (name: _: !(hasSplitFiles name)) moduleDirs;
-  unifiedModules = lib.mapAttrsToList (name: _: import ./${name}) unifiedDirs;
-  unifiedOptions = map (m: m.options) unifiedModules;
-  unifiedConfigs = map (m: m.config) unifiedModules;
+  unifiedModules = lib.mapAttrsToList (name: _: ./${name}) unifiedDirs;
 
 in
 {
+  options.los.homev2Modules = lib.mkOption {
+    type = lib.types.listOf lib.types.deferredModule;
+    default = [ ];
+    internal = true;
+    description = "Per-user option modules fed into the los.homev2 submodule";
+  };
+
   options.los.homev2 = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submoduleWith {
       specialArgs = { inherit pkgs; };
-      modules = optionsModules ++ unifiedOptions;
+      modules = optionsModules ++ config.los.homev2Modules;
     });
     default = { };
     description = "Per-user configuration (attrsOf-based modules)";
   };
 
-  imports = configModules ++ unifiedConfigs;
+  imports = configModules ++ unifiedModules;
 }

@@ -6,17 +6,20 @@ let
   promptGit = "${inputs.unix}/dotfiles/pkg/shell/.config/shell/prompt/prompt-git.sh";
 in
 {
-  # NixOS system config for availability
-  config = {
-    programs.zsh.enable = homev2.anyEnabled config "zsh";
-    users.users = homev2.mkConfigPerUser config (username: userCfg:
-      lib.mkIf userCfg.zsh.enable {
-        shell = pkgs.zsh;
-      }
-    );
-  };
+  config.los.homev2Modules = [
+    ({ lib, ... }: {
+      options.zsh.enable = lib.mkEnableOption "Enable ZSh shell with los defaults";
+    })
+  ];
 
-  # HomeManager defines actual Zsh config
+  config.programs.zsh.enable = homev2.anyEnabled config "zsh";
+
+  config.users.users = homev2.mkConfigPerUser config (username: userCfg:
+    lib.mkIf userCfg.zsh.enable {
+      shell = pkgs.zsh;
+    }
+  );
+
   config.home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
     lib.mkIf userCfg.zsh.enable {
       programs.zsh = {
@@ -47,4 +50,3 @@ in
     }
   );
 }
-
