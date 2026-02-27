@@ -44,23 +44,10 @@ in
 
     # Per-user configs
     {
-      # Allow wofipower to be called without passwords by doas
-      los.doas.noPasswords = lib.mkIf config.los.doas.enable (homev2.mapEnabledUsers config "sway" (username: _: {
+      los.auth.noPasswordRules = homev2.mapEnabledUsers config "sway" (username: _: {
         inherit username;
         cmd = "${scripts.wofipower}";
-      }));
-
-      # Allow wofipower to be called without passwords by sudo
-      security.sudo.extraRules = lib.mkIf (!config.los.doas.enable)
-        (homev2.mapEnabledUsers config "sway" (username: _: {
-          commands = [
-            {
-              users = [ username ];
-              command = scripts.wofipower;
-              options = [ "NOPASSWD" ];
-            }
-          ];
-        }));
+      });
 
       users.users = homev2.mkConfigPerUser config (username: userCfg:
         lib.mkIf userCfg.sway.enable {

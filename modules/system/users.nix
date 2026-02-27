@@ -93,12 +93,6 @@ in
       })
       cfg.users);
 
-    # Doas for superusers (with mkDefault so hosts can override)
-    los.doas = lib.mkIf (superusers != [ ]) {
-      enable = lib.mkDefault true;
-      settings.users = lib.mkDefault superuserNames;
-    };
-
     # Home Manager skeleton for each user
     home-manager.users = lib.listToAttrs (map
       (u: {
