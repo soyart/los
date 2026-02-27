@@ -76,15 +76,18 @@ in
         }) doasNoPassRules);
     };
 
-    security.sudo.extraRules = lib.mkIf anyUsesSudo (
-      map (rule: {
-        users = [ rule.username ];
-        commands = [{
-          command = rule.cmd;
-          options = [ "NOPASSWD" ];
-        }];
-      }) sudoNoPassRules
-    );
+    security.sudo = {
+      enable = anyUsesSudo;
+      extraRules = lib.mkIf anyUsesSudo (
+        map (rule: {
+          users = [ rule.username ];
+          commands = [{
+            command = rule.cmd;
+            options = [ "NOPASSWD" ];
+          }];
+        }) sudoNoPassRules
+      );
+    };
 
     environment.systemPackages = lib.mkIf anyUsesDoas [
       pkgs.doas-sudo-shim
