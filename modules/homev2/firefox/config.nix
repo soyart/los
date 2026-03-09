@@ -30,6 +30,19 @@ in
                 if usePipewire
                 then pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
                 else pkgs.firefox;
+
+              profiles.default = {
+                id = 0;
+                isDefault = true;
+                settings = {
+                  "browser.ai.control.default" = "blocked";
+                  "browser.ai.control.linkPreviewKeyPoints" = "blocked";
+                  "browser.ai.control.pdfjsAltText" = "blocked";
+                  "browser.ai.control.sidebarChatbot" = "blocked";
+                  "browser.ai.control.smartTabGroups" = "blocked";
+                  "browser.ai.control.translations" = "blocked";
+                };
+              };
             };
 
             xdg.portal = {
