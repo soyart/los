@@ -7,7 +7,13 @@ let
 in
 {
   config = lib.mkMerge [
-    # Per-user home-manager config
+    (lib.mkIf (homev2.anyEnabled config "firefox") {
+      environment.pathsToLink = [
+        "/share/applications"
+        "/share/xdg-desktop-portal"
+      ];
+    })
+
     {
       home-manager.users = homev2.mkConfigPerUser config (username: userCfg:
         lib.mkIf userCfg.firefox.enable (
@@ -23,7 +29,7 @@ in
               BROWSER = "firefox";
               MOZ_ENABLE_WAYLAND = "1";
             };
-            
+
             # Stateless profile
             home.file.".mozilla/firefox/profiles.ini".force = true;
 
@@ -57,14 +63,6 @@ in
         )
       );
     }
-
-    # System-level config (if ANY user has firefox enabled)
-    (lib.mkIf (homev2.anyEnabled config "firefox") {
-      environment.pathsToLink = [
-        "/share/applications"
-        "/share/xdg-desktop-portal"
-      ];
-    })
   ];
 }
 
