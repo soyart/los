@@ -23,6 +23,9 @@ in
               BROWSER = "firefox";
               MOZ_ENABLE_WAYLAND = "1";
             };
+            
+            # Stateless profile
+            home.file.".mozilla/firefox/profiles.ini".force = true;
 
             programs.firefox = {
               enable = true;
@@ -31,8 +34,6 @@ in
                 then pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
                 else pkgs.firefox;
 
-
-              home.file.".mozilla/firefox/profiles.ini".force = true;
               profiles.default = {
                 id = 0;
                 isDefault = true;
