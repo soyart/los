@@ -30,7 +30,6 @@ in
               MOZ_ENABLE_WAYLAND = "1";
             };
 
-            # Stateless profile
             home.file.".mozilla/firefox/profiles.ini".force = true;
 
             programs.firefox = {
