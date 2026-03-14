@@ -30,6 +30,13 @@ in
               MOZ_ENABLE_WAYLAND = "1";
             };
 
+            xdg.portal = {
+              enable = true;
+              extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
+              config.common.default = "*";
+            };
+
+            # You might need to uncomment this if your profile's updated.
             # home.file.".mozilla/firefox/profiles.ini".force = true;
 
             programs.firefox = {
@@ -77,13 +84,74 @@ in
                   "extensions.ml.enabled" = false;
                   "pdfjs.enableAltText" = false;
                 };
+                search = {
+                  force = true;
+                  default = "google";
+                  order = [
+                    "google"
+                    "ddg"
+                    "wikipedia"
+                  ];
+                  privateDefault = "ddg";
+                  engines =
+                    let
+                      nixIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                    in
+                    {
+                      "Nix Packages" = {
+                        definedAliases = [ "@nixpkgs" "@np" ];
+                        icon = nixIcon;
+                        urls = [
+                          {
+                            template = "https://search.nixos.org/packages";
+                            params = [
+                              { name = "channel"; value = "unstable"; }
+                              { name = "query"; value = "{searchTerms}"; }
+                            ];
+                          }
+                        ];
+                      };
+                      "Nix Options" = {
+                        definedAliases = [ "@nix" "@no" ];
+                        icon = nixIcon;
+                        urls = [
+                          {
+                            template = "https://search.nixos.org/options";
+                            params = [
+                              { name = "channel"; value = "unstable"; }
+                              { name = "query"; value = "{searchTerms}"; }
+                            ];
+                          }
+                        ];
+                      };
+                      "NixOS Wiki" = {
+                        definedAliases = [ "@nixwiki" "@nixoswiki" ];
+                        icon = nixIcon;
+                        urls = [
+                          {
+                            template = "https://wiki.nixos.org/w/index.php";
+                            params = [
+                              { name = "search"; value = "{searchTerms}"; }
+                            ];
+                          }
+                        ];
+                      };
+                      "Home-Manager Options" = {
+                        definedAliases = [ "@nixhm" "@home-manager" "@hm" ];
+                        icon = nixIcon;
+                        urls = [
+                          {
+                            template = "https://home-manager-options.extranix.com/";
+                            params = [
+                              { name = "channel"; value = "unstable"; }
+                              { name = "query"; value = "{searchTerms}"; }
+                            ];
+                          }
+                        ];
+                      };
+                    };
+                };
               };
-            };
-
-            xdg.portal = {
-              enable = true;
-              extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
-              config.common.default = "*";
             };
           }
         )
