@@ -14,9 +14,12 @@
 , withRust ? true
 , withGo ? true
 , withLfs ? false
+, doas ? true
+, sudo ? false
 }:
 
 lib.foldl lib.recursiveUpdate { } [
+  (import ../../defaults/homev2/auth.nix { inherit doas sudo; })
   (import ../../defaults/homev2/bash.nix)
   (import ../../defaults/homev2/alacritty.nix)
   (import ../../defaults/homev2/sway.nix { inherit inputs; })

@@ -13,7 +13,6 @@ in
 
     ../../modules/system/syspkgs.nix
     ../../modules/system/users.nix
-    ../../modules/system/doas.nix # doas is considered a system setting and is accessed/set by other modules including homev2 modules
     ../../modules/system/ramdisk.nix
 
     ../../defaults/system/nix
@@ -91,15 +90,6 @@ in
         homeStateVersion = "24.05";
       }
     ];
-
-    doas = {
-      # enable and settings.users are set by users.nix for superusers
-      keepSudo = false;
-      settings = {
-        keepEnv = true;
-        persist = true;
-      };
-    };
 
     ramDisks = {
       "/tmp" = {
