@@ -1,4 +1,4 @@
-{ doas ? false, sudo ? false }:
+{ doas ? true, sudo ? false }:
 
 {
   doas.enable = doas;
