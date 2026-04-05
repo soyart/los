@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, config, pkgs, ... }:
 
 let
   liblos = import ../../liblos { inherit lib pkgs; };
@@ -9,8 +9,6 @@ let
   inherit (constants.groups) defaultUserGroup;
 
   allUsernames = map (u: u.username) cfg.users;
-  superusers = builtins.filter (u: u.superuser) cfg.users;
-  superuserNames = map (u: u.username) superusers;
 
   # Illegal group names
   illegalGroups = [ "root" "wheel" ];

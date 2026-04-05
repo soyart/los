@@ -14,6 +14,7 @@ in
     ../../modules/system/syspkgs.nix
     ../../modules/system/users.nix
     ../../modules/system/ramdisk.nix
+    ../../modules/system/zfs.nix
 
     ../../defaults/system/nix
     ../../defaults/system/net/laptop.nix
@@ -102,6 +103,12 @@ in
       };
     };
 
+    zfs = {
+      enable = true;
+      enableTrim = true;
+      hostId = "f22a16bd";
+    };
+
     syspkgs = [
       ../../packages/base
       ../../packages/devel
@@ -114,11 +121,6 @@ in
   environment.systemPackages = [
     # Other packages go here
   ];
-
-  boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.forceImportRoot = false;
-  networking.hostId = "f22a16bd";
-  services.zfs.trim.enable = true;
 
   programs.nano.enable = false;
 
