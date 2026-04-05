@@ -115,6 +115,11 @@ in
     # Other packages go here
   ];
 
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "f22a16bd";
+  services.zfs.trim.enable = true;
+
   programs.nano.enable = false;
 
   services = {
