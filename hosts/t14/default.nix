@@ -14,6 +14,7 @@ in
     ../../modules/system/syspkgs.nix
     ../../modules/system/users.nix
     ../../modules/system/ramdisk.nix
+    ../../modules/system/zfs.nix
 
     ../../defaults/system/nix
     ../../defaults/system/net/laptop.nix
@@ -100,6 +101,12 @@ in
         group = username;
         owner = username;
       };
+    };
+
+    zfs = {
+      enable = true;
+      enableTrim = true;
+      hostId = "f22a16bd";
     };
 
     syspkgs = [
