@@ -104,3 +104,38 @@ but without Sway or GUI configuration.
 - [Original source code](./src)
 
   los also has its own programs, packaged into Nix Flake and used within los modules.
+
+- [Using NixOS Docker image instead of installing Nix]
+
+  If you're like me and you're using work laptop to develop your own private projects,
+  then you're more likely to be prohibited from installing Nix (since Nix install on macOS is quite invasive).
+
+  We can work around that with Docker (and even Docker Volume if you want persistent). Below is an example
+  for running `nix build` with Nix Store being cached in Docker volume `los-nix-store`:
+
+  ```sh
+  docker run --rm -v $(pwd):/workspace -v los-nix-store:/nix/store nixos/nix:latest sh -c '
+    cp -r /workspace /source
+    cd
+    nix build .#someOutputs --extra-experimental-features nix-command --extra-experimental-features flakes
+  '
+  ```
+
+  With Docker volume, you can even persist and link the result back to your mac PWD!:
+
+  ```sh
+  mkdir -p result-nix-docker;
+
+  docker run --rm -v $(pwd):/workspace -v line-fact-check-nix-store:/nix/store nixos/nix:latest sh -c '
+    # Copy to prevent container messing up our code
+    cp -r /workspace /source
+    cd source
+
+    # Build docker-factcheck with unique result name using the actual flake version
+    nix build .#dmenutrackpad --extra-experimental-features nix-command --extra-experimental-features flakes
+
+    # Copy the result to workspace
+    cp -r result /workspace/result-nix-docker/dmenutrackpad
+    echo "copied to /workspace/result-nix-docker/dmenutrackpad"
+  '
+  ```
