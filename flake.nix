@@ -1,24 +1,29 @@
 {
   description = "NixOS configuration";
 
-  outputs = { ... }@inputs:
+  outputs =
+    inputs@{ flake-parts, ... }:
     let
-      pkgsFor = system: import inputs.nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-
-      nixosConfigurations = import ./hosts { inherit inputs pkgsFor; };
+      pkgsFor =
+        system:
+        import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
     in
-    {
-      inherit nixosConfigurations;
-      homeConfigurations = import ./home { inherit inputs pkgsFor; };
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
-      # Linux-only packages
-      packages = builtins.listToAttrs (map
-        (system:
-          let
-            pkgs = pkgsFor system;
+      perSystem =
+        { system, ... }:
+        let
+          pkgs = pkgsFor system;
+        in
+        {
+          packages = {
             dwmbar = pkgs.buildGoModule {
               pname = "dwmbar";
               version = "0.1.0";
@@ -36,25 +41,31 @@
               src = ./src/dmenutrackpad;
               vendorHash = null;
             };
-          in
-          {
-            name = system;
-            value = { inherit dwmbar dmenutrackpad; };
-          }
-        ) [ "x86_64-linux" "aarch64-linux" ]);
+          };
+        };
 
-      # Extract home-manager dotfiles from NixOS builds
-      dotfiles =
+      flake =
         let
-          t14 = nixosConfigurations.los-t14.config;
-          firstSuperuser = (builtins.head (builtins.filter (u: u.superuser) t14.los.users)).username;
+          nixosConfigurations = import ./hosts { inherit inputs pkgsFor; };
         in
         {
-          los-t14 = t14.home-manager.users.${firstSuperuser}.home.activationPackage;
+          inherit nixosConfigurations;
+
+          homeConfigurations = import ./home { inherit inputs pkgsFor; };
+
+          dotfiles =
+            let
+              t14 = nixosConfigurations.los-t14.config;
+              firstSuperuser = (builtins.head (builtins.filter (u: u.superuser) t14.los.users)).username;
+            in
+            {
+              los-t14 = t14.home-manager.users.${firstSuperuser}.home.activationPackage;
+            };
         };
     };
 
   inputs = {
+    flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     impermanence.url = "github:nix-community/impermanence";
