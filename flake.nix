@@ -12,6 +12,11 @@
         };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.nix-gitlab-ci.flakeModule
+        ./ci/flake-module.nix
+      ];
+
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -66,6 +71,8 @@
 
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
+    nix-gitlab-ci.url = "gitlab:TECHNOFAB/nix-gitlab-ci/3.1.2?dir=lib";
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     impermanence.url = "github:nix-community/impermanence";
