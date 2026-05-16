@@ -23,6 +23,7 @@ in
 
           git = {
             enable = true;
+            signing.format = null; # 26.05
             lfs.enable = cfg.withLfs;
             settings.user = {
               name = gitUsername;
