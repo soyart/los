@@ -40,6 +40,7 @@ in
 
             programs.firefox = {
               enable = true;
+              configPath = "${config.xdg.configHome}/mozilla/firefox"; # 26.05
               package =
                 if usePipewire
                 then pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { }
