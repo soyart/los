@@ -24,7 +24,7 @@ jobs:
 
       - name: test evaluate system
         run: |
-          nix eval --strict .#nixosConfigurations.los-t14.config.system.build.toplevel
+          nix build .#nixosConfigurations.los-t14.config.system.build.toplevel
 
       - name: build dotfiles from NixOS config
         run: |

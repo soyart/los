@@ -33,7 +33,7 @@ jobs:
 
       - name: test nix build
         run: |
-          nix eval --strict .#nixosConfigurations.los-t14.config.system.build.toplevel
+          nix build .#nixosConfigurations.los-t14.config.system.build.toplevel
 
       - name: pr number
         run: |
