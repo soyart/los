@@ -10,7 +10,7 @@ in
     lib.mkIf userCfg.vscodium.enable (
       let cfg = userCfg.vscodium; in
       {
-        programs.vscode = {
+        programs.vscodium = {
           enable = true;
           package =
             if cfg.fhs
