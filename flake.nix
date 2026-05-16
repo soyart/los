@@ -1,7 +1,16 @@
 {
   description = "NixOS configuration";
 
-  outputs = inputs@{ flake-parts, ... }:
+  outputs =
+    inputs@{ flake-parts, ... }:
+    let
+      pkgsFor =
+        system:
+        import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -11,10 +20,7 @@
       perSystem =
         { system, ... }:
         let
-          pkgs = import inputs.nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
+          pkgs = pkgsFor system;
         in
         {
           packages = {
@@ -40,11 +46,13 @@
 
       flake =
         let
-          inherit (inputs) nixpkgs;
+          nixosConfigurations = import ./hosts { inherit inputs pkgsFor; };
         in
-        rec {
-          nixosConfigurations = import ./hosts { inherit inputs nixpkgs; };
-          homeConfigurations = import ./home { inherit inputs nixpkgs; };
+        {
+          inherit nixosConfigurations;
+
+          homeConfigurations = import ./home { inherit inputs pkgsFor; };
+
           dotfiles =
             let
               t14 = nixosConfigurations.los-t14.config;

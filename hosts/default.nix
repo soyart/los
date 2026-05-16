@@ -1,7 +1,9 @@
-{ inputs, nixpkgs, ... }:
+{ inputs, pkgsFor, ... }:
 
 let
-  inherit (nixpkgs.lib) nixosSystem;
+  inherit (inputs.nixpkgs.lib) nixosSystem;
+  # inherit (inputs.disko.nixosModules) disko;
+  # inherit (inputs.sops-nix.nixosModules) sops;
 
   mkHost =
     { modules
@@ -9,19 +11,15 @@ let
     , hostname ? "los"
     , system ? "x86_64-linux"
     , # disk ? ./disks/thinkpad.nix,
-    }:
-    nixosSystem {
+    }: nixosSystem {
       inherit system modules;
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
+      pkgs = pkgsFor system;
 
       specialArgs = {
         inherit hostname inputs stateVersion;
       };
 
-      # modules = [ sops disko ./shared ] ++ modules;
+      # modules = [ sops disko ./shared ] ++ modules; 
       # specialArgs = { inherit inputs disk stateVersion; };
     };
 
