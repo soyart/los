@@ -22,6 +22,8 @@
                 {
                   "if" = ''$CI_COMMIT_BRANCH == "master" && $CI_PIPELINE_SOURCE == "push"'';
                 }
+                # Child pipeline from nix-ci:trigger uses parent_pipeline, not push/MR.
+                { "if" = ''$CI_PIPELINE_SOURCE == "parent_pipeline"''; }
               ];
               script = [
                 "nix build .#nixosConfigurations.los-t14.config.system.build.toplevel --print-build-logs"
@@ -32,7 +34,7 @@
               stage = "maintain";
               rules = [
                 {
-                  "if" = ''$CI_COMMIT_BRANCH == "master" && $CI_PIPELINE_SOURCE == "push"'';
+                  "if" = ''$CI_COMMIT_BRANCH == "master" && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "parent_pipeline")'';
                 }
               ];
               needs = [ "build-nixos-toplevel" ];
