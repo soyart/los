@@ -2,6 +2,10 @@ include:
   - component: gitlab.com/TECHNOFAB/nix-gitlab-ci/nix-gitlab-ci@3.1.2
     inputs:
       version: "3.1.2"
+      # Bust nix-ci:build cache when CI Nix changes (default is only flake.nix + flake.lock).
+      cache_files:
+        - "flake.*"
+        - "ci/flake-module.nix"
 
 # nix-gitlab-ci maps CI_PIPELINE_SOURCE to a pipeline name. By default everything
 # uses "default"; this regex excludes `schedule` so scheduled runs use
