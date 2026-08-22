@@ -55,8 +55,6 @@
         {
           inherit nixosConfigurations;
 
-          homeConfigurations = import ./home { inherit inputs pkgsFor; };
-
           dotfiles =
             let
               t14 = nixosConfigurations.los-t14.config;
