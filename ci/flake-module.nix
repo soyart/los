@@ -1,6 +1,10 @@
 # GitLab CI (nix-gitlab-ci). Imported from the root flake via flake-parts.
 { ... }:
 {
+  imports = [
+    inputs.nix-gitlab-ci.flakeModule
+  ];
+
   perSystem =
     { pkgs, ... }:
     {

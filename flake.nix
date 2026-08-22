@@ -13,7 +13,6 @@
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        inputs.nix-gitlab-ci.flakeModule
         ./ci/flake-module.nix
       ];
 
