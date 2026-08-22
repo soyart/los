@@ -3,14 +3,6 @@
 
   outputs =
     inputs@{ flake-parts, ... }:
-    let
-      pkgsFor =
-        system:
-        import inputs.nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./ci/flake-module.nix
@@ -22,10 +14,7 @@
       ];
 
       perSystem =
-        { system, ... }:
-        let
-          pkgs = pkgsFor system;
-        in
+        { pkgs, ... }:
         {
           packages = {
             dwmbar = pkgs.buildGoModule {
@@ -50,7 +39,7 @@
 
       flake =
         let
-          nixosConfigurations = import ./hosts { inherit inputs pkgsFor; };
+          nixosConfigurations = import ./hosts { inherit inputs; };
         in
         {
           inherit nixosConfigurations;
@@ -58,10 +47,10 @@
           dotfiles =
             let
               t14 = nixosConfigurations.los-t14.config;
-              firstSuperuser = (builtins.head (builtins.filter (u: u.superuser) t14.los.users)).username;
+              someSuperuser = (builtins.head (builtins.filter (u: u.superuser) t14.los.users)).username;
             in
             {
-              los-t14 = t14.home-manager.users.${firstSuperuser}.home.activationPackage;
+              los-t14 = t14.home-manager.users.${someSuperuser}.home.activationPackage;
             };
         };
     };
