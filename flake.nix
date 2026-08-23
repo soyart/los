@@ -37,21 +37,6 @@
             };
           };
         };
-
-      flake =
-        let
-          nixosConfigurations = import ./hosts { inherit inputs; };
-        in
-        {
-          dotfiles =
-            let
-              t14 = nixosConfigurations.los-t14.config;
-              someSuperuser = (builtins.head (builtins.filter (u: u.superuser) t14.los.users)).username;
-            in
-            {
-              los-t14 = t14.home-manager.users.${someSuperuser}.home.activationPackage;
-            };
-        };
     };
 
   inputs = {
