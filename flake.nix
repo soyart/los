@@ -6,6 +6,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./ci/flake-module.nix
+        ./hosts/flake-module.nix
       ];
 
       systems = [
@@ -42,8 +43,6 @@
           nixosConfigurations = import ./hosts { inherit inputs; };
         in
         {
-          inherit nixosConfigurations;
-
           dotfiles =
             let
               t14 = nixosConfigurations.los-t14.config;

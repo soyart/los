@@ -23,9 +23,7 @@
               interruptible = true;
               rules = [
                 { "if" = ''$CI_PIPELINE_SOURCE == "merge_request_event"''; }
-                {
-                  "if" = ''$CI_COMMIT_BRANCH == "master" && $CI_PIPELINE_SOURCE == "push"'';
-                }
+                { "if" = ''$CI_COMMIT_BRANCH == "master" && $CI_PIPELINE_SOURCE == "push"''; }
                 # Dynamic child pipeline from nix-ci:trigger (source name varies by GitLab version).
                 { "if" = ''$CI_PIPELINE_SOURCE == "parent_pipeline"''; }
                 { "if" = ''$CI_PIPELINE_SOURCE == "pipeline"''; }
