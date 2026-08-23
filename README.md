@@ -115,9 +115,9 @@ but without Sway or GUI configuration.
 
   ```sh
   docker run --rm -v $(pwd):/workspace -v los-nix-store:/nix/store nixos/nix:latest sh -c '
-    cp -r /workspace /source
-    cd
-    nix build .#someOutputs --extra-experimental-features nix-command --extra-experimental-features flakes
+      cp -r /workspace /source
+      cd /source
+      nix build .#nixosConfigurations.los-t14.config.system.build.toplevel --extra-experimental-features nix-command --extra-experimental-features flakes
   '
   ```
 
@@ -129,7 +129,7 @@ but without Sway or GUI configuration.
   docker run --rm -v $(pwd):/workspace -v line-fact-check-nix-store:/nix/store nixos/nix:latest sh -c '
     # Copy to prevent container messing up our code
     cp -r /workspace /source
-    cd source
+    cd /source
 
     # Build docker-factcheck with unique result name using the actual flake version
     nix build .#dmenutrackpad --extra-experimental-features nix-command --extra-experimental-features flakes
