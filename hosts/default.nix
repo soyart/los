@@ -1,9 +1,16 @@
-{ inputs, pkgsFor, ... }:
+{ inputs, ... }:
 
 let
   inherit (inputs.nixpkgs.lib) nixosSystem;
   # inherit (inputs.disko.nixosModules) disko;
   # inherit (inputs.sops-nix.nixosModules) sops;
+
+  pkgsFor =
+    system:
+    import inputs.nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
 
   mkHost =
     { modules
