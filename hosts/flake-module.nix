@@ -1,10 +1,12 @@
+# Flake "module" for flake-parts
+
 { inputs, ... }:
 let
-  lib = inputs.nixpkgs.lib;
+  inherit (inputs.nixpkgs) lib;
   nixosConfigurations = import ./default.nix { inherit inputs; };
 
   # Example usage: `nix build .#homeFiles.los-t14.artnoi`
-  # Outputs will land under result/home-files/
+  # home-manager outputs will land under ./result/home-files (default location set from home-manager)
   mkHomeFiles =
     _hostName: nixos:
     lib.genAttrs

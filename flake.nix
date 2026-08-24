@@ -2,7 +2,7 @@
   description = "NixOS configuration";
 
   outputs =
-    inputs@{ flake-parts, ... }:
+    { flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./ci/flake-module.nix
@@ -40,19 +40,18 @@
     };
 
   inputs = {
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    nix-gitlab-ci.url = "gitlab:TECHNOFAB/nix-gitlab-ci/3.1.2?dir=lib";
-
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:nixos/nixos-hardware/master";
-    impermanence.url = "github:nix-community/impermanence";
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    unix = {
+    impermanence.url = "github:nix-community/impermanence";
+    nixos-hardware.url = "github:nixos/nixos-hardware/master";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    nix-gitlab-ci.url = "gitlab:TECHNOFAB/nix-gitlab-ci/3.1.2?dir=lib";
+
+    unix = { # Not a flake
       type = "gitlab";
       owner = "artnoi";
       repo = "unix";
