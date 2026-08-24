@@ -5,7 +5,7 @@ include:
       # Bust nix-ci:build cache when CI Nix changes (default is only flake.nix + flake.lock).
       cache_files:
         - "flake.*"
-        - "ci/flake-module.nix"
+        - ".gitlab/ci.nix"
 
 # nix-gitlab-ci maps CI_PIPELINE_SOURCE to a pipeline name. By default everything
 # uses "default"; this regex excludes `schedule` so scheduled runs use
