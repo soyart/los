@@ -1,24 +1,23 @@
 {
   description = "NixOS configuration";
 
-  outputs = { ... }@inputs:
-    let
-      pkgsFor = system: import inputs.nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
+  outputs =
+    { flake-parts, ... }@inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        ./ci/flake-module.nix
+        ./hosts/flake-module.nix
+      ];
 
-      nixosConfigurations = import ./hosts { inherit inputs pkgsFor; };
-    in
-    {
-      inherit nixosConfigurations;
-      homeConfigurations = import ./home { inherit inputs pkgsFor; };
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
-      # Linux-only packages
-      packages = builtins.listToAttrs (map
-        (system:
-          let
-            pkgs = pkgsFor system;
+      perSystem =
+        { pkgs, ... }:
+        {
+          packages = {
             dwmbar = pkgs.buildGoModule {
               pname = "dwmbar";
               version = "0.1.0";
@@ -36,35 +35,23 @@
               src = ./src/dmenutrackpad;
               vendorHash = null;
             };
-          in
-          {
-            name = system;
-            value = { inherit dwmbar dmenutrackpad; };
-          }
-        ) [ "x86_64-linux" "aarch64-linux" ]);
-
-      # Extract home-manager dotfiles from NixOS builds
-      dotfiles =
-        let
-          t14 = nixosConfigurations.los-t14.config;
-          firstSuperuser = (builtins.head (builtins.filter (u: u.superuser) t14.los.users)).username;
-        in
-        {
-          los-t14 = t14.home-manager.users.${firstSuperuser}.home.activationPackage;
+          };
         };
     };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:nixos/nixos-hardware/master";
-    impermanence.url = "github:nix-community/impermanence";
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    unix = {
+    impermanence.url = "github:nix-community/impermanence";
+    nixos-hardware.url = "github:nixos/nixos-hardware/master";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    nix-gitlab-ci.url = "gitlab:TECHNOFAB/nix-gitlab-ci/3.1.2?dir=lib";
+
+    unix = { # Not a flake
       type = "gitlab";
       owner = "artnoi";
       repo = "unix";
