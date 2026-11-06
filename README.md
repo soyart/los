@@ -115,10 +115,16 @@ but without Sway or GUI configuration.
 
   ```sh
   docker run --rm -v $(pwd):/workspace -v los-nix-store:/nix/store nixos/nix:latest sh -c '
-      cp -r /workspace /source
-      cd /source
-      nix build .#nixosConfigurations.los-t14.config.system.build.toplevel --extra-experimental-features nix-command --extra-experimental-features flakes
-  '
+  # Copy to prevent container messing up our code
+  cp -r /workspace /source
+  cd /source
+
+  # Build the whole los
+  nix build \
+    --extra-experimental-features nix-command \
+    --extra-experimental-features flakes \
+    --print-build-logs
+    .#nixosConfigurations.los-t14.config.system.build.toplevel \
   ```
 
   With Docker volume, you can even persist and link the result back to your mac PWD!:
@@ -126,12 +132,11 @@ but without Sway or GUI configuration.
   ```sh
   mkdir -p result-nix-docker;
 
-  docker run --rm -v $(pwd):/workspace -v line-fact-check-nix-store:/nix/store nixos/nix:latest sh -c '
+  docker run --rm -v $(pwd):/workspace -v los-nix-store:/nix/store nixos/nix:latest sh -c '
     # Copy to prevent container messing up our code
     cp -r /workspace /source
     cd /source
 
-    # Build docker-factcheck with unique result name using the actual flake version
     nix build .#dmenutrackpad --extra-experimental-features nix-command --extra-experimental-features flakes
 
     # Copy the result to workspace
